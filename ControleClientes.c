@@ -11,9 +11,9 @@
 #include <ctype.h>
 #include <locale.h>
 #include <windows.h>
-#define clienteNaoExiste '*'
+#define clienteNaoExiste 0
 #define ERROMEM "ERRO: Memoria indisponivel!\n"
-
+#define CLIENTEEXISTE 1
 /*funcao responsavel por verificar se existem clientes cadastrados, visto que a exclusao e feita por exclusao logica, entao pode ter 5 cadastros
  mas todos estarem com os campos com "*"*/
 int verificaExisteClientes(cliente *ptr, int quantidade){
@@ -24,7 +24,7 @@ int verificaExisteClientes(cliente *ptr, int quantidade){
     /*loop verifica se existe algum nome diferente de "*"*/
     for(int i = 0; i<quantidade; i++){
         //se o nome atual for diferente de *, entao existem clientes cadastrados
-        if(strcmp(ptr[i].nomeCompleto, "*")){
+        if(ptr[i].flag != 0){
            return 1;  
         }
     }
@@ -118,7 +118,7 @@ int leDadosClientesBin(cliente **ptr){
         fread(&ptr[0][i].diaNascimento, sizeof(int), 1, f);
         fread(&ptr[0][i].mes, sizeof(int), 1, f);
         fread(&ptr[0][i].ano, sizeof(int), 1, f);
-        
+        fread(&ptr[0][i].flag, sizeof(int), 1, f);
     }
     
     fechaArquivo(&f);//depois de lido todos os dados do aquivo, fecha o arquivo
@@ -179,7 +179,9 @@ int leDadosClientes(cliente **ptr){
         
         fscanf(f, "%d ", &ptr[0][i].mes);
         
-        fscanf(f, "%d  ", &ptr[0][i].ano);
+        fscanf(f, "%d ", &ptr[0][i].ano);
+        
+        fscanf(f, "%d  ", &ptr[0][i].flag);
     }
     /*depois de terminar a leitura dos dados para a struct, fecha o arquivo, e retorna a quantidade*/
     fechaArquivo(&f);
@@ -247,6 +249,8 @@ void reescreveDadosClienteBin(cliente *ptr, int quantidade){
         fwrite(&ptr[i].mes, sizeof(int), 1, f);
         
         fwrite(&ptr[i].ano, sizeof(int), 1, f);
+        
+        fwrite(&ptr[i].flag, sizeof(int), 1, f);
     }
     //fecha o arquivo depois de salvar todos os dados no arquivo temporario
     fechaArquivo(&f);
@@ -287,7 +291,8 @@ void reescreveDadosCliente(cliente *ptr, int quantidade){
             fprintf(f, "%d\n", ptr[i].estadoCivil);
             fprintf(f, "%d\n", ptr[i].diaNascimento);
             fprintf(f, "%d\n", ptr[i].mes);
-            fprintf(f, "%d\n\n", ptr[i].ano);
+            fprintf(f, "%d\n", ptr[i].ano);
+            fprintf(f, "%d\n\n", ptr[i].flag);
 
         
     }
@@ -317,7 +322,7 @@ cliente *encontraClienteCodigo(cliente *ptr, int quantidade, char *codigo, int i
         return NULL;
     }
     //se nome completo for igual a * e na chamada da funcao tiver mandado ignorar clientes apagados, entao retorna null
-    if(strcmp(ptr[cod].nomeCompleto, "*") == 0 && ignorar){
+    if(!ptr[cod].flag && ignorar){
         return NULL;
     }
     /*se todos os testes foram falsos, entao o codigo e valido*/
@@ -329,7 +334,7 @@ cliente *encontraClienteNome(cliente *ptr, int quantidade, char *nome){
     /*enquanto nao conferir se todos os clientes tem o nome pedido, continuar conferindo*/
     for(int i = 0; i<quantidade; i++){
         //se nome completo for igual a nome, entao retorne o ponteiro atual
-        if(strcmp(ptr[i].nomeCompleto, nome) == 0){
+        if(ptr[i].flag && !strcmp(ptr[i].nomeCompleto, nome)){
             return (ptr+i);
         }
     }
@@ -342,7 +347,7 @@ cliente *encontraClienteCpf(cliente *ptr, int quantidade, char *cpf){
     /*enquanto nao conferiu se todos os clientes tem aquele cpf, continuar conferindo*/
     for(int i = 0; i<quantidade; i++){
         /*se o cliente atual tem o cpf pedido, entao retornar o ponteiro para este cliente*/
-        if(strcmp(ptr[i].cpf, cpf)  ==0){
+        if(!strcmp(ptr[i].cpf, cpf) && ptr[i].flag){
             return (ptr+i);
         }
     }
@@ -359,7 +364,7 @@ cliente *buscaCliente(cliente *buscar, int quantidade, char *mensagem){
         /*com o dado digitado tenta buscar pelo cpf*/
         ptr = encontraClienteCpf(buscar, quantidade, dado);
         //se o ponteiro for um endereco nao null, e o nome for diferente de *
-        if(ptr && strcmp(ptr->nomeCompleto, "*")){
+        if(ptr){
             //entao o cliente foi encontrado, logo limpa a memoria da string digitada, e retorna o ptr
             dado = limpaMemoria(dado);
             return ptr;
@@ -368,7 +373,7 @@ cliente *buscaCliente(cliente *buscar, int quantidade, char *mensagem){
          usando o dado em que o usuario digitou*/
         ptr = encontraClienteNome(buscar, quantidade, dado);
         /*se o ponteiro devolvido pela funcao nao foi um ponteiro null, e o nome nao e "*", entao */
-        if(ptr && strcmp(ptr->nomeCompleto, "*")){
+        if(ptr){
             /*limpa a memoria da string que o usuario digitou*/
             dado = limpaMemoria(dado);
             /*devolve o ponteiro*/
@@ -603,6 +608,7 @@ void cadastraCliente(int modoLeitura){
     printf("digite o ano de nascimento do cliente\n");
     verificaNumero(&client[quantidadeCliente-1].ano, "%d");
     
+    client[quantidadeCliente-1].flag = CLIENTEEXISTE;
     /*reescreve os dados no arquivo segundo o argumento passado como parametro pela funcao, se 0, arquivo text, se 1, binario*/
     (*reescreveDados[modoLeitura])(client, quantidadeCliente);
     /*limpa os campos de texto das structs de clientes da memoria*/
@@ -648,52 +654,9 @@ void apagaCliente(int modo){
      se encontrar retorna o ponteiro desse cliente para apagar*/
     apagar = buscaCliente(clientes, quantidadeClientes, "Nenhum cliente tem o dado digitado, por favor, digite um nome, cpf ou codigo");
     
-    /*depois de encontrar qual cliente o usuario deseja apagar*/
-    //limpa a memoria anterior onde estava alocada o nome
-    apagar->nomeCompleto = limpaMemoria(apagar->nomeCompleto);
-    //aloca duas posicoes de chars para o nome que significa que o cliente foi apagado
-    apagar->nomeCompleto = malloc(sizeof(char)*2);
-    /*atribui a primeira posicao um *, que significa que o cliente foi apagado*/
-    apagar->nomeCompleto[0] = clienteNaoExiste;
-    /*atribui a segunda um caracter de finalizacao de string*/
-    apagar->nomeCompleto[1] = '\0';
+    apagar->flag = 0;
     
-    apagar->rua = limpaMemoria(apagar->rua);
-    apagar->rua = malloc(sizeof(char)*2);
-    apagar->rua[0] = clienteNaoExiste;
-    apagar->rua[1] = '\0';
     
-    apagar->bairro = limpaMemoria(apagar->bairro);
-    apagar->bairro = malloc(sizeof(char)*2);
-    apagar->bairro[0] = clienteNaoExiste;
-    apagar->bairro[1] = '\0';
-    
-    /*para campos numerico, atribui -1 ao valor*/
-    apagar->numeroDaCasa = -1;
-    
-    apagar->cpf = limpaMemoria(apagar->cpf);
-    apagar->cpf = malloc(sizeof(char)*2);
-    apagar->cpf[0] = clienteNaoExiste;
-    apagar->cpf[1] = '\0';
-    
-    apagar->telefone = -1;
-
-    apagar->email = limpaMemoria(apagar->email);
-    apagar->email = malloc(sizeof(char)*2);
-    apagar->email[0] = clienteNaoExiste;
-    apagar->email[1] = '\0';
-    
-    apagar->sexo = -1;
-    
-    apagar->estadoCivil = -1;
-    
-    apagar->diaNascimento = -1;
-    apagar->mes = -1;
-    apagar->ano = -1;
-    
-    /*depois de apagados todos os dados, reescreve os dados no arquivo, unica informacao que nao e subscrita e o codigo, indicando que aquele codigo
-     ja foi de alguem, e tornando util a exclusao logica, pois sera impossivel alguem ter novamnte o codigo N*/
-    /*como ja explicado na funcao de leitura, a reescrita e feita com base no parametro passado como argumento*/
     (*reescreveDados[modo])(clientes, quantidadeClientes);
     /*limpa os campos de texto das structs de clientes da memoria*/
     limpaDadosClienteMemoria(clientes, quantidadeClientes);
@@ -708,7 +671,7 @@ void mostraListaClientes(cliente *ptr, int quantidade){
     /*enquanto nao chegar na ultima posicao de clientes cadastrados na memoria, continuar percorrendo*/
     for(int i = 0; i<quantidade; i++){
         //se o nome do cliente atual for diferente de *, entao ele devera ser mostrado
-        if(ptr[i].nomeCompleto[0] != '*'){
+        if(ptr[i].flag != 0){
             /*printa as informacoes do cliente atual*/
             printf("╔════════════════\n");
             printf("║Nome: %s\n", ptr[i].nomeCompleto);

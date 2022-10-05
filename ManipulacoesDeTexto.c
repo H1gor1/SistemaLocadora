@@ -95,7 +95,7 @@ void converteTodasEmMinusculas(char *text){
 int verificaStringRepetiu(cliente *ptr, int quantidade, cliente *posicao, char *string){
     
     for(int i = 0; i<quantidade; i++){
-        if((ptr+i) != posicao){
+        if((ptr+i) != posicao && ptr[i].flag){
             if(!strcmp(ptr[i].nomeCompleto, string) || !strcmp(ptr[i].cpf, string)){
                  return 1;
             }

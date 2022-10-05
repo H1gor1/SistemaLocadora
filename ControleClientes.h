@@ -12,6 +12,7 @@ typedef struct cliente{
     int diaNascimento;
     int mes;
     int ano;
+    int flag;
     
     
 }cliente;

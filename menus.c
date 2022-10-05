@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>
+#include <windows.h>
 #include "ManipulacoesDeTexto.h"
 #include "ControleDeDadosLocadora.h"
 #include "ControleDeNumeros.h"

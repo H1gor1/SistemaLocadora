@@ -13,13 +13,13 @@
 #include <locale.h>
 #include <windows.h>
 #define ERROMEM "ERRO: Memoria indisponivel!"
-#define FORNECEDORNAOEXISTE '*'
-
+#define FORNECEDORNAOEXISTE 0
+#define FORNECEDOREXISTE 1
 
 
 void mostraDadosFornecedores(fornecedor *ptr, int quantidade){
     for(int i = 0; i<quantidade; i++){
-        if(strcmp(ptr[i].nomeFantasia, "*")){
+        if(ptr[i].flag){
             printf("%d:\nNome Fantasia: %s\nCNPJ: %s\n", i+1, ptr[i].nomeFantasia, ptr[i].CNPJ);
         }
     }
@@ -49,6 +49,7 @@ int leDadosFornecedores(fornecedor **ptr){
     if(!f){
         f = fopen("fornecedores.txt", "w");
         fprintf(f, "0\n");
+        fechaArquivo(&f);
         return 0;
     }
     
@@ -78,7 +79,7 @@ int leDadosFornecedores(fornecedor **ptr){
         
         digText(&ptr[0][i].email, f);
 
-        fgetc(f);
+        fscanf(f, "%d  ", &ptr[0][i].flag);
         
     }
     
@@ -98,6 +99,7 @@ int leDadosFornecedoresBin(fornecedor **ptr){
         quantidadeFornecedores = 0;
         f = fopen("fornecedores.bin", "wb");
         fwrite(&quantidadeFornecedores, sizeof(int), 1, f);
+        fechaArquivo(&f);
         return 0;
     }
     
@@ -150,6 +152,7 @@ int leDadosFornecedoresBin(fornecedor **ptr){
         verificaOperacao(ptr[0][i].email, ERROMEM, 1);
         fread(ptr[0][i].email, sizeof(char), quantidadeLetras, f);
     
+        fread(&ptr[0][i].flag, sizeof(int), 1, f);
     }
     
     fechaArquivo(&f);
@@ -191,7 +194,9 @@ void reescreveDadosFornecedores(fornecedor *ptr, int quantidade){
         
         fprintf(f, "%d\n", ptr[i].telefone);
         
-        fprintf(f, "%s\n\n", ptr[i].email);
+        fprintf(f, "%s\n", ptr[i].email);
+        
+        fprintf(f, "%d\n\n", ptr[i].flag);
     }
     
     fechaArquivo(&f);
@@ -250,6 +255,7 @@ void reescreveDadosFornecedoresBin(fornecedor *ptr, int quantidade){
         fwrite(&quantidadeLetras, sizeof(int), 1, f);
         fwrite(ptr[i].email, sizeof(char), quantidadeLetras, f);
         
+        fwrite(&ptr[i].flag, sizeof(int), 1, f);
         
     }
     
@@ -273,7 +279,7 @@ void cadastraFornecedor(int modoAbertura){
     int quantidadeFornecedores = (*leDados[modoAbertura])(&fornecedores)+1;
     
     fornecedores = (quantidadeFornecedores == 1)
-            ?malloc(sizeof(fornecedores))
+            ?malloc(sizeof(fornecedor))
             :realloc(fornecedores, sizeof(fornecedor)*quantidadeFornecedores);
     
     fornecedores[quantidadeFornecedores-1].codigo = quantidadeFornecedores-1;
@@ -305,6 +311,8 @@ void cadastraFornecedor(int modoAbertura){
     printf("Digite o email:\n");
     verificaText("@.", &fornecedores[quantidadeFornecedores-1].email, "Email digitado foi invalido! Por favor, digite um email valido!");
     
+    fornecedores[quantidadeFornecedores-1].flag = FORNECEDOREXISTE;
+    
     (*reescreveDados[modoAbertura])(fornecedores, quantidadeFornecedores);
     limpaMemoriaStringsFornecedor(fornecedores, quantidadeFornecedores);
     fornecedores = limpaMemoria(fornecedores);
@@ -315,7 +323,7 @@ int verificaExisteFornecedores(fornecedor *ptr, int quantidade){
         return 0;
     }
     for(int i = 0; i<quantidade; i++){
-        if(strcmp(ptr[i].nomeFantasia, "*")){
+        if(ptr[i].flag){
             return 1;
         }
     }
@@ -324,7 +332,7 @@ int verificaExisteFornecedores(fornecedor *ptr, int quantidade){
 
 fornecedor * encontraFornecedorCNPJ(fornecedor *ptr, int quantidade, char *dado){
     for(int i = 0; i<quantidade; i++){
-        if(!strcmp(ptr[i].CNPJ, dado)){
+        if(!strcmp(ptr[i].CNPJ, dado) && ptr[i].flag){
             return (ptr+i);
         }
     }
@@ -332,7 +340,7 @@ fornecedor * encontraFornecedorCNPJ(fornecedor *ptr, int quantidade, char *dado)
 }
 fornecedor *encontraFornecedorNomeFantasia(fornecedor *ptr, int quantidade, char *dado){
     for(int i = 0; i<quantidade; i++){
-        if(!strcmp(ptr[i].nomeFantasia, dado)){
+        if(!strcmp(ptr[i].nomeFantasia, dado) && ptr[i].flag){
             return (ptr+i);
         }
     }
@@ -480,44 +488,7 @@ void apagaFornecedor(int modoAbertura){
     printf("Digite o nome ou CNPJ do fornecedor que deseja apagar:\n");
     apagar = buscaFornecedor(fornecedores, quantidadeFornecedores);
     
-    apagar->nomeFantasia = limpaMemoria(apagar->nomeFantasia);
-    apagar->nomeFantasia = malloc(sizeof(char)*2);
-    apagar->nomeFantasia[0] = FORNECEDORNAOEXISTE;
-    apagar->nomeFantasia[1] = '\0';
-    
-    apagar->razaoSocial = limpaMemoria(apagar->razaoSocial);
-    apagar->razaoSocial = malloc(sizeof(char)*2);
-    apagar->razaoSocial[0] = FORNECEDORNAOEXISTE;
-    apagar->razaoSocial[1] = '\0';
-    
-    apagar->inscricaoEstadual = limpaMemoria(apagar->inscricaoEstadual);
-    apagar->inscricaoEstadual = malloc(sizeof(char)*2);
-    apagar->inscricaoEstadual[0] = FORNECEDORNAOEXISTE;
-    apagar->inscricaoEstadual[1] = '\0';
-    
-    apagar->CNPJ = limpaMemoria(apagar->CNPJ);
-    apagar->CNPJ = malloc(sizeof(char)*2);
-    apagar->CNPJ[0] = FORNECEDORNAOEXISTE;
-    apagar->CNPJ[1] = '\0';
-    
-    apagar->bairro = limpaMemoria(apagar->bairro);
-    apagar->bairro = malloc(sizeof(char)*2);
-    apagar->bairro[0] = FORNECEDORNAOEXISTE;
-    apagar->bairro[1] = '\0';
-    
-    apagar->rua = limpaMemoria(apagar->rua);
-    apagar->rua = malloc(sizeof(char)*2);
-    apagar->rua[0] = FORNECEDORNAOEXISTE;
-    apagar->rua[1] = '\0';
-    
-    apagar->numero = -1;
-    
-    apagar->telefone = -1;
-    
-    apagar->email = limpaMemoria(apagar->email);
-    apagar->email = malloc(sizeof(char)*2);
-    apagar->email[0] = FORNECEDORNAOEXISTE;
-    apagar->email[1] = '\0';
+    apagar->flag = FORNECEDORNAOEXISTE;
     
     (*reescreveDados[modoAbertura])(fornecedores, quantidadeFornecedores);
     limpaMemoriaStringsFornecedor(fornecedores, quantidadeFornecedores);

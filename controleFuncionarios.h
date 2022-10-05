@@ -10,6 +10,7 @@ typedef struct Funcionarios{
     int numero;
     int telefone;
     char *email;
+    int flag;
 }Funcionarios;
 
 void cadastraFuncionario(int modoAbertura);

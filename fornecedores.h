@@ -12,6 +12,7 @@ typedef struct fornecedor{
     int numero;
     int telefone;
     char *email;
+    int flag;
     
 }fornecedor;
 

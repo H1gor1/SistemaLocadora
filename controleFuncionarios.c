@@ -71,9 +71,8 @@ int leDadosFuncionarios(Funcionarios **ptr){
         fscanf(f, "%d ", &ptr[0][i].numero);
         fscanf(f, "%d ", &ptr[0][i].telefone);
         digText(&ptr[0][i].email, f);
-        /*depos de pegar todos os campos de textos, pega mais um caracter e joga fora, esse caracter e o enter a mais que separa um cliente do outro
-         no arquivo text*/
-        fgetc(f);
+        fscanf(f, "%d  ", &ptr[0][i].flag);
+        
         
     }
     /*depois de realizar a leitura, fecha o arquivo, e retorna a quantidade*/
@@ -150,7 +149,7 @@ int leDadosFuncionariosBin(Funcionarios **ptr){
         ptr[0][i].email = malloc(sizeof(char)*quantidadeLetras);
         verificaOperacao(ptr[0][i].email, "ERRO: Memoria indisponivel!\n", 1);
         fread(ptr[0][i].email, sizeof(char), quantidadeLetras, f);
-        
+        fread(&ptr[0][i].flag, sizeof(int), 1, f);
         
         
     }
@@ -210,6 +209,8 @@ void reescreveDadosFuncionariosBin(Funcionarios *ptr, int quantidadeFuncionarios
         quantidadeLetras = strlen(ptr[i].email)+1;
         fwrite(&quantidadeLetras, sizeof(int), 1, f);
         fwrite(ptr[i].email,  sizeof(char), quantidadeLetras, f);
+        
+        fwrite(&ptr[i].flag, sizeof(int), 1, f);
     }
     /*depois de terminar de reescrever o arquivo, fecha o arquivo*/
     fechaArquivo(&f);
@@ -254,7 +255,9 @@ void reescreveDadosFuncionarios(Funcionarios *ptr, int quantidadeFuncionarios, c
         
         fprintf(f, "%d\n", ptr[i].telefone);
         
-        fprintf(f, "%s\n\n", ptr[i].email);
+        fprintf(f, "%s\n", ptr[i].email);
+        
+        fprintf(f, "%d\n\n", ptr[i].flag);
         
         
     }
@@ -308,6 +311,8 @@ void cadastraFuncionario(int modoAbertura){
     printf("digite o email do funcionario:\n");
     verificaText("@.", &novo.email, "email invalido, por favor, digite um email valido!\n");
     
+    novo.flag = 1;
+    
     (*reescrita[modoAbertura])(&novo, 1, modoEscrita[modoAbertura], nomeArqOr[modoAbertura], nomeArqOr[modoAbertura]);
     apagaDadosStructFuncionarios(&novo, 1);
     
@@ -318,7 +323,7 @@ void cadastraFuncionario(int modoAbertura){
 Funcionarios *encontraFuncionarioNome(Funcionarios *ptr, char *nome, int quantidade, Funcionarios *posicao){
     
     for(int i = 0; i<quantidade; i++){
-        if((ptr+i)!=posicao){
+        if((ptr+i)!=posicao && ptr[i].flag){
             if(!strcmp(ptr[i].nome, nome)){
                 return (ptr+i);
             }
@@ -329,7 +334,7 @@ Funcionarios *encontraFuncionarioNome(Funcionarios *ptr, char *nome, int quantid
 Funcionarios *encontraFuncionarioCodigo(Funcionarios *ptr, int codigo, int quantidade, Funcionarios *posicao){
     
     for(int i = 0; i<quantidade; i++){
-        if((ptr+i)!=posicao){
+        if((ptr+i)!=posicao && ptr[i].flag){
             if(ptr[i].codigo == codigo){
                 return (ptr+i);
             }
@@ -365,7 +370,7 @@ int verificaExisteFuncionarios(Funcionarios *ptr, int quantidade){
         return 0;
     }
     for(int i = 0; i<quantidade; i++){
-        if(strcmp(ptr[i].nome, "*")){
+        if(ptr[i].flag){
             return 1;
         }
     }
@@ -402,9 +407,10 @@ void editaFuncionario(int modoAbertura){
     mostraFuncionarios(modoAbertura);
     editar = buscaFuncionarios(ptr, quantidadeFuncionarios, (ptr-1));
     
-    printf("digite qual informacao sobre o usuario deseja editar:\n");
+    
     while(1){
-        printf("1-nome Completo\n2-cargo\n3-rua\n4-bairro\n5-numero da casa\n6-telefone\n7-email\n");
+        menuGraphics(7, "Qual informacao deseja editar:", "Nome Completo", "Cargo", "Rua", "Bairro", "Numero Da Casa", "Telefone", "Email");
+        
         verificaNumero(&dado, "%d");
         
         switch(dado){
@@ -504,33 +510,7 @@ void apagaFuncionario(int modoAbertura){
     mostraFuncionarios(modoAbertura);
     apagar = buscaFuncionarios(ptr, quantidadeFuncionarios, (ptr-1));
     
-    apagar->nome = limpaMemoria(apagar->nome);
-    apagar->nome = malloc(sizeof(char)*2);
-    apagar->nome[0] = FuncionarioNaoExiste;
-    apagar->nome[1] = '\0';
-    
-    apagar->cargo = limpaMemoria(apagar->cargo);
-    apagar->cargo = malloc(sizeof(char)*2);
-    apagar->cargo[0] = FuncionarioNaoExiste;
-    apagar->cargo[1] = '\0';
-    
-    apagar->rua = limpaMemoria(apagar->rua);
-    apagar->rua = malloc(sizeof(char)*2);
-    apagar->rua[0] = FuncionarioNaoExiste;
-    apagar->rua[1] = '\0';
-
-    apagar->bairro = limpaMemoria(apagar->bairro);
-    apagar->bairro = malloc(sizeof(char)*2);
-    apagar->bairro[0] = FuncionarioNaoExiste;
-    apagar->bairro[1] = '\0';
-    
-    apagar->numero = -1;
-    apagar->telefone = -1;
-    
-    apagar->email = limpaMemoria(apagar->email);
-    apagar->email = malloc(sizeof(char)*2);
-    apagar->email[0] = FuncionarioNaoExiste;
-    apagar->email[1] = '\0';
+    apagar->flag = 0;
     
     (*reescrita[modoAbertura])(ptr, quantidadeFuncionarios, modoEscrita[modoAbertura], nomeArquivoTemp[modoAbertura], nomeArquivoOr[modoAbertura]);
     apagaDadosStructFuncionarios(ptr, quantidadeFuncionarios);
@@ -551,7 +531,7 @@ void mostraFuncionarios(int modoAbertura){
     quantidadeFuncionarios = (*leitura[modoAbertura])(&ptr);
     
     for(int i = 0; i<quantidadeFuncionarios; i++){
-        if(strcmp(ptr[i].nome, "*")){
+        if(ptr[i].flag){
             printf("_______________________\n");
             printf("¦ codigo: %ld\n", ptr[i].codigo);
             printf("¦ nome: %s\n¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\n", ptr[i].nome);
