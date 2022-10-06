@@ -27,7 +27,7 @@ int verificaExisteFilme(filmes *ptr, int quantidade){
         return 0;
     }
     for(int i = 0; i<quantidade; i++){
-        if(strcmp(ptr[i].nome, "*")){
+        if(ptr[i].flag != 0){
            return 1;  
         }
     }
@@ -36,7 +36,7 @@ int verificaExisteFilme(filmes *ptr, int quantidade){
 void mostraFilmes(filmes *ptr, int quantidade){
     for(int i = 0; i<quantidade; i++){
                 
-        if(ptr[i].nome[0] != '*'){
+        if(ptr[i].flag != 0){
                 printf("╔════════════════\n");
                 printf("║Nome: %s\n", ptr[i].nome);
                 printf("║Codigo: %d\n", ptr[i].codigo);
@@ -68,20 +68,15 @@ int leDadosFilmesBin(filmes **ptr){
         ptr[0][i].nome = malloc(sizeof(char)*quantidadeLetras);
         verificaOperacao(ptr[0][i].nome, ERROMEM, 1);
         fread(ptr[0][i].nome, sizeof(char), quantidadeLetras, f);
-        
         fread(&quantidadeLetras, sizeof(int), 1, f);
         ptr[0][i].descricao = malloc(sizeof(char)*quantidadeLetras);
         verificaOperacao(ptr[0][i].descricao, ERROMEM, 1);
         fread(ptr[0][i].descricao, sizeof(char), quantidadeLetras, f);
-        
-        
         fread(&ptr[0][i].exemplares, sizeof(int), 1, f);
-        
-        
         fread(&ptr[0][i].codigoCategoria, sizeof(int), 1, f);
-        
-        
+        fread(&ptr[0][i].valorLocacao, sizeof(float), 1, f);     
         fread(&ptr[0][i].lingua, sizeof(int), 1, f);
+        fread(&ptr[0][i].flag, sizeof(int), 1, f);
     }
     
     fechaArquivo(&f);
@@ -109,7 +104,9 @@ int leDadosFilmes(filmes **ptr){
         digText(&ptr[0][i].descricao, f);
         fscanf(f, "%d ", &ptr[0][i].exemplares);
         fscanf(f,"%d ", &ptr[0][i].codigoCategoria);
+        fscanf(f,"%f ", &ptr[0][i].valorLocacao);
         fscanf(f, "%d ", &ptr[0][i].lingua);
+        fscanf(f, "%d  ", &ptr[0][i].flag);
 
     }
     fechaArquivo(&f);
@@ -143,7 +140,11 @@ void reescreveDadosFilmeBin(filmes *ptr, int quantidade){
         
         fwrite(&ptr[i].codigoCategoria, sizeof(int), 1, f);
         
+        fwrite(&ptr[i].valorLocacao, sizeof(float), 1, f);
+        
         fwrite(&ptr[i].lingua, sizeof(int), 1, f);
+        
+        fwrite(&ptr[i].flag, sizeof(int), 1, f);
     }
     fechaArquivo(&f);
     remove("filmes.bin");
@@ -166,21 +167,24 @@ void reescreveDadosFilme(filmes *ptr, int quantidade){
         fprintf(f, "%s\n", ptr[i].descricao);
         fprintf(f, "%d\n", ptr[i].exemplares);
         fprintf(f, "%d\n", ptr[i].codigoCategoria);
-        fprintf(f, "%d\n\n", ptr[i].lingua); 
+        fprintf(f, "%f\n", ptr[i].valorLocacao);
+        fprintf(f, "%d\n", ptr[i].lingua); 
+        fprintf(f, "%d\n\n", ptr[i].flag);
     }
     fechaArquivo(&f);
     remove("filmes.txt");
     rename("filmesRes.txt", "filmes.txt");
 }
 
-filmes *encontraFilmeCodigo(filmes *ptr, int quantidade, char *codigo, int ignorar ){
+filmes *encontraFilmeCodigo(filmes *ptr, int quantidade, char *codigo, int ignorar){
     if(!isdigit(codigo[0]) || strlen(codigo)>8){
+        return NULL;
     }
     int cod = atoi(codigo);
     if(cod>=quantidade){
         return NULL;
     }
-    if(strcmp(ptr[cod].nome, "*") == 0 && ignorar){
+    if(ptr[cod].flag == 0 && ignorar){
         return NULL;
     }
     return (ptr+cod);
@@ -208,7 +212,7 @@ filmes *buscaFilme(filmes *buscar, int quantidade, char *mensagem){
         }
         
         ptr = encontraFilmeNome(buscar, quantidade, dado);
-        if(ptr && strcmp(ptr->nome, "*")){
+        if(ptr && ptr->flag != 0){
             dado = limpaMemoria(dado);
             return ptr;
         }
@@ -266,8 +270,17 @@ void editaFilme(int modoAbertura){
                 break;
                     
             case 4:
+                categoria *categorias;
+                int quantidadeCategorias;
+                int (*LeDadosCategoria[2])(categoria **) = {leDadosCategoria, leDadosCategoriaBin};
+                quantidadeCategorias = (*LeDadosCategoria[modoAbertura])(&categorias);
+                
                 printf("digite codigo da categoria do filme\n");
                 verificaNumero(&ptr->codigoCategoria, "%d");
+                ptr->valorLocacao = categorias[ptr->codigoCategoria].valorLocacao;
+                
+                limpaDadosCategoriaMemoria(categorias, quantidadeCategorias);
+                categorias = limpaMemoria(categorias);
                 break;
             
             case 5:
@@ -293,11 +306,12 @@ void editaFilme(int modoAbertura){
 
 void cadastraFilmes(int modoLeitura){
     filmes *filme;
+    
     categoria *categorias;
     int quantidadeCategorias;
     int (*LeDadosCategoria[2])(categoria **) = {leDadosCategoria, leDadosCategoriaBin};
     quantidadeCategorias = (*LeDadosCategoria[modoLeitura])(&categorias);
-
+    
     int (*leDados[2])(filmes **) = {leDadosFilmes, leDadosFilmesBin};
     void (*reescreveDados[2])(filmes *, int) = {reescreveDadosFilme, reescreveDadosFilmeBin};
     int quantidadeFilmes = (*leDados[modoLeitura])(&filme) + 1;
@@ -320,10 +334,13 @@ void cadastraFilmes(int modoLeitura){
     mostraListaCategoria(categorias, quantidadeCategorias);
     verificaNumero(&filme[quantidadeFilmes-1].codigoCategoria, "%d");
     
+    filme[quantidadeFilmes-1].valorLocacao = categorias[filme[quantidadeFilmes-1].codigoCategoria].valorLocacao;
+    
     printf("Escolha se o filme é dublado ou legendado\n");
     printf("1-Dublado\n2-Legendado\n");
     verificaLimiteNumero(&filme[quantidadeFilmes-1].lingua, 2, 1, "%d");
     
+    filme[quantidadeFilmes-1].flag = 1;
 
     (*reescreveDados[modoLeitura])(filme, quantidadeFilmes);
     limpaDadosFilmeMemoria(filme, quantidadeFilmes);
@@ -363,23 +380,5 @@ void apagaFilme(int modo){
 }
 
 void deletaFilme(filmes *apagar){
-    
-
-    apagar->nome = limpaMemoria(apagar->nome);
-    apagar->nome = malloc(sizeof(char)*2);
-
-    apagar->nome[0] = filmeNaoExiste;
-
-    apagar->nome[1] = '\0';
-    
-    apagar->descricao = limpaMemoria(apagar->descricao);
-    apagar->descricao = malloc(sizeof(char)*2);
-    apagar->descricao[0] = filmeNaoExiste;
-    apagar->descricao[1] = '\0';
-    
-    
-
-    apagar->exemplares = -1;
-    apagar->codigoCategoria = -1;    
-    apagar->lingua = -1;
+    apagar->flag = 0;
 }

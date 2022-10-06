@@ -11,6 +11,7 @@
 #include "ControleFilmes.h"
 #include "ControleCategorias.h"
 #include "menus.h"
+#include "Caixa.h"
 #include "fornecedores.h"
 #define OPCAO "Escolha a opcao desejada:"
 #define CAD "Cadastrar"
@@ -40,11 +41,11 @@ void menuGraphics(int quantidadeArgumentos, char *frasePrincipal , ...){
     
 }
 int menuPrincipal(int *modo){
-    menuGraphics(6, "Seja bem Vindo! Escolha uma opcao:", "Administrativo", "Clientes", "Filmes", "Categorias", "Trocar modo arm BIN/TXT", "Sair");
+    menuGraphics(7, "Seja bem Vindo! Escolha uma opcao:", "Administrativo", "Clientes", "Filmes", "Categorias", "Trocar modo arm BIN/TXT", "Alugar um filme","Sair");
     int escolha;
     printf("\n");
     
-    while(escolha != 6){
+    while(escolha != 7){
         verificaNumero(&escolha, "%d");
         switch(escolha){
             case 1:
@@ -69,6 +70,9 @@ int menuPrincipal(int *modo){
                 
                 break;
             case 6:
+                realizaVenda(*modo);
+                break;
+            case 7:
                 break;
             default:
                 printf("Opcao invalida\n");
@@ -104,7 +108,7 @@ void menuTroca(int *modo){
         }
         break;
     }
-    menuGraphics(6, "Menu Principal, Escolha uma opcao:", "Administrativo", "Clientes", "Filmes", "Categorias", "Trocar modo arm BIN/TXT", "Sair");
+    menuGraphics(7, "Menu Principal, Escolha uma opcao:", "Administrativo", "Clientes", "Filmes", "Categorias", "Trocar modo arm BIN/TXT", "Alugar filme" ,"Sair");
 }
 int MenuAdm(int modo){
     menuGraphics(4, OPCAO, "Editar dados Loc.", "Funcionarios", "Fornecedores", VLT);    
@@ -132,7 +136,7 @@ int MenuAdm(int modo){
                 printf("Opcao invalida");
         }
     }
-    menuGraphics(6, "Menu Principal, Escolha uma opcao:", "Administrativo", "Clientes", "Filmes", "Categorias", "Trocar modo arm BIN/TXT", "Sair");
+    menuGraphics(7, "Menu Principal, Escolha uma opcao:", "Administrativo", "Clientes", "Filmes", "Categorias", "Trocar modo arm BIN/TXT", "Alugar filme" , "Sair");
     
 }
 
@@ -163,7 +167,7 @@ int MenuClientes(int modo){
                 printf("Opcao invalida");
         }
     }
-    menuGraphics(6, "Menu Principal, Escolha uma opcao:", "Administrativo", "Clientes", "Filmes", "Categorias", "Trocar modo arm BIN/TXT", "Sair");
+    menuGraphics(7, "Menu Principal, Escolha uma opcao:", "Administrativo", "Clientes", "Filmes", "Categorias", "Trocar modo arm BIN/TXT", "Alugar filme" ,"Sair");
 }
 
 int MenuFuncionarios(int modo){
@@ -223,7 +227,7 @@ int MenuFilmes(int modo){
                 printf("Opcao invalida");
         }
     }
-    menuGraphics(6, "Menu Principal, Escolha uma opcao:", "Administrativo", "Clientes", "Filmes", "Categorias", "Trocar modo arm BIN/TXT", "Sair");
+    menuGraphics(7, "Menu Principal, Escolha uma opcao:", "Administrativo", "Clientes", "Filmes", "Categorias", "Trocar modo arm BIN/TXT", "Alugar filme" ,"Sair");
 }
 
 int MenuCategoria(int modo){
@@ -253,7 +257,7 @@ int MenuCategoria(int modo){
                 printf("Opcao invalida");
         }
     }
-    menuGraphics(6, "Menu Principal, Escolha uma opcao:", "Administrativo", "Clientes", "Filmes", "Categorias", "Trocar modo arm BIN/TXT", "Sair");
+    menuGraphics(7, "Menu Principal, Escolha uma opcao:", "Administrativo", "Clientes", "Filmes", "Categorias", "Trocar modo arm BIN/TXT", "Alugar filme" ,"Sair");
 }
 int menuFornecedores(int modo){
     menuGraphics(4, OPCAO, CAD, ED, APG, VLT); 

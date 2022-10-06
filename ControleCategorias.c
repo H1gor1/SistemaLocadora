@@ -151,7 +151,7 @@ void reescreveDadosCategoria(categoria *ptr, int quantidade){
             fprintf(f, "%d\n", ptr[i].codigo);
             fprintf(f, "%s\n", ptr[i].nome);
             fprintf(f, "%s\n", ptr[i].descricao);
-            fprintf(f, "%d\n", ptr[i].valorLocacao);
+            fprintf(f, "%f\n\n", ptr[i].valorLocacao);
     }
     fechaArquivo(&f);
     remove("categorias.txt");

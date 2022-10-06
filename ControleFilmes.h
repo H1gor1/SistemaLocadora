@@ -3,8 +3,10 @@ typedef struct filmes{
     char *nome;
     char *descricao;
     int codigoCategoria;
+    float valorLocacao;
     int exemplares;
     int lingua;
+    int flag;
 }filmes;
 
 void apagaFilme(int modo);
