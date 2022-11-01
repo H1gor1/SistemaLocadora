@@ -9,7 +9,7 @@ typedef struct locadora{
     char *email;
     char *nomeResponsavel;
     int telefoneResp;
-    
+    float multa;
 }locadora;
 
 

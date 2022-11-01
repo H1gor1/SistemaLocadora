@@ -185,3 +185,39 @@ int verificaLimiteNumero(void *ptr, float limiteAlto, float limiteBaixo, char *c
         printf(" digite novamente:\n");
     }while(1);
 }
+
+char *converteIntEmString(int valorInt){
+    
+    if(valorInt == 0){
+        return "0";
+    }
+    char *valor;
+    int indice = 0;
+    
+    while(valorInt>0){
+        
+        valor = (indice == 0)?malloc(sizeof(char)):realloc(valor, sizeof(char)*(indice+1));
+        
+        valor[indice] = (valorInt%10)+'0';
+        valorInt /= 10;
+        
+        indice++;
+    }
+    
+    valor = realloc(valor, sizeof(char)*(indice+1));
+    valor[indice] = '\0';
+    
+    char temporario;
+    int indiceContra = strlen(valor)-1;
+    indice = 0;
+    while(indice<indiceContra){
+        temporario = valor[indice];
+        valor[indice] = valor[indiceContra];
+        valor[indiceContra] = temporario;
+        
+        indice++;
+        indiceContra--;
+        
+    }
+    return valor;
+}

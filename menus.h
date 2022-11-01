@@ -7,3 +7,5 @@ int MenuCategoria(int modo);
 void menuGraphics(int quantidadeArgumentos, char *frasePrincipal , ...);
 int menuFornecedores(int modo);
 void menuTroca(int *modo);
+void menuContas(int modoArm);
+void menuCaixa(int modoArm);

@@ -11,7 +11,12 @@
 #include "controleFuncionarios.h"
 #include "ControleCategorias.h"
 #include "fornecedores.h"
+#include "Caixa.h"
+#include "ContasAreceber.h"
+#include "Devolucoes.h"
 #define VAZIO NULL
+
+
 
 void removeArquivos(int quantidadeRemov, ...){
     
@@ -85,7 +90,7 @@ void verificaModoArmazenamento(int *var){
  recebe um ponteiro do tipo void, podendo assim ser usada para desalocar qualquer tipo de memoria "int, char, struct"*/
 void *limpaMemoria(void *ptr){
     /*repassa o ponteiro generico recebido como argumento para fclose*/
-     (ptr);
+    free(ptr);
     return NULL;//retorna o endereco nulo
     /*na chamada desta funcao e obrigatorio igualar o ponteiro desalocado ao retorno dela, se nao o ponteiro
      continuara sem receber null, assim apontando pra lixo de memoria*/
@@ -102,24 +107,29 @@ void trocaModoArmazenamento(int *modo){
     categoria *categorias = NULL;
     filmes *Filmes = NULL;
     fornecedor *fornecedores = NULL;
+    lancamentoCaixa *lancamentos = NULL;
+    contaArec *lancAprazo = NULL;
+    compras *devolucoes = NULL;
     
     int quantidadeFornecedores;
-    int quantidadeClientes;//var que guardara as quantidades dos clientes totais
-    int quantidadeFuncionarios;//variavel que guardara a quantidade de funcionarios
+    quantidades quant;
     int quantidadeCategorias;
-    int quantidadeFilmes;
+    
+    int quantidadeLancamentosCaixa;
+    int quantidadeLancamentosAprazo;
     FILE *f;//ponteiro para o arquivo de onde os dados serao lidos ou guardados
     
     /*se modo for 1, entao trocar de binario pra texto*/
     if(*modo){
         /*chamada das funcoes para ler os dados do sistema se estiver em modo binario*/
         leDadosLocadoraBin(&loc,"locadora.bin");
-        quantidadeClientes = leDadosClientesBin(&clientes);
-        quantidadeFuncionarios = leDadosFuncionariosBin(&funcionario);
+       
         quantidadeCategorias = leDadosCategoriaBin(&categorias);
-        quantidadeFilmes = leDadosFilmesBin(&Filmes);
+        quant = leDadosDevolucoesBin(&devolucoes, &funcionario, &clientes, &Filmes);
         quantidadeFornecedores = leDadosFornecedoresBin(&fornecedores);
-        /*remocao dos arquivos antigos*/
+        quantidadeLancamentosCaixa = leDadosLancamentosBin(&lancamentos);
+        quantidadeLancamentosAprazo = leDadosLancamentosAprazoBin(&lancAprazo);
+        
         
         
         
@@ -129,16 +139,18 @@ void trocaModoArmazenamento(int *modo){
         reescreveDadosLocadora(&loc, f);
         fechaArquivo(&f);//fecha o arquivo
         //escreve os dados de clientes em um novo arquivo de texto
-        reescreveDadosCliente(clientes, quantidadeClientes);
+        reescreveDadosCliente(clientes, quant.quantidadeClientes);
         //escreve os dados dos funcionarios em um novo arquivo de texto
-        reescreveDadosFuncionarios(funcionario, quantidadeFuncionarios, "w", "Funcionarios.txt", "Funcionarios.txt");
+        reescreveDadosFuncionarios(funcionario, quant.quantidadesFuncionarios, "w", "Funcionarios.txt", "Funcionarios.txt");
         /*alterna o modo pra 0*/
         reescreveDadosCategoria(categorias, quantidadeCategorias); 
-        reescreveDadosFilme(Filmes, quantidadeFilmes);
+        reescreveDadosFilme(Filmes, quant.quantidadesFilmes);
         reescreveDadosFornecedores(fornecedores, quantidadeFornecedores);
-        
+        reescreveLancamentosCaixa(lancamentos, quantidadeLancamentosCaixa, "lancamentos.txt", "lancamentos.txt", "w");
+        reescreveLancamentosAprazo(lancAprazo, quantidadeLancamentosAprazo, "lancamentosAprazo.txt", "lancamentosAprazo.txt", "w");
+        reescreveDadosDevolucoes(devolucoes, quant.quantidadeAlugacoes, "devolucoes.txt", "devolucoes.txt", "w");
         //correcao feita apos a apresentacao, problema apontado pelo manoel
-        removeArquivos(6, "locadora.bin", "clientes.bin", "Funcionarios.bin", "categorias.bin", "filmes.bin", "fornecedores.bin");
+        removeArquivos(9, "locadora.bin", "clientes.bin", "Funcionarios.bin", "categorias.bin", "filmes.bin", "fornecedores.bin", "lancamentos.bin", "lancamentosAprazo.bin", "devolucoes.bin");
         *modo = 0;
         
         
@@ -147,11 +159,12 @@ void trocaModoArmazenamento(int *modo){
         
         /**le os dados dos arquivos de texto*/
         leDadosLocadora(&loc, "locadora.txt");
-        quantidadeClientes = leDadosClientes(&clientes);
-        quantidadeFuncionarios = leDadosFuncionarios(&funcionario);
+       
         quantidadeCategorias = leDadosCategoria(&categorias);
-        quantidadeFilmes = leDadosFilmes(&Filmes);
+        quant = leDadosDevolucoes(&devolucoes, &funcionario, &clientes, &Filmes);
         quantidadeFornecedores = leDadosFornecedores(&fornecedores);
+        quantidadeLancamentosCaixa = leDadosLancamentos(&lancamentos);
+        quantidadeLancamentosAprazo = leDadosLancamentosAprazo(&lancAprazo);
         /*apaga os arquivos de texto*/
        
         
@@ -162,18 +175,20 @@ void trocaModoArmazenamento(int *modo){
         fechaArquivo(&f);//fecha o arquivo
         
         /*reescreve os dados dos clientes no arquivo binario novo*/
-        reescreveDadosClienteBin(clientes, quantidadeClientes);
+        reescreveDadosClienteBin(clientes, quant.quantidadeClientes);
         
         /*reescreve os dados dos funcionarios em um novo arquivo binario*/
-        reescreveDadosFuncionariosBin(funcionario, quantidadeFuncionarios, "wb", "Funcionarios.bin", "Funcionarios.bin");
+        reescreveDadosFuncionariosBin(funcionario, quant.quantidadesFuncionarios, "wb", "Funcionarios.bin", "Funcionarios.bin");
         
         reescreveDadosCategoriaBin(categorias, quantidadeCategorias);
-        reescreveDadosFilmeBin(Filmes, quantidadeFilmes);
+        reescreveDadosFilmeBin(Filmes, quant.quantidadesFilmes);
         reescreveDadosFornecedoresBin(fornecedores, quantidadeFornecedores);
-        
+        reescreveLancamentosCaixaBin(lancamentos, quantidadeLancamentosCaixa, "lancamentos.bin", "lancamentos.bin", "wb");
+        reescreveLancamentosAprazoBin(lancAprazo, quantidadeLancamentosAprazo, "lancamentosAprazo.bin", "lancamentosAprazo.bin", "wb");
+        reescreveDadosDevolucoesBin(devolucoes, quant.quantidadeAlugacoes, "devolucoes.bin", "devolucoes.bin", "wb");
         
         /*correcao feita em sala de aula de um problema apontado pelo manoel*/
-        removeArquivos(6, "locadora.txt", "clientes.txt", "Funcionarios.txt", "categorias.txt", "filmes.txt", "fornecedores.txt");
+        removeArquivos(9, "locadora.txt", "clientes.txt", "Funcionarios.txt", "categorias.txt", "filmes.txt", "fornecedores.txt", "lancamentos.txt", "lancamentosAprazo.txt", "devolucoes.txt");
         *modo = 1;//muda o modo de abertura pra 1, que significa binario
         
     }
@@ -181,7 +196,7 @@ void trocaModoArmazenamento(int *modo){
     limpaCamposLocadoraMemoria(&loc);//limpa os campos de text da locadora da memoria
     
     //limpa os campos de text de cada cliente da memoria
-    limpaDadosClienteMemoria(clientes, quantidadeClientes);
+    limpaDadosClienteMemoria(clientes, quant.quantidadeClientes);
     /*se cliente tem um valor diferente de null, entao foi feita uma alocacao de memoria para de structs clientes, logo e necessario limpar a memoria*/
     if(clientes){
         //entao limpa as poscioes de memoria que o ponteiro de cliente aponta
@@ -189,14 +204,21 @@ void trocaModoArmazenamento(int *modo){
     }
     /*se clientes tem um valor null, entao nao sera necessario limpa-lo*/
     /*apaga os campos de text dos funcionarios da memoria*/
-    apagaDadosStructFuncionarios(funcionario, quantidadeFuncionarios);
+    apagaDadosStructFuncionarios(funcionario, quant.quantidadesFuncionarios);
     /*se funcionario tem um valor diferente de null, entao sera necessario limpar a memoria da struct de funcionarios*/
     if(funcionario){
         /*limpa a memoria da struct de funcionarios*/
         funcionario = limpaMemoria(funcionario);
     }
     
-    limpaDadosFilmeMemoria(Filmes, quantidadeFilmes);
+    limpaDadosFilmeMemoria(Filmes, quant.quantidadesFilmes);
+    
+    for(int i = 0; i<quant.quantidadeAlugacoes; i++){
+        atribuiNull(&devolucoes[i].filmesComprados, devolucoes[i].quantidadeFilmesComprados, 1);
+        devolucoes[i].filmesComprados = limpaMemoria(devolucoes[i].filmesComprados);
+    }
+    atribuiNull(devolucoes, quant.quantidadeAlugacoes, 2);
+    devolucoes = limpaMemoria(devolucoes);
     
     if(Filmes){
         Filmes = limpaMemoria(Filmes);

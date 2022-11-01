@@ -13,11 +13,15 @@
 #include "menus.h"
 #include "Caixa.h"
 #include "fornecedores.h"
+#include "Carrinho.h"
+#include "ContasAreceber.h"
+#include "Devolucoes.h"
 #define OPCAO "Escolha a opcao desejada:"
 #define CAD "Cadastrar"
 #define ED "Editar"
 #define APG "Apagar"
 #define VLT "Voltar"
+
 
 void menuGraphics(int quantidadeArgumentos, char *frasePrincipal , ...){
     system("clear");
@@ -26,7 +30,7 @@ void menuGraphics(int quantidadeArgumentos, char *frasePrincipal , ...){
     
     va_start(parametros, quantidadeArgumentos);
     
-    printf( "\n%50s ___________________________________________________________\n"
+    printf("\n%50s ___________________________________________________________\n"
             "%50s|               %-35s         |\n"
             "%50s|                                                           |\n", "\0", "\0", frasePrincipal, "\0");
     for(int i = 0; i<quantidadeArgumentos; i++){
@@ -41,11 +45,11 @@ void menuGraphics(int quantidadeArgumentos, char *frasePrincipal , ...){
     
 }
 int menuPrincipal(int *modo){
-    menuGraphics(7, "Seja bem Vindo! Escolha uma opcao:", "Administrativo", "Clientes", "Filmes", "Categorias", "Trocar modo arm BIN/TXT", "Alugar um filme","Sair");
+    menuGraphics(8, "Seja bem Vindo! Escolha uma opcao:", "Administrativo", "Clientes", "Filmes", "Categorias", "Trocar modo arm BIN/TXT", "Caixa", "Contas", "Sair");
     int escolha;
     printf("\n");
     
-    while(escolha != 7){
+    while(escolha != 8){
         verificaNumero(&escolha, "%d");
         switch(escolha){
             case 1:
@@ -70,21 +74,26 @@ int menuPrincipal(int *modo){
                 
                 break;
             case 6:
-                realizaVenda(*modo);
+                menuCaixa(*modo);
+                menuGraphics(8, "Menu principal, escolha uma opcao:", "Administrativo", "Clientes", "Filmes", "Categorias", "Trocar modo arm BIN/TXT", "Caixa", "Contas", "Sair");
                 break;
             case 7:
+                menuContas(*modo);
+                menuGraphics(8, "Menu principal, escolha uma opcao:", "Administrativo", "Clientes", "Filmes", "Categorias", "Trocar modo arm BIN/TXT", "Caixa", "Contas", "Sair");
+                break;
+            case 8:
                 break;
             default:
-                printf("Opcao invalida\n");
+                printf("Opcao invalida!\n");
         }
     }
 }
 /*correcao feita em sala de aula apos a apresentacao do trabalho, pelo motivo de nao ser possivel o usuario saber o modo atual de armazenamento*/
 void menuTroca(int *modo){
     if(*modo){
-        menuGraphics(2, "Atualmente estamos trabalhando com binario.\n", "trocar para texto", "Voltar");
+        menuGraphics(2, "Atualmente estamos trabalhando com binario.\n", "trocar para texto", VLT);
     }else{
-        menuGraphics(2, "Atualmente estamos trabalhando com texto.\n", "trocar para binario", "Voltar");
+        menuGraphics(2, "Atualmente estamos trabalhando com texto.\n", "trocar para binario", VLT);
     }
     int escolha;
     
@@ -108,7 +117,7 @@ void menuTroca(int *modo){
         }
         break;
     }
-    menuGraphics(7, "Menu Principal, Escolha uma opcao:", "Administrativo", "Clientes", "Filmes", "Categorias", "Trocar modo arm BIN/TXT", "Alugar filme" ,"Sair");
+    menuGraphics(9, "Menu Principal! Escolha uma opcao:", "Administrativo", "Clientes", "Filmes", "Categorias", "Trocar modo arm BIN/TXT", "Alugar um filme", "Contas","Devolver filme", "Sair");
 }
 int MenuAdm(int modo){
     menuGraphics(4, OPCAO, "Editar dados Loc.", "Funcionarios", "Fornecedores", VLT);    
@@ -136,7 +145,7 @@ int MenuAdm(int modo){
                 printf("Opcao invalida");
         }
     }
-    menuGraphics(7, "Menu Principal, Escolha uma opcao:", "Administrativo", "Clientes", "Filmes", "Categorias", "Trocar modo arm BIN/TXT", "Alugar filme" , "Sair");
+    menuGraphics(9, "Menu Principal! Escolha uma opcao:", "Administrativo", "Clientes", "Filmes", "Categorias", "Trocar modo arm BIN/TXT", "Alugar um filme", "Contas","Devolver filme", "Sair");
     
 }
 
@@ -167,7 +176,7 @@ int MenuClientes(int modo){
                 printf("Opcao invalida");
         }
     }
-    menuGraphics(7, "Menu Principal, Escolha uma opcao:", "Administrativo", "Clientes", "Filmes", "Categorias", "Trocar modo arm BIN/TXT", "Alugar filme" ,"Sair");
+    menuGraphics(9, "Menu Principal! Escolha uma opcao:", "Administrativo", "Clientes", "Filmes", "Categorias", "Trocar modo arm BIN/TXT", "Alugar um filme", "Contas","Devolver filme", "Sair");
 }
 
 int MenuFuncionarios(int modo){
@@ -227,7 +236,7 @@ int MenuFilmes(int modo){
                 printf("Opcao invalida");
         }
     }
-    menuGraphics(7, "Menu Principal, Escolha uma opcao:", "Administrativo", "Clientes", "Filmes", "Categorias", "Trocar modo arm BIN/TXT", "Alugar filme" ,"Sair");
+    menuGraphics(9, "Menu Principal! Escolha uma opcao:", "Administrativo", "Clientes", "Filmes", "Categorias", "Trocar modo arm BIN/TXT", "Alugar um filme", "Contas","Devolver filme", "Sair");
 }
 
 int MenuCategoria(int modo){
@@ -257,7 +266,7 @@ int MenuCategoria(int modo){
                 printf("Opcao invalida");
         }
     }
-    menuGraphics(7, "Menu Principal, Escolha uma opcao:", "Administrativo", "Clientes", "Filmes", "Categorias", "Trocar modo arm BIN/TXT", "Alugar filme" ,"Sair");
+    menuGraphics(9, "Menu Principal! Escolha uma opcao:", "Administrativo", "Clientes", "Filmes", "Categorias", "Trocar modo arm BIN/TXT", "Alugar um filme", "Contas","Devolver filme", "Sair");
 }
 int menuFornecedores(int modo){
     menuGraphics(4, OPCAO, CAD, ED, APG, VLT); 
@@ -289,4 +298,66 @@ int menuFornecedores(int modo){
         
     }
     menuGraphics(4, OPCAO, "Editar dados Loc.", "Funcionarios", "Fornecedores", VLT);
+}
+void menuContas(int modoArm){
+    
+    menuGraphics(3, "Menu de contas", "Dar baixa", "Consultar Conta", "Sair");
+    
+    int escolha;
+    while(escolha!=3){
+        verificaNumero(&escolha, "%d");
+        
+        switch(escolha){
+            
+            case 1:
+                daBaixa(modoArm);
+                menuGraphics(3, "Menu de contas", "Dar baixa", "Consultar Conta", "Sair");
+                continue;
+                
+            case 2:
+                 consultaLancamentos(modoArm);
+                 menuGraphics(3, "Menu de contas", "Dar baixa", "Consultar Conta", "Sair");
+                //....
+                continue;
+                
+            case 3:
+                break;
+        }
+        break;
+    }
+    
+}
+void menuCaixa(int modoArm){
+    menuGraphics(4, "Menu do caixa", "Realizar venda", "devolver filme", "Contar caixa","sair");
+    int escolha;
+    
+    while(escolha !=4){
+        
+        verificaNumero(&escolha, "%d");
+        
+        switch(escolha){
+            
+            case 1:
+                realizaVenda(modoArm);
+                menuGraphics(4, "Menu do caixa", "Realizar venda", "devolver filme","contarCaixa", "sair");
+                break;
+                
+            case 2:
+                devolveFilme(modoArm);
+                menuGraphics(4, "Menu do caixa", "Realizar venda", "devolver filme", "contarCaixa", "sair");
+                break;
+                
+            case 3:
+                contaCaixa(modoArm);
+                menuGraphics(4, "Menu do caixa", "Realizar venda", "devolver filme", "contarCaixa", "sair");
+                break;
+                
+            case 4:
+                break;
+            default:
+                printf("escolha uma opcao valida!\n");
+                break;
+                
+        }
+    }
 }

@@ -1,6 +1,6 @@
 /*funcao responsavel por verificar se a digitacao de um numero foi correta, recebe por parametro o ponteiro para a variavel, um inteiro em que 0 representa 
  inteiros, e 1 representa flutuantes, e a string de controle do tipo*/
-void verificaNumero(void *ptr, char *controle);
+void* verificaNumero(void *ptr, char *controle);
 /*funcao responsavel por verificar a digitacao de numeros que precisam estar em um vetor, como cpf ou cnpj, recebe a primeira posicao de memoria
  do vetor, e a quantidade de numeros ela deve pegar do buffer*/
 int verificaDigitos(int *ptr, int quant);
@@ -14,4 +14,6 @@ https://www.macoratti.net/alg_cnpj.htm#:~:text=Algoritmo%20para%20valida%C3%A7%C
 int valida(char *ptr, char *vetorVerificacoes, int quantidade, int divisao, int posicao);
 
 int verificaLimiteNumero(void *ptr, float limiteAlto, float limiteBaixo, char *controle);
+
+char *converteIntEmString(int valorInt);
 

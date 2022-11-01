@@ -1,0 +1,30 @@
+1667180263
+vitor gabriel correia rodrigues
+vendedor
+rua padre alberico
+sao luiz
+441
+991532144
+vitorrodrys@gmail.com
+1
+
+1667180296
+carlos ferreira da silva
+estoque
+rua fernando ferreira
+eldorado
+66
+991548777
+carlos@gmail.com
+1
+
+1667180362
+ivan
+vendedor
+rua professor ferreira junior
+eldorado
+45
+991548777
+ivandosk@gmail.com
+1
+

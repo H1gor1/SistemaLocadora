@@ -331,7 +331,7 @@ Funcionarios *encontraFuncionarioNome(Funcionarios *ptr, char *nome, int quantid
     }
     return NULL;
 }
-Funcionarios *encontraFuncionarioCodigo(Funcionarios *ptr, int codigo, int quantidade, Funcionarios *posicao){
+Funcionarios *encontraFuncionarioCodigo(Funcionarios *ptr, time_t codigo, int quantidade, Funcionarios *posicao){
     
     for(int i = 0; i<quantidade; i++){
         if((ptr+i)!=posicao && ptr[i].flag){
@@ -352,7 +352,7 @@ Funcionarios *buscaFuncionarios(Funcionarios *ptr, int quantidade, Funcionarios 
             itemBusca = limpaMemoria(itemBusca);
             return busca;
         }
-        int codigo = atoi(itemBusca);
+        time_t codigo = atoi(itemBusca);
         busca = encontraFuncionarioCodigo(ptr, codigo, quantidade, posicao);
         if(busca){
             itemBusca = limpaMemoria(itemBusca);

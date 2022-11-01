@@ -60,6 +60,10 @@ void cadastraLocadora(locadora *ptr){
     printf("digite o telefone do responsavel\n");
     /*chamada da funcao para o usuario digitar o numero do telefone do responsavel da locadora*/
     verificaNumero(&(ptr->telefoneResp),"%d");
+    
+    printf("digite o valor da multa caso algum cliente atrase na devolucao:\n");
+    verificaNumero(&(ptr->multa), "%f");
+    
 }
 /*funcao responsavel por rescrever os dados da locadora novamente no arquivo de texto, ou escrever pela primeira vez,
  recebe como argumento um ponteiro da struct locadora, e o ponteiro do arquivo em que deve escrever as informacoes
@@ -75,7 +79,7 @@ void reescreveDadosLocadora(locadora *ptr, FILE *f){
     fprintf(f, "%s\n", ptr->email);
     fprintf(f, "%s\n", ptr->nomeResponsavel);
     fprintf(f, "%d\n", ptr->telefoneResp);
-    
+    fprintf(f, "%f\n", ptr->multa);
 }
 /*funcao responsavel por reescrever os dados da locadora em binario, recebe um ponteiro para a struct de locadora, e o arquivo onde deve salvar*/
 void reescreveDadosLocadoraBin(locadora *ptr, FILE *f){
@@ -113,6 +117,8 @@ void reescreveDadosLocadoraBin(locadora *ptr, FILE *f){
     fwrite(ptr->nomeResponsavel, sizeof(char), quantidadeLetras, f);
     
     fwrite(&ptr->telefoneResp, sizeof(int), 1, f);
+    
+    fwrite(&ptr->multa, sizeof(float), 1, f);
 }
 /*funcao responsavel por ler os dados da locadora em binario, recebe como argumento um ponteiro para a struct de locadora, e o nome
  do arquivo de onde deve ler as informacoes*/
@@ -168,6 +174,7 @@ void leDadosLocadoraBin(locadora *ptr, char *nomeArq){
     
     fread(&ptr->telefoneResp, sizeof(int), 1, f);
     
+    fread(&ptr->multa, sizeof(float), 1, f);
     /*depois de terminar de fazer a leitura, fecha o arquivo f*/
     fechaArquivo(&f);
     
@@ -198,6 +205,7 @@ void leDadosLocadora(locadora *ptr, char *nomeArq){
     /*chama a funcao para ler o proximi campo do aruqivo e guardar no campo telefone respp da struct*/
     fscanf(f, "%d ", &(ptr->telefoneResp));
     
+    fscanf(f, "%f ", &ptr->multa);
     fechaArquivo(&f);//depois de terminar de fazer a leitura dos campos, fecha o arquuivo
 }
 
@@ -266,19 +274,8 @@ void editaDadosLocadora(int modo){
     f = fopen(nomeArq[modo], modoAbertura[modo]);
     //while e sempre verdadeiro, e so pode ser quebrado se o comando break no fim for executado    
     while(1){ 
-        printf("%50s _________________________________\n"
-               "%50s|                                 |\n"
-               "%50s| 1-Nome fantasia                 |\n"
-               "%50s| 2-Razao social                  |\n"
-               "%50s| 3-Inscricao estadual            |\n"
-               "%50s| 4-CNPJ                          |\n"
-               "%50s| 5-Endereco                      |\n"
-               "%50s| 6-Telefone                      |\n"
-               "%50s| 7-Email                         |\n"
-               "%50s| 8-Nome responsavel              |\n"
-               "%50s| 9-Telefone responsaevel|        |\n"
-               "%50s|_________________________________|\n", "\0", "\0", "\0", "\0", "\0", "\0", "\0", "\0", "\0", "\0", "\0", "\0");
         
+        menuGraphics(10, "Escolha uma opcao para editar", "Nome fantasia", "Razao social", "Inscricao estadual", "CNPJ", "Endereco", "Telefone", "Email", "Nome responsavel", "Telefone responsavel", "Multa por atraso");
        
         verificaNumero(&escolha, "%d");
         /*ifs aninhados para descobrir qual campo o usuario deseja editar*/
@@ -347,12 +344,19 @@ void editaDadosLocadora(int modo){
                         break;
                         
             case 9:
+                
                                     
                         //caso verdadeiro, entao
                         printf("Digite o novo telefone do responsavel\n");
                         //pede a digitacao do novo numero do telefone
                         verificaNumero(&editar.telefoneResp, "%d");
                         break;
+                        
+            case 10:
+                
+                printf("digite o valor da multa caso algum cliente atrase:\n");
+                verificaNumero(&editar.multa, "%f");
+                break;
             default:
                         //caso todas as opcoes de cima sejam falsas, entao o usuario nao escolheu um 
                         //entao o comando continue faz o ciclo while repetir novamente

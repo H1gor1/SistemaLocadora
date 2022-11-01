@@ -1,9 +1,10 @@
-locadora teste 
+locadora
 locadora filmes ltda
 123456789
 33041260000164
-rua teste
-55
-@.com
-vito
-55
+rua professor francisco fernandes bairro niteroi 320
+991569571
+locadora@gmail.com
+vitor
+5
+30.650000

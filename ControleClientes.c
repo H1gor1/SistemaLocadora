@@ -616,6 +616,8 @@ void cadastraCliente(int modoLeitura){
     /*limpa todas as struct de clientes da memoria*/
     client = limpaMemoria(client);
     
+    printf("cliente cadastrado com sucesso!\n");
+    
     
 }
 /*funcao responsavel por apagar um cliente, recebe como argumento o modo de armazenamento usado atualmente pelo sistema*/

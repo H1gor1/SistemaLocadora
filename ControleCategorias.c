@@ -240,7 +240,7 @@ void editaCategoria(int modoAbertura){
                 ptr->descricao = limpaMemoria(ptr->descricao);
                 digText(&ptr->descricao, stdin);
                 break;
-            case 4:
+            case 3:
                 printf("Digite o valor da locacao:\n");
                 verificaNumero(&ptr->valorLocacao, "%f");
                 break;
