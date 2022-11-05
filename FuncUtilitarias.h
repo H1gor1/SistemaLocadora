@@ -1,3 +1,6 @@
+#ifndef FUNCUTILITARIAS_H
+#define FUNCUTILITARIAS_H
+
 int verificaNull(void *ptr);
 void fechaArquivo(FILE **f);
 
@@ -12,3 +15,4 @@ void trocaModoArmazenamento(int *modo);
 void removeArquivos(int quantidadeRemov, ...);
 
 void *limpaMemoria(void *ptr);
+#endif

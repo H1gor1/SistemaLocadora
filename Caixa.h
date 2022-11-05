@@ -1,5 +1,6 @@
 #include <time.h>
-
+#ifndef CAIXA_H
+#define CAIXA_H
 typedef struct filmes filmes;
 
 typedef struct lancamentoCaixa{
@@ -47,6 +48,7 @@ void compraAvista(compras *compras, int modoArm);
 void mostraLancamentos(lancamentoCaixa *todosLancamentos, int quantidade, struct tm *data);
 ContagemCaixa contabilizaCaixa(lancamentoCaixa *todosLancamentos, int quantidade, struct tm *data);
 void contaCaixa(int modoArm);
+#endif
 
 
 

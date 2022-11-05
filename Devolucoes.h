@@ -1,7 +1,7 @@
 #include <time.h>
 #include "controleFuncionarios.h"
-#ifndef Devolucoes_h
-#define Devolucoes_h
+#ifndef DEVOLUCOES_H
+#define DEVOLUCOES_H
 typedef struct compras compras;
 
 

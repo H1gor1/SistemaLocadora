@@ -1,5 +1,5 @@
-#ifndef Funcionarios_h
-#define Funcionarios_h
+#ifndef FUNCIONARIOS_H
+#define FUNCIONARIOS_H
 
 typedef struct Funcionarios{
     

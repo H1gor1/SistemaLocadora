@@ -1,3 +1,5 @@
+#ifndef CONTROLEDEDADOSLOCADORA_H
+#define CONTROLEDEDADOSLOCADORA_H
 
 typedef struct locadora{
     char *nomeFantasia;
@@ -37,4 +39,6 @@ void reescreveDadosLocadora(locadora *ptr, FILE *f );
 void reescreveDadosLocadoraBin(locadora *ptr, FILE *f);
 
 void limpaCamposLocadoraMemoria(locadora *ptr);
+
+#endif
 

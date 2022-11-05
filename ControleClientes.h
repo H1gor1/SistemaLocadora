@@ -1,3 +1,6 @@
+#ifndef CONTROLECLIENTES_H
+#define CONTROLECLIENTES_H
+
 typedef struct cliente{
     int codigo;
     char *nomeCompleto;
@@ -44,3 +47,5 @@ void editaCliente(int modoAbertura);
 void mostraListaClientes(cliente *ptr, int quantidade);
 
 int verificaExisteClientes(cliente *ptr, int quantidade);
+
+#endif

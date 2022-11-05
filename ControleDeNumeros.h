@@ -1,4 +1,7 @@
-/*funcao responsavel por verificar se a digitacao de um numero foi correta, recebe por parametro o ponteiro para a variavel, um inteiro em que 0 representa 
+#ifndef CONTROLEDENUMEROS_H
+#define CONTROLEDENUMEROS_H
+
+/*funcao responsavel por verificar se a digitacao de um numero foi correta, recebe por parametro o ponteiro para a variavel, um inteiro em que 0 representa
  inteiros, e 1 representa flutuantes, e a string de controle do tipo*/
 void* verificaNumero(void *ptr, char *controle);
 /*funcao responsavel por verificar a digitacao de numeros que precisam estar em um vetor, como cpf ou cnpj, recebe a primeira posicao de memoria
@@ -16,4 +19,6 @@ int valida(char *ptr, char *vetorVerificacoes, int quantidade, int divisao, int 
 int verificaLimiteNumero(void *ptr, float limiteAlto, float limiteBaixo, char *controle);
 
 char *converteIntEmString(int valorInt);
+
+#endif
 
