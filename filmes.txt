@@ -1,8 +1,8 @@
-2
+3
 0
 velozes e furiosos
 O longa acompanaha os passos do policial disfarçado Brian conner (Walker), que investiga uma gangue liderada por dominic toretto(Diesel), qual, usando carros de alta perfomance, vem praticando roubos a caminhoes tranportando equipamentos eletronicos caros
-138
+130
 0
 60.000000
 1
@@ -11,9 +11,18 @@ O longa acompanaha os passos do policial disfarçado Brian conner (Walker), que 
 1
 flash
 Barry allen ganha poderes a partir de um raio feito pelo acelerador de particulas do cientista harrison wells, a partir deste fato sua vida nunca mais sera a mesma
-49
+0
 1
-60.000000
+60.500000
+1
+1
+
+2
+teste
+teste teste teste
+150
+1
+60.500000
 1
 1
 

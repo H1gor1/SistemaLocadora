@@ -1,6 +1,3 @@
-#ifndef CONTROLECLIENTES_H
-#define CONTROLECLIENTES_H
-
 typedef struct cliente{
     int codigo;
     char *nomeCompleto;
@@ -46,6 +43,12 @@ void editaCliente(int modoAbertura);
 
 void mostraListaClientes(cliente *ptr, int quantidade);
 
-int verificaExisteClientes(cliente *ptr, int quantidade);
+void filtraCodigo(cliente *ptr, int quantidade, int codigo, int codigo1);
 
-#endif
+void filtraFaixaCodigo(cliente *ptr, int quantidade);
+
+void filtraSexo(cliente *ptr, int quantidade, int sexo);
+
+void listaClientes(int modoArm);
+
+int verificaExisteClientes(cliente *ptr, int quantidade);

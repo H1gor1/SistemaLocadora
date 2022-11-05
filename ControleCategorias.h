@@ -1,6 +1,3 @@
-#ifndef CONTROLECATEGORIAS_H
-#define CONTROLECATEGORIAS_H
-
 typedef struct categoria{
     int codigo;
     char *nome;
@@ -33,4 +30,3 @@ void editaCategoria(int modoAbertura);
 int verificaExisteCategoria(categoria *ptr, int quantidade);
 
 void mostraListaCategoria(categoria *ptr, int quantidade);
-#endif

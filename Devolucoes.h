@@ -1,7 +1,7 @@
 #include <time.h>
 #include "controleFuncionarios.h"
-#ifndef DEVOLUCOES_H
-#define DEVOLUCOES_H
+#ifndef Devolucoes_h
+#define Devolucoes_h
 typedef struct compras compras;
 
 
@@ -29,5 +29,5 @@ void atribuiNull(void *endereco, int quantidade, int oqueLimpar);
 
 void devolveFilme(int modoArm);
 
-void mostraCompra(compras *compra);
+void mostraCompra(compras *compra, int resumir);
 #endif

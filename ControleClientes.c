@@ -683,3 +683,81 @@ void mostraListaClientes(cliente *ptr, int quantidade){
         }
     }
 }
+void filtraCodigo(cliente *ptr, int quantidade, int codigo, int codigo1){
+    int quantidadeClientes = 0;
+    int i=0;
+    for(i = codigo; i<quantidade && i<=codigo1; i++){
+        quantidadeClientes++;
+        mostraListaClientes(ptr+i, 1);
+        
+    }
+    printf("quantidade de clientes nesta faixa de codigo: %d\n", quantidadeClientes);
+}
+void filtraFaixaCodigo(cliente *ptr, int quantidade){
+    
+    int codigo, codigo1;
+    int escolha;
+    printf("digite a faixa de codigo:\n");
+    printf("digite o primeiro codigo:\n");
+    verificaNumero(&codigo, "%d");
+    printf("digite o segundo codigo:\n");
+    verificaNumero(&codigo1, "%d");
+    
+    filtraCodigo(ptr, quantidade, (codigo>codigo1)?codigo1:codigo, (codigo<codigo1)?codigo1:codigo);
+    
+    printf("deseja visualizar algum cliente especifico desta faixa?\n");
+    printf("1-sim\n2-nao\n");
+    while(1){
+        if(escolha == 2){
+            return;
+        }else
+            if(escolha != 1){
+                printf("digite uma opcao valida!\n");
+                continue;
+            }
+        break;
+    }
+    
+    
+    
+}
+void filtraSexo(cliente *ptr, int quantidade, int sexo){
+    int i = 0;
+    for(i = 0; i<quantidade; i++){
+        if(ptr[i].sexo == sexo){
+            mostraListaClientes(ptr+i, 1);
+        }
+    }
+    printf("quantidade clientes do sexo %s: %d\n", (sexo== 1)?"masculino":"femino", i);
+}
+void listaClientes(int modoArm){
+    
+    cliente *todosClientes = NULL;
+    int quantidadeClientes;
+    quantidadeClientes = (modoArm)?leDadosClientesBin(&todosClientes):leDadosClientes(&todosClientes);
+    
+    int escolha;
+    menuGraphics(2, "Como deseja filtrar os clientes\n", "filtrar pela faixa de codigo", "filtrar pelo sexo");
+    
+    while(1){
+        verificaNumero(&escolha, "%d");
+        switch(escolha){
+            case 1:
+                filtraFaixaCodigo(todosClientes, quantidadeClientes);
+                break;
+                
+            case 2:
+                int sexo;
+                printf("digite o sexo que deseja filtrar:\n");
+                verificaLimiteNumero(&sexo, 1, 2, "%d");
+                filtraSexo(todosClientes, quantidadeClientes, sexo);
+                
+                break;
+                
+            default:
+                printf("voce digitou uma opcao invalida! Por favor digite novamente:\n");
+                continue;
+        }
+        break;
+    }
+}

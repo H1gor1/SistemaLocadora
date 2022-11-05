@@ -231,10 +231,6 @@ void compraAvista(compras *compras, int modoArm){
     
     
     Sleep(2000);
-    
-    geraNotinha(compras,lancar.valorPago, stdout, modoArm);
-    
-    Sleep(1000);
     while(escolha !=2 && escolha != 1){
         menuGraphics(2, "Deseja imprimir notinha?\n", "Sim", "Nao");
         verificaNumero(&escolha, "%d");

@@ -5,6 +5,7 @@
 #include <ctype.h>
 #include "ControleDeDadosLocadora.h"
 #include "FuncUtilitarias.h"
+#include <math.h>
 #define ENTER '\n'
 
 /*funcao responsavel por validar um cpf ou cnpj, basta mudar os parametros
@@ -181,7 +182,7 @@ int verificaLimiteNumero(void *ptr, float limiteAlto, float limiteBaixo, char *c
         //se os ifs de verificaco de valor de limite nao foram executados, entao e pedido para o usuario digitar novamente
         //um valor, respeitando o limite
         printf("voce digitou um valor invalido! O valor maximo e ");
-        printf("%.0f e o minimo é de %.0f\n", limiteAlto, limiteBaixo);
+        printf("%.0f e o minimo é de %.0f\n", floor(limiteAlto), limiteBaixo);
         printf(" digite novamente:\n");
     }while(1);
 }

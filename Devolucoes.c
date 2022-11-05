@@ -294,6 +294,7 @@ void devolveFilme(int modoArm){
     quantidades quant = {0,0,0,0};
     time_t codigoCompraDevolvida = 0;
     struct tm dataDev;
+    int escolha;
     quant = (modoArm)?leDadosDevolucoesBin(&alocacoes, &funcs, &todosClientes, &todosFilmes):leDadosDevolucoes(&alocacoes, &funcs, &todosClientes, &todosFilmes);
     
     time(&codigoCompraDevolvida);
@@ -301,6 +302,38 @@ void devolveFilme(int modoArm){
     dataDev = *localtime(&codigoCompraDevolvida);
     printf("digite o codigo da alocacao que sera devolvida:\n");
     devolvida = buscaCompra(alocacoes, quant.quantidadeAlugacoes, 0);
+    
+    menuGraphics(2, "Confirme a devolucao:", "sim", "nao");
+    printf("informacoes da compra:\n");
+    mostraCompra(devolvida,0);
+    
+    while(1){
+        verificaNumero(&escolha, "%d");
+        if(escolha == 2){
+            limpaDadosFilmeMemoria(todosFilmes, quant.quantidadesFilmes);
+            for(int i = 0; i<quant.quantidadeAlugacoes; i++){
+                atribuiNull(alocacoes[i].filmesComprados, alocacoes[i].quantidadeFilmesComprados, 1);
+                alocacoes[i].filmesComprados = limpaMemoria(alocacoes[i].filmesComprados);
+            }
+            todosFilmes = limpaMemoria(todosFilmes);
+
+            limpaDadosClienteMemoria(todosClientes, quant.quantidadeClientes);
+            todosClientes = limpaMemoria(todosClientes);
+
+            apagaDadosStructFuncionarios(funcs, quant.quantidadesFuncionarios);
+            funcs = limpaMemoria(funcs);
+
+            atribuiNull(alocacoes, quant.quantidadeAlugacoes, 2);
+
+            alocacoes = limpaMemoria(alocacoes);
+    
+            return;
+        }else if(escolha != 1){
+            printf("escolha uma opcao valida!\n");
+        }
+        break;
+    }
+    
     
     devolvida->devolvido = 1;
     
@@ -355,21 +388,26 @@ void devolveFilme(int modoArm){
     
    
 }
-void mostraCompra(compras *compra){
+void mostraCompra(compras *compra, int resumir){
     printf("Codigo compra: %ld\n", compra->codigo);
     printf("Modo pagamento: %s\n", (compra->modoPagamento == 1)?"a vista":(compra->modoPagamento == 2)?"a prazo":"a prazo com entrada");
     printf("Data: %d/%d/%d\n", compra->data.tm_mday, compra->data.tm_mon+1, compra->data.tm_year+1900);
     printf("Horario: %d:%d\n", compra->data.tm_hour, compra->data.tm_min);
-    printf("Vendedor:\n");
-    printf("    nome: %s\n",compra->vendedor->nome);
-    printf("    cargo: %s\n", compra->vendedor->cargo);
-    printf("    codigo: %ld\n", compra->vendedor->codigo);
+    if(resumir){
+        printf("Vendedor:\n");
+        printf("    nome: %s\n",compra->vendedor->nome);
+        printf("    cargo: %s\n", compra->vendedor->cargo);
+        printf("    codigo: %ld\n", compra->vendedor->codigo);
+    }
     printf("Comprador:\n");
     printf("    nome: %s\n", compra->comprador->nomeCompleto);
     printf("    CPF: %s\n", compra->comprador->cpf);
-    printf("    codigo: %d\n", compra->comprador->codigo);
-    printf("    telefone: %d\n", compra->comprador->telefone);
-    printf("    endereco: %s, %s, %d\n", compra->comprador->rua, compra->comprador->bairro, compra->comprador->numeroDaCasa);
+    
+    if(resumir){
+        printf("    codigo: %d\n", compra->comprador->codigo);
+        printf("    telefone: %d\n", compra->comprador->telefone);
+        printf("    endereco: %s, %s, %d\n", compra->comprador->rua, compra->comprador->bairro, compra->comprador->numeroDaCasa);
+    }
     printf("Preco: %.2f\n", compra->preco);
     printf("Filmes Comprados:\n");
     for(int i = 0; i<compra->quantidadeFilmesComprados; i++){
@@ -382,6 +420,9 @@ void mostraCompra(compras *compra){
         
     }
     printf("Status: %s\n", (compra->devolvido)?"devolvido":"Nao devolvido");
-    printf("digite 1 para sair:\n");
-    while(getchar()!='1');
+    if(resumir){
+        printf("digite 1 para sair:\n");
+        while(getchar()!='1');
+
+    }
 }

@@ -178,6 +178,8 @@ int leDadosLancamentosAprazoBin(contaArec **contas){
 }
 void lancaEntradaOuParcela(contaArec *conta, int modoArm, float preco){
     
+    time_t seg;
+    time(&seg);
     lancamentoCaixa lancamento;
     
     lancamento.codigoCompra = conta->codigoCompra;
@@ -186,7 +188,7 @@ void lancaEntradaOuParcela(contaArec *conta, int modoArm, float preco){
     
     lancamento.modoPagamento = conta->modoPagamento;
     
-    lancamento.data = conta->dataAluga;
+    lancamento.data = *localtime(&seg);
     printf("digite o valor pago pelo cliente:\n");
     
     while(1){
@@ -387,7 +389,7 @@ void mostraContasFiltradas(contaArec *contas, int quantidadeContas, int modoArm,
             case 1:
                 printf("digite o codigo da compra:\n");
                 compraEspecifica = buscaCompra(alocacoes, quants.quantidadeAlugacoes, 0);
-                mostraCompra(compraEspecifica);
+                mostraCompra(compraEspecifica,1);
                 break;
             case 2:
                 break;

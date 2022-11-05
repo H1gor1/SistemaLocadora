@@ -61,7 +61,7 @@ filmes *deletaFilmeCarrinho(filmes *lista, int *quantidade, filmes *listaOrigina
     
     
 }
-void alocaFilmes(filmes **filmesAlocados, int *quantidade, filmes *lista, int quantidadeLista){
+void alocaFilmes(filmes **filmesAlocados, int *quantidade, filmes *lista, int quantidadeLista, int ignora, char *frase){
     
     (*quantidade) = 0;
     menuGraphics(3, "Selecione uma opcao:", "adicionar filme", "Deletar filme", "fechar lista");
@@ -80,12 +80,12 @@ void alocaFilmes(filmes **filmesAlocados, int *quantidade, filmes *lista, int qu
                         ?malloc(sizeof(filmes)*(*quantidade))
                         :realloc(filmesAlocados[0], sizeof(filmes)*(*quantidade));
                 verificaOperacao(filmesAlocados[0], ERROMEM, 1);
-                printf("digite o nome ou codigo do filme");
+                printf("digite o nome ou codigo do filme\n");
 
                 do{
 
                     alocAgr = buscaFilme(lista, quantidadeLista, "Nao existe um filme cadastrado com este dado, digite novamente:");
-                    if(alocAgr->exemplares == 0){
+                    if(alocAgr->exemplares == 0 && ignora){
                         printf("Estoque do filme %s esta vazio!\n", alocAgr->nome);
                     }
                 }while(alocAgr->exemplares == 0);
@@ -94,7 +94,7 @@ void alocaFilmes(filmes **filmesAlocados, int *quantidade, filmes *lista, int qu
 
                 printf("digite a quantidade:\n");
                 verificaLimiteNumero(&filmesAlocados[0][(*quantidade)-1].exemplares, filmesAlocados[0][(*quantidade)-1].exemplares, 1, "%d");
-                printf("Filme alocado com sucesso!\n");
+                printf("%s\n", frase);
                 alocAgr->exemplares -= filmesAlocados[0][(*quantidade)-1].exemplares;
                 Sleep(1000);
             
@@ -141,7 +141,7 @@ void realizaVenda(int modoArm){
     printf("digite o codigo, nome ou cpf do cliente:\n");
     compraAtual.comprador = buscaCliente(clientes, quantidadeClientes, "Nao existe nenhum cliente com o campo digitado registrado, por favor digite novamente:\n");
     
-    alocaFilmes(&compraAtual.filmesComprados, &compraAtual.quantidadeFilmesComprados, TodosFilmes, quantidadeTotalFilmes);
+    alocaFilmes(&compraAtual.filmesComprados, &compraAtual.quantidadeFilmesComprados, TodosFilmes, quantidadeTotalFilmes, 1, "Filme alocado com sucesso!");
     
     compraAtual.preco = calculaPreco(compraAtual.filmesComprados, compraAtual.quantidadeFilmesComprados);
     

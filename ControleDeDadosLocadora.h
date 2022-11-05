@@ -1,5 +1,3 @@
-#ifndef CONTROLEDEDADOSLOCADORA_H
-#define CONTROLEDEDADOSLOCADORA_H
 
 typedef struct locadora{
     char *nomeFantasia;
@@ -15,10 +13,12 @@ typedef struct locadora{
 }locadora;
 
 
+
+
+
 void VerificaExisteArquivoLocadora();
 
 /*funcao responsavel por coletar as informacoes do usuario sobre a locadora, salva os dados em memoria*/
-
 void cadastraLocadora(locadora *ptr);
 /*abre o arquivo passado por 2 parametro no modo de escrita, caso o arquivo nao seja encontrado, a funcao criara um arquivo, o ponteiro para uma
  funcao passado no 3 parametro sera a funcao que ela executara logo apos de abrir o arquivo, ou seja, caso passe a funcao de coletar os dados 
@@ -32,12 +32,9 @@ void leDadosLocadora(locadora *ptr, char *nomeArq);
 void leDadosLocadoraBin(locadora *ptr, char *nomeArq);
 
 void editaDadosLocadora(int modo);
-
 void reescreveDadosLocadora(locadora *ptr, FILE *f );
 
 void reescreveDadosLocadoraBin(locadora *ptr, FILE *f);
 
 void limpaCamposLocadoraMemoria(locadora *ptr);
-
-#endif
 

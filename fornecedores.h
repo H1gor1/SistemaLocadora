@@ -1,5 +1,3 @@
-#ifndef FORNECEDORES_H
-#define FORNECEDORES_H
 typedef struct fornecedor fornecedor;
 
 typedef struct fornecedor{
@@ -31,4 +29,3 @@ fornecedor *encontraFornecedorNomeFantasia(fornecedor *ptr, int quantidade, char
 fornecedor *buscaFornecedor(fornecedor *ptr, int quantidade);
 void editaFornecedor(int modoAbertura);
 void apagaFornecedor(int modoAbertura);
-#endif

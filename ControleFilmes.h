@@ -1,6 +1,3 @@
-#ifndef CONTROLEFILMES_H
-#define CONTROLEFILMES_H
-
 typedef struct filmes{
     int codigo;
     char *nome;
@@ -37,5 +34,3 @@ void editaFilme(int modoAbertura);
 int verificaExisteFilme(filmes *ptr, int quantidade);
 
 void deletaFilme(filmes *ptr);
-
-#endif
