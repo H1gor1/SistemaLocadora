@@ -1,3 +1,6 @@
+#ifndef MANIPULACOESDETEXTO_H
+#define MANIPULACOESDETEXTO_H
+
 typedef struct cliente cliente;
 typedef struct filmes filmes;
 /*Recebe um endereço de um ponteiro que aponta pra uma string, e conforme necessario aloca mais memoria para 
@@ -17,3 +20,5 @@ void converteTodasEmMinusculas(char *text);
 int verificaStringRepetiu(cliente *ptr, int quantidade, cliente *posicao, char *string);
 
 void pegaDadoTextEverificaRepeticao(cliente *ptr, int quantidade, cliente *posicao, char **string, char *mensagem);
+
+#endif

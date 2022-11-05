@@ -1,3 +1,6 @@
+#ifndef CARRINHO_H
+#define CARRINHO_H
+
 void mostraListaFilmesAlocados(filmes *listaAlocacao, int quantidade);
 
 void realizaVenda(int modoArm);
@@ -5,3 +8,5 @@ void realizaVenda(int modoArm);
 void alocaFilmes(filmes **filmesAlocados, int *quantidade, filmes *lista, int quantidadeLista, int ignora, char *frase);
 
 filmes *deletaFilmeCarrinho(filmes *lista, int *quantidade, filmes *listaOriginal, int quantidadeListaOriginal);
+
+#endif

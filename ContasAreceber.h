@@ -1,3 +1,6 @@
+#ifndef CONTASARECEBER_H
+#define CONTASARECEBER_H
+
 #include <time.h>
 
 
@@ -26,3 +29,5 @@ int filtraContasAtrasadas(contaArec *contas, int quantidadeContas, contaArec **a
 int filtraContasClientes(contaArec *contas, int quantidadeContas, contaArec **contasDeUmCliente, int modoArm);
 void mostraContasFiltradas(contaArec *contas, int quantidadeContas, int modoArm, int (*filtra)(contaArec *, int, contaArec **, int), char *mensagem);
 void consultaLancamentos(int modoArm);
+
+#endif

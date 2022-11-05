@@ -1,3 +1,6 @@
+#ifndef MENUS_H
+#define MENUS_H
+
 int menuPrincipal(int *modo);
 int MenuAdm(int modo);
 int MenuClientes(int modo);
@@ -9,3 +12,5 @@ int menuFornecedores(int modo);
 void menuTroca(int *modo);
 void menuContas(int modoArm);
 void menuCaixa(int modoArm);
+
+#endif
