@@ -1,0 +1,19 @@
+cmake_minimum_required(VERSION 3.23)
+project(untitled C)
+
+set(CMAKE_C_STANDARD 11)
+
+add_executable(untitled main.c Caixa.c Caixa.h
+        Carrinho.c Carrinho.h
+        contasAreceber.c contasAreceber.h
+        ControleCategorias.c ControleCategorias.h
+        ControleClientes.c ControleClientes.h
+        ControleDeDadosLocadora.c ControleDeDadosLocadora.h
+        ControleDeNumeros.c ControleDeNumeros.h
+        ControleFilmes.c ControleFilmes.h
+        controleFuncionarios.c controleFuncionarios.h
+        Devolucoes.c Devolucoes.h
+        fornecedores.c fornecedores.h
+        FuncUtilitarias.c FuncUtilitarias.h
+        ManipulacoesDeTexto.c ManipulacoesDeTexto.h
+        menus.c menus.h)
