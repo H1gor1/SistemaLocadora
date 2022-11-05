@@ -1,5 +1,5 @@
-#ifndef MENUS_H
-#define MENUS_H
+#ifndef menus_h
+#define menus_h
 int menuPrincipal(int *modo);
 int MenuAdm(int modo);
 int MenuClientes(int modo);

@@ -1,5 +1,6 @@
 #ifndef CARRINHO_H
 #define CARRINHO_H
+
 void mostraListaFilmesAlocados(filmes *listaAlocacao, int quantidade);
 
 void realizaVenda(int modoArm);
