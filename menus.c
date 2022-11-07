@@ -21,6 +21,7 @@
 #define ED "Editar"
 #define APG "Apagar"
 #define VLT "Voltar"
+#define ESC 27
 #define MENUPRINC  menuGraphics(8, "Menu principal, escolha uma opcao:", "Administrativo", "Clientes", "Filmes", "Categorias", "Trocar modo arm BIN/TXT", "Caixa", "Contas", "Sair")
 
 
@@ -40,9 +41,12 @@ void menuGraphics(int quantidadeArgumentos, char *frasePrincipal , ...){
     for(int i = 0; i<quantidadeArgumentos; i++){
         
         string = va_arg(parametros, char *);
-        
-        printf("%55s|   %2d- %-25s                           |\n","\0", i+1, string);
-        
+        if(!strcmp(string, "Sair")|| !strcmp(string, "Voltar")){
+            printf("%55s|   esc- %-25s                           |\n","\0", string);
+        }else {
+            printf("%55s|   F%d- %-25s                           |\n", "\0", i + 1, string);
+
+        }
     }
     printf("%55s|___________________________________________________________|\n", "\0");
     va_end(parametros);
@@ -53,40 +57,39 @@ int menuPrincipal(int *modo){
     int escolha;
     printf("\n");
     
-    while(escolha != 8){
-        verificaNumero(&escolha, "%d");
+    while(escolha != ESC){
+        escolha = escolheOpcao();
         switch(escolha){
-            case 1:
+            case 59:
                 system("clear");
                 MenuAdm(*modo);
                 break;
-            case 2:
+            case 60:
                 system("clear");
                 MenuClientes(*modo);
                 break;
-            case 3:
+            case 61:
                 system("clear");
                 MenuFilmes(*modo);
                 break;
-            case 4:
+            case 62:
                 system("clear");
                 MenuCategoria(*modo);
                 break;
-            case 5:
+            case 63:
                 
                 menuTroca(modo);
                 
                 break;
-            case 6:
+            case 64:
                 menuCaixa(*modo);
                 MENUPRINC;
                 break;
-            case 7:
+            case 65:
                 menuContas(*modo);
                 MENUPRINC;
                 break;
-            case 8:
-                break;
+
             default:
                 printf("Opcao invalida!\n");
         }

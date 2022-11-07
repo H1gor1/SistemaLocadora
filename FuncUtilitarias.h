@@ -16,4 +16,6 @@ void removeArquivos(int quantidadeRemov, ...);
 
 void *limpaMemoria(void *ptr);
 
+int escolheOpcao();
+
 #endif

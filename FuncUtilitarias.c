@@ -14,9 +14,18 @@
 #include "Caixa.h"
 #include "ContasAreceber.h"
 #include "Devolucoes.h"
+#include <conio.h>
+#define ESC 27
 #define VAZIO NULL
 
+int escolheOpcao(){
+    int opcao = getch();
+    if(opcao == 0 || opcao == 224){
+        opcao = getch();
+    }
 
+    return opcao;
+}
 
 void removeArquivos(int quantidadeRemov, ...){
     
