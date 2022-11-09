@@ -8,7 +8,7 @@ typedef struct compras compras;
 
 typedef struct contaArec{
     int codigoCliente;
-    time_t codigoCompra;
+    long int codigoCompra;
     int modoPagamento;
     int parcelas;
     float valorParc;
@@ -23,7 +23,7 @@ void reescreveLancamentosAprazoBin(contaArec *contas, int quantidade, char *nome
 int leDadosLancamentosAprazo(contaArec **contas);
 int leDadosLancamentosAprazoBin(contaArec **contas);
 void realizaCompraAprazo(compras *compra, int modoArm);
-contaArec * encontraContaPeloCodigo(contaArec *contas, int quantidade, time_t codigo);
+contaArec * encontraContaPeloCodigo(contaArec *contas, int quantidade, long int codigo);
 int daBaixa(int modoArm);
 int filtraContasAtrasadas(contaArec *contas, int quantidadeContas, contaArec **atrasadas, int modoArm);
 int filtraContasClientes(contaArec *contas, int quantidadeContas, contaArec **contasDeUmCliente, int modoArm);

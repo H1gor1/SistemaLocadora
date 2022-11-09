@@ -2,6 +2,7 @@
 #include<stdlib.h>
 #include<string.h>
 #include<errno.h>
+#include <time.h>
 #include "ControleCategorias.h"
 #include "ManipulacoesDeTexto.h"
 #include "ControleDeDadosLocadora.h"
@@ -265,11 +266,12 @@ compras * encontraCompraCodigo(compras *ptr, int quantidade, time_t codigo){
 }
 compras *buscaCompra(compras *ptr, int quantidade, int ignoraDev){
     compras *busca = NULL;
-    time_t codigo;
-    
+
+    long int codigo;
     
     while(1){
-        verificaNumero(&codigo, "%ld");
+        verificaNumero(&codigo, "%d");
+
         busca = encontraCompraCodigo(ptr, quantidade, codigo);
         if(busca){
             if(busca->devolvido && ignoraDev){

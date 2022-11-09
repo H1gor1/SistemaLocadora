@@ -64,16 +64,15 @@ filmes *deletaFilmeCarrinho(filmes *lista, int *quantidade, filmes *listaOrigina
 void alocaFilmes(filmes **filmesAlocados, int *quantidade, filmes *lista, int quantidadeLista, int ignora, char *frase){
     
     (*quantidade) = 0;
-    menuGraphics(3, "Selecione uma opcao:", "adicionar filme", "Deletar filme", "fechar lista");
     filmes *alocAgr = NULL;
     int escolha;
-    while(escolha != 3){
+    while(escolha != 61){
         menuGraphics(3, "Selecione uma opcao:", "adicionar filme", "Deletar filme", "fechar lista");
         mostraListaFilmesAlocados(filmesAlocados[0], *quantidade);
-        verificaNumero(&escolha, "%d");
+        escolha = escolheOpcao();
         /*adicionar no if uma funcao para verificar se todos os filmes estao zerados*/
         switch(escolha){
-            case 1:
+            case 59:
             
                 (*quantidade)++;
                 filmesAlocados[0] = (*quantidade==1)
@@ -100,10 +99,10 @@ void alocaFilmes(filmes **filmesAlocados, int *quantidade, filmes *lista, int qu
             
                 continue;
         
-            case 2:
+            case 60:
                 filmesAlocados[0] = deletaFilmeCarrinho(filmesAlocados[0], quantidade, lista, quantidadeLista);
                 continue;
-            case 3:
+            case 61:
                 break;
             default:
                 printf("voce escolheu uma opcao invalida, escolha novamente!\n");
@@ -179,7 +178,7 @@ void realizaVenda(int modoArm){
     
     while(1){
         menuGraphics(2, "Escolha o modo de pagamento:", "A vista", "A prazo");
-        verificaNumero(&compraAtual.modoPagamento, "%d");
+        compraAtual.modoPagamento = retornaNumeroConformeF(2, 0);
         switch(compraAtual.modoPagamento){
             
             case 1:

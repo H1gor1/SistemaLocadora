@@ -201,7 +201,7 @@ void lancaEntradaOuParcela(contaArec *conta, int modoArm, float preco){
         printf("troco: %.2f\n", (lancamento.troco = lancamento.valorPago - lancamento.valor));
         break;
     }
-    
+    Sleep(2000);
     (modoArm)?reescreveLancamentosCaixaBin(&lancamento, 1, "lancamentos.bin", "lancamentos.bin", "ab"):reescreveLancamentosCaixa(&lancamento, 1, "lancamentos.txt", "lancamentos.txt", "a");
     return;
     
@@ -242,7 +242,7 @@ void realizaCompraAprazo(compras *compra, int modoArm){
     return;
     
 }
-contaArec * encontraContaPeloCodigo(contaArec *contas, int quantidade, time_t codigo){
+contaArec * encontraContaPeloCodigo(contaArec *contas, int quantidade, long int codigo){
     for(int i = 0; i<quantidade; i++){
         if(contas[i].codigoCompra == codigo && contas[i].parcelas > 0){
             return (contas+i);
@@ -284,7 +284,9 @@ int daBaixa(int modoArm){
     contaArec *darBaixa = NULL;
     int quantidade = 0;
     int quantidadesNotinhasPagar = 0;
-    time_t codigo;
+    long int codigo;
+    time_t tempo;
+
     quantidade = (modoArm)?leDadosLancamentosAprazoBin(&contas):leDadosLancamentosAprazo(&contas);
     printf("digite o codigo da compra que deseja dar baixa:\n");
     consultaContas(contas, quantidade);
@@ -300,8 +302,8 @@ int daBaixa(int modoArm){
         }
         break;
     }
-    time(&codigo);
-    darBaixa->dataAluga.tm_mon = localtime(&codigo)->tm_mon;
+    time(&tempo);
+    darBaixa->dataAluga.tm_mon = localtime(&tempo)->tm_mon;
     printf("digite a quantidade de parcelas que deseja baixar desta compra, ainda existem %d parcelas:", darBaixa->parcelas);
     
     verificaLimiteNumero(&quantidadesNotinhasPagar, darBaixa->parcelas, 1, "%d");
@@ -430,16 +432,18 @@ void consultaLancamentos(int modoArm){
     
     
     while(1){
-        menuGraphics(3, "escolha uma opcao:", "filtrar contas atrasadas", "filtrar contas de um cliente", "sair");
-        verificaNumero(&escolha, "%d");
+        menuGraphics(3, "escolha uma opcao:", "filtrar contas atrasadas", "filtrar contas de um cliente", "Voltar");
+        escolha = escolheOpcao();
         switch(escolha){
-            case 1:
+            case 59:
                 mostraContasFiltradas(contas, quantidadeContas, modoArm, filtraContasAtrasadas, "Contas atrasadas:");
                 break;
-            case 2:
+            case 60:
                 mostraContasFiltradas(contas, quantidadeContas, modoArm, filtraContasClientes, "Contas do cliente:");
                 break;
-            case 3:
+            case 61:
+                break;
+            case 27:
                 break;
             default:
                 printf("escolha uma opcao valida!\n");

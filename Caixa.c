@@ -1,6 +1,7 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
+#include <conio.h>
 #include<errno.h>
 #include "ControleCategorias.h"
 #include "ManipulacoesDeTexto.h"
@@ -233,7 +234,7 @@ void compraAvista(compras *compras, int modoArm){
     Sleep(2000);
     while(escolha !=2 && escolha != 1){
         menuGraphics(2, "Deseja imprimir notinha?\n", "Sim", "Nao");
-        verificaNumero(&escolha, "%d");
+        escolha = retornaNumeroConformeF(2, 0);
         if(escolha == 1){
             char *nomeArq;
             FILE *f;
@@ -342,7 +343,7 @@ void contaCaixa(int modoArm){
     printf("\n\nContagem total:\n   valor liquido: %.2f\n   valor bruto: %.2f\n     trocos totais: %.2f\n", valores.dinheiroLiquido, valores.dinheiroBruto, valores.troco);
     
     printf("digite qualquer tecla para sair.\n");
-    getchar();
+    getch();
     
     todosLancamentos = limpaMemoria(todosLancamentos);
 }
