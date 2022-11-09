@@ -56,4 +56,8 @@ void listaClientes(int modoArm);
 
 int verificaExisteClientes(cliente *ptr, int quantidade);
 
+void mostraInformacoesClientes(cliente *ptr, int quantidade);
+
+cliente* mostraClienteEspecficoComFaixa(cliente *ptr, int quantidade, int codigo, int codigo1);
+
 #endif

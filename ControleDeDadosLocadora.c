@@ -9,6 +9,7 @@
 #include "menus.h"
 #define VAZIO NULL
 #define ERROMEM "ERRO: Memoria indisponivel!\n"
+#define ESC 27
 
 
 /*funcao responsavel por limpar os campos de texto da struct da locadora da memoria*/
@@ -275,12 +276,12 @@ void editaDadosLocadora(int modo){
     //while e sempre verdadeiro, e so pode ser quebrado se o comando break no fim for executado    
     while(1){ 
         
-        menuGraphics(10, "Escolha uma opcao para editar", "Nome fantasia", "Razao social", "Inscricao estadual", "CNPJ", "Endereco", "Telefone", "Email", "Nome responsavel", "Telefone responsavel", "Multa por atraso");
+        menuGraphics(11, "Escolha uma opcao para editar", "Nome fantasia", "Razao social", "Inscricao estadual", "CNPJ", "Endereco", "Telefone", "Email", "Nome responsavel", "Telefone responsavel", "Multa de atraso", "Voltar");
        
-        verificaNumero(&escolha, "%d");
+        escolha = escolheOpcao();
         /*ifs aninhados para descobrir qual campo o usuario deseja editar*/
         switch(escolha){
-            case 1:
+            case 59:
             //caso o campo escolha seja igual a nome fantasia
             printf("Digite o novo nome fantasia da locadora:\n");
             editar.nomeFantasia = limpaMemoria(editar.nomeFantasia);
@@ -288,7 +289,7 @@ void editaDadosLocadora(int modo){
             digText(&editar.nomeFantasia, stdin);
             break;
             
-            case 2:
+            case 60:
                
                 //caso seja igual, entao
                 printf("Digite o nome nome para razao social:\n");
@@ -297,21 +298,21 @@ void editaDadosLocadora(int modo){
                 digText(&editar.razaoSocial, stdin);
                 break;
                 
-            case 3:
+            case 61:
                 
                     printf("Digite o novo numero da Inscricao Estadual\n");
                     /*chama a funcao para o usuario digitar a nova inscricao estadual*/
                     validaInsEstadual(&editar.inscricaoEstadual);
                     break;
 
-            case 4:
+            case 62:
                         //caso verdadeiro, entao
                         printf("Digite o novo numero do CNPJ:\n");
                         //chama a funcao para o usuario digitar o novo valor de cnpj
                         validaCnpjouCpf(&editar.cnpj, 14, "543298765432", "6543298765432", 12, 12, "CNPJ digitado invalido!", 0, 0);
                         break;
                         
-            case 5:
+            case 63:
                    
                         
                         //caso verdadeiro, entao
@@ -321,7 +322,7 @@ void editaDadosLocadora(int modo){
                         digText(&editar.endereco, stdin);
                         break;
 
-            case 6:
+            case 64:
                 
                         //caso verdadeiro, entao
                         printf("Digite o novo telefone:\n");
@@ -329,21 +330,21 @@ void editaDadosLocadora(int modo){
                         verificaNumero(&editar.telefone, "%d");
                         break;
                         
-            case 7:
+            case 65:
                 
                         printf("Digite o novo email:\n");
                         //pede a digitacao do novo email para o usuario
                         verificaText("@.", &editar.email, "Por favor, digite um email valido!\n");
                         break;
                                
-            case 8:
+            case 66:
                         //caso verdadeiro, entao 
                         printf("Digite o novo Nome do Responsavel:\n");           
                         //pede a digitacao do novo nome do responsavel
                         digText(&editar.nomeResponsavel, stdin);
                         break;
                         
-            case 9:
+            case 67:
                 
                                     
                         //caso verdadeiro, entao
@@ -352,10 +353,12 @@ void editaDadosLocadora(int modo){
                         verificaNumero(&editar.telefoneResp, "%d");
                         break;
                         
-            case 10:
+            case 68:
                 
                 printf("digite o valor da multa caso algum cliente atrase:\n");
                 verificaNumero(&editar.multa, "%f");
+                break;
+            case ESC:
                 break;
             default:
                         //caso todas as opcoes de cima sejam falsas, entao o usuario nao escolheu um 

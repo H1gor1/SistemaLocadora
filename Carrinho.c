@@ -115,7 +115,14 @@ void alocaFilmes(filmes **filmesAlocados, int *quantidade, filmes *lista, int qu
     
     
 }
-
+void limpaMemoriaRealizaVenda(cliente** clients, int quantidadeClientes, Funcionarios ** func, int quantidadeFuncionarios, filmes ** todosFilmes, int quantidadeFilmes){
+    limpaDadosClienteMemoria(clients[0], quantidadeClientes);
+    clients[0] = limpaMemoria(clients[0]);
+    limpaDadosFilmeMemoria(todosFilmes[0], quantidadeFilmes);
+    todosFilmes[0] = limpaMemoria(todosFilmes[0]);
+    apagaDadosStructFuncionarios(func[0], quantidadeFuncionarios);
+    func[0] = limpaMemoria(func[0]);
+}
 
 void realizaVenda(int modoArm){
    
@@ -133,7 +140,28 @@ void realizaVenda(int modoArm){
     quantidadeClientes = (modoArm)?leDadosClientesBin(&clientes):leDadosClientes(&clientes);
     quantidadeTotalFilmes = (modoArm)?leDadosFilmesBin(&TodosFilmes):leDadosFilmes(&TodosFilmes);
     quantidadeFuncionarios = (modoArm)?leDadosFuncionariosBin(&funcionarios):leDadosFuncionarios(&funcionarios);
-    
+
+    if(!contaQuantidadeExistente(sizeof(Funcionarios), funcionarios, quantidadeFuncionarios)){
+
+        printf("Nao existem funcionarios cadastrados, primeiro cadastre um funcionario pra depois realizar a venda!\n");
+        limpaMemoriaRealizaVenda(&clientes, quantidadeClientes, &funcionarios, quantidadeFuncionarios, &TodosFilmes, quantidadeTotalFilmes);
+        Sleep(4000);
+        return;
+    }
+    if(!contaQuantidadeExistente(sizeof(cliente), funcionarios, quantidadeFuncionarios)){
+
+        printf("Nao existem clientes cadastrados, primeiro cadastre um clientes pra depois realizar a venda!\n");
+        limpaMemoriaRealizaVenda(&clientes, quantidadeClientes, &funcionarios, quantidadeFuncionarios, &TodosFilmes, quantidadeTotalFilmes);
+        Sleep(4000);
+        return;
+    }
+    if(!contaQuantidadeExistente(sizeof(filmes), funcionarios, quantidadeFuncionarios)){
+
+        printf("Nao existem filmes cadastrados, primeiro cadastre um filme pra depois realizar a venda!\n");
+        limpaMemoriaRealizaVenda(&clientes, quantidadeClientes, &funcionarios, quantidadeFuncionarios, &TodosFilmes, quantidadeTotalFilmes);
+        Sleep(4000);
+        return;
+    }
     printf("Digite o codigo ou nome do Funcionario:\n");
     compraAtual.vendedor = buscaFuncionarios(funcionarios, quantidadeFuncionarios, NULL);
     compraAtual.devolvido = 0;
@@ -169,12 +197,7 @@ void realizaVenda(int modoArm){
     }
     (modoArm)?reescreveDadosDevolucoesBin(&compraAtual, 1, "devolucoes.bin", "devolucoes.bin", "ab"):reescreveDadosDevolucoes(&compraAtual, 1, "devolucoes.txt", "devolucoes.txt", "a");
     (modoArm)?reescreveDadosFilmeBin(TodosFilmes, quantidadeTotalFilmes):reescreveDadosFilme(TodosFilmes, quantidadeTotalFilmes);
-    limpaDadosClienteMemoria(clientes, quantidadeTotalFilmes);
-    clientes = limpaMemoria(clientes);
-    limpaDadosFilmeMemoria(TodosFilmes, quantidadeTotalFilmes);
-    TodosFilmes = limpaMemoria(TodosFilmes);
-    apagaDadosStructFuncionarios(funcionarios, quantidadeFuncionarios);
-    funcionarios = limpaMemoria(funcionarios);
+    limpaMemoriaRealizaVenda(&clientes, quantidadeClientes, &funcionarios, quantidadeFuncionarios, &TodosFilmes, quantidadeTotalFilmes);
     return;
     
 }

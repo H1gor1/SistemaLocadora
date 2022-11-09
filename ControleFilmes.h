@@ -34,7 +34,6 @@ filmes *buscaFilme(filmes *buscar, int quantidade, char *mensagem);
 
 void editaFilme(int modoAbertura);
 
-int verificaExisteFilme(filmes *ptr, int quantidade);
 
 void deletaFilme(filmes *ptr);
 

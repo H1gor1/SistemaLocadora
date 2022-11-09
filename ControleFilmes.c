@@ -22,25 +22,15 @@ void limpaDadosFilmeMemoria(filmes *ptr, int quantidade){
     }
 }
 
-int verificaExisteFilme(filmes *ptr, int quantidade){
-    if(quantidade == 0){
-        return 0;
-    }
-    for(int i = 0; i<quantidade; i++){
-        if(ptr[i].flag != 0){
-           return 1;  
-        }
-    }
-    return 0;
-}
+
 void mostraFilmes(filmes *ptr, int quantidade){
     for(int i = 0; i<quantidade; i++){
                 
         if(ptr[i].flag != 0){
-                printf("╔════════════════\n");
-                printf("║Nome: %s\n", ptr[i].nome);
-                printf("║Codigo: %d\n", ptr[i].codigo);
-                printf("╚════════════════\n");
+                printf("_________________\n");
+                printf("|Nome: %s\n", ptr[i].nome);
+                printf("|Codigo: %d\n", ptr[i].codigo);
+                printf("|________________\n");
         }
     }
 }
@@ -231,45 +221,45 @@ void editaFilme(int modoAbertura){
         reescreveDadosFilme, reescreveDadosFilmeBin 
     };
     filmes *ptr = NULL;
-    filmes *filmes = NULL;
+    filmes *fil = NULL;
     int quantidadeFilmes;
     
-    quantidadeFilmes = (*leDados[modoAbertura])(&filmes);
-    if(!verificaExisteFilme(filmes, quantidadeFilmes)){
+    quantidadeFilmes = (*leDados[modoAbertura])(&fil);
+    if(!contaQuantidadeExistente( sizeof(filmes), fil, quantidadeFilmes)){
         printf("nao existe nenhum filme cadastrado no momento\n");
         Sleep(2000);
         return;
     }
     printf("digite o nome ou codigo do filme que deseja editar\n");
-    mostraFilmes(filmes, quantidadeFilmes);
-    ptr = buscaFilme(filmes, quantidadeFilmes, "Nenhum filme possui o dado digitado, por favor, digite um nome ou codigo");
+    mostraFilmes(fil, quantidadeFilmes);
+    ptr = buscaFilme(fil, quantidadeFilmes, "Nenhum filme possui o dado digitado, por favor, digite um nome ou codigo");
     
     int dadoEditar;
-    printf("digite o campo do filme que deseja editar:\n");
-    printf("1-Nome do filme\n2-Descricao\n3-Exemplares\n4-Codigo da Categoria\n5-Lingua\n");
-    verificaNumero(&dadoEditar, "%d");
-    
+    menuGraphics(6 , "Qual campo deseja editar:", "Nome do filme", "Descricao", "Exemplares", "Codigo da Categoria", "Lingua", "Voltar");
+
+
+    dadoEditar = escolheOpcao();
 
     while(1){
         switch(dadoEditar){
             
-            case 1:
+            case 59:
                 printf("digite o nome do filme\n");
                 ptr->nome = limpaMemoria(ptr->nome);
                 digText(&ptr->nome, stdin);
                 break;
-            case 2:
+            case 60:
                 printf("digite a descricao do filme\n");
                 ptr->descricao = limpaMemoria(ptr->descricao);
                 digText(&ptr->descricao, stdin);
                 break;
 
-            case 3:
+            case 61:
                 printf("digite a quantidade de exemplares disponiveis\n");
                 verificaNumero(&ptr->exemplares, "%d");
                 break;
                     
-            case 4:
+            case 62:
                 categoria *categorias;
                 int quantidadeCategorias;
                 int (*LeDadosCategoria[2])(categoria **) = {leDadosCategoria, leDadosCategoriaBin};
@@ -283,11 +273,13 @@ void editaFilme(int modoAbertura){
                 categorias = limpaMemoria(categorias);
                 break;
             
-            case 5:
+            case 63:
                 printf("O filme é dublado ou legendado?:\n");
                 printf("1-Dublado\n2-Legendado\n");
                 verificaLimiteNumero(&ptr->lingua, 2, 1, "%d");
-                break;      
+                break;
+            case 27:
+                break;
             default:
                 printf("Voce digitou uma opcao invalida, por favor, digite novamente!\n");
                 verificaNumero(&dadoEditar, "%d");
@@ -298,9 +290,9 @@ void editaFilme(int modoAbertura){
         break;
     
     }
-    (*reescreveDados[modoAbertura])(filmes, quantidadeFilmes);
-    limpaDadosFilmeMemoria(filmes, quantidadeFilmes);
-    filmes = limpaMemoria(filmes);
+    (*reescreveDados[modoAbertura])(fil, quantidadeFilmes);
+    limpaDadosFilmeMemoria(fil, quantidadeFilmes);
+    fil = limpaMemoria(fil);
     ptr = NULL;
 }
 
@@ -311,7 +303,14 @@ void cadastraFilmes(int modoLeitura){
     int quantidadeCategorias;
     int (*LeDadosCategoria[2])(categoria **) = {leDadosCategoria, leDadosCategoriaBin};
     quantidadeCategorias = (*LeDadosCategoria[modoLeitura])(&categorias);
-    
+
+    if(!verificaExisteCategoria(categorias, quantidadeCategorias)){
+        printf("Nao existem categorias de filmes cadastrados ainda!\nPrimeiro cadastre uma categoria, para depois conseguir cadastrar um filme!\n");
+        Sleep(2000);
+        limpaDadosCategoriaMemoria(categorias, quantidadeCategorias);
+        categorias = limpaMemoria(categorias);
+        return;
+    }
     int (*leDados[2])(filmes **) = {leDadosFilmes, leDadosFilmesBin};
     void (*reescreveDados[2])(filmes *, int) = {reescreveDadosFilme, reescreveDadosFilmeBin};
     int quantidadeFilmes = (*leDados[modoLeitura])(&filme) + 1;
@@ -330,16 +329,15 @@ void cadastraFilmes(int modoLeitura){
     printf("digite a quantidade de exemplares para alugar do filme:\n");
     verificaNumero(&filme[quantidadeFilmes-1].exemplares, "%d");
     
-    printf("Digite o código da categoria do filme:\n");
+    printf("Digite o codigo da categoria do filme:\n");
     mostraListaCategoria(categorias, quantidadeCategorias);
-    verificaNumero(&filme[quantidadeFilmes-1].codigoCategoria, "%d");
-    
+    filme[quantidadeFilmes-1].codigoCategoria = pegaCategoria(categorias, quantidadeCategorias);
+
     filme[quantidadeFilmes-1].valorLocacao = categorias[filme[quantidadeFilmes-1].codigoCategoria].valorLocacao;
     
-    printf("Escolha se o filme é dublado ou legendado\n");
-    printf("1-Dublado\n2-Legendado\n");
-    verificaLimiteNumero(&filme[quantidadeFilmes-1].lingua, 2, 1, "%d");
-    
+    printf("Escolha se o filme e dublado ou legendado\n");
+    printf("F1-Dublado\nF2-Legendado\n");
+    filme[quantidadeFilmes-1].lingua = retornaNumeroConformeF(2, 0);
     filme[quantidadeFilmes-1].flag = 1;
 
     (*reescreveDados[modoLeitura])(filme, quantidadeFilmes);
@@ -362,8 +360,9 @@ void apagaFilme(int modo){
 
     int quantidadeFilmes = (*leDados[modo])(&filme);
     
-    if(!verificaExisteFilme(filme, quantidadeFilmes)){
+    if(!contaQuantidadeExistente( sizeof(filmes), filme, quantidadeFilmes)){
         printf("Ate o momento nao existe nenhum filme cadastrado\n");
+        Sleep(3000);
         return;
     }
 

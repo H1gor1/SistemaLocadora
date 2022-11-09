@@ -6,7 +6,10 @@ typedef struct categoria{
     char *nome;
     char *descricao;
     float valorLocacao;
+    int flag;
 }categoria;
+
+int pegaCategoria(categoria *ptr, int quantidade);
 
 void apagaCategoria(int modo);
 

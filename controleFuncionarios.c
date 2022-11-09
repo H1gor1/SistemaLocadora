@@ -15,6 +15,15 @@
 #define FuncionarioNaoExiste '*'
 #define ERROMEM "ERRO: Memoria indisponivel!\n"
 
+int verificaExistemFuncionarios(Funcionarios *ptr, int quantidade){
+
+    for(int i = 0; i<quantidade; i++){
+        if(ptr[i].flag){
+            return 1;
+        }
+    }
+    return 0;
+}
 /*funcao responsavel por apagar os dados da struct funcionarios, recebe um ponteiro para a primeira posicao da struct de cadastro
  de funcionarios na memoria, e a quantidade de funcionarios deveram ser apagados*/
 void apagaDadosStructFuncionarios(Funcionarios *ptr, int quantidadeFuncionarios){
@@ -409,57 +418,59 @@ void editaFuncionario(int modoAbertura){
     
     
     while(1){
-        menuGraphics(7, "Qual informacao deseja editar:", "Nome Completo", "Cargo", "Rua", "Bairro", "Numero Da Casa", "Telefone", "Email");
+        menuGraphics(8, "Qual informacao deseja editar:", "Nome Completo", "Cargo", "Rua", "Bairro", "Numero Da Casa", "Telefone", "Email", "Voltar");
         
-        verificaNumero(&dado, "%d");
+        dado = escolheOpcao();
         
         switch(dado){
             
-            case 1:
+            case 59:
                 editar->nome = limpaMemoria(editar->nome);
                 printf("digite o nome do funcionario:\n");
                 digText(&editar->nome, stdin);
                 break;
                 
-            case 2:
+            case 60:
          
                 editar->cargo = limpaMemoria(editar->cargo);
                 printf("digite o cargo do funcionario:\n");
                 digText(&editar->cargo, stdin);
                 break;
                 
-            case 3:
+            case 61:
                 
                 editar->rua = limpaMemoria(editar->rua);
                 printf("digite a rua do funcionario:\n");
                 digText(&editar->rua, stdin);
                 break;
                 
-            case 4:
+            case 62:
                 
                 editar->bairro = limpaMemoria(editar->bairro);
                 printf("digite o bairro do funcionario:\n");
                 digText(&editar->bairro, stdin);
                 break;
                 
-            case 5:
+            case 63:
                 
                 printf("digite o numero da casa do funcionario:\n");
                 verificaNumero(&editar->numero, "%d");
                 break;
             
-            case 6:
+            case 64:
                 printf("digite o telefone do funcionario:\n");
                 verificaNumero(&editar->telefone, "%d");
                 break;
                        
-            case 7:
+            case 65:
                                                    
                 editar->email = limpaMemoria(editar->email);                   
                 printf("digite o email do funcionario:\n");
                 verificaText("@.", &editar->email, "email invalido, por favor, digite um email valido!\n");
                 break;           
-                        
+
+            case 27:
+                break;
             default:
                 
                 printf("digite uma opcao valida!");
@@ -532,9 +543,9 @@ void mostraFuncionarios(int modoAbertura){
     
     for(int i = 0; i<quantidadeFuncionarios; i++){
         if(ptr[i].flag){
-            printf("_______________________\n");
-            printf("¦ codigo: %ld\n", ptr[i].codigo);
-            printf("¦ nome: %s\n¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\n", ptr[i].nome);
+            printf("__________________________\n");
+            printf("| codigo: %ld\n", ptr[i].codigo);
+            printf("| nome: %s\n_______________________\n", ptr[i].nome);
         }
     }
     apagaDadosStructFuncionarios(ptr, quantidadeFuncionarios);

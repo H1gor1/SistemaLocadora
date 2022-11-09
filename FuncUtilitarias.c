@@ -18,6 +18,46 @@
 #define ESC 27
 #define VAZIO NULL
 
+
+int contaQuantidadeExistente(size_t tamanho, void *ptr, int quantidade){
+    int quantidadeExistente = 0;
+    switch(tamanho){
+
+        case sizeof(cliente):
+            for(int i = 0; i<quantidade; i++){
+                if(((cliente *)ptr)[i].flag){
+                    quantidadeExistente++;
+                }
+            }
+            return quantidade;
+
+        case sizeof(categoria):
+            for(int i = 0; i<quantidade; i++){
+                if(((categoria *)ptr)[i].flag){
+                    quantidadeExistente++;
+                }
+
+            }
+            return quantidadeExistente;
+        case sizeof(Funcionarios):
+                for(int i = 0; i<quantidade; i++){
+                    if(((Funcionarios *)ptr)[i].flag){
+                        quantidadeExistente++;
+                    }
+
+                }
+                return quantidadeExistente;
+
+        case sizeof(filmes):
+            for(int i = 0; i<quantidade; i++){
+                if(((filmes *)ptr)[i].flag){
+                    quantidadeExistente++;
+                }
+            }
+            return quantidadeExistente;
+
+    }
+}
 int escolheOpcao(){
     int opcao = getch();
     if(opcao == 0 || opcao == 224){
@@ -241,5 +281,27 @@ void trocaModoArmazenamento(int *modo){
     
     
     
+}
+int retornaNumeroConformeF(int quantidadeOpcoes, int ignorarEsc){
+    int F;
+    int escolha;
+
+    while(1) {
+        F = 59;
+        escolha = escolheOpcao();
+        if(escolha == 27 && ignorarEsc){
+            return escolha;
+        }
+        for (int i = 1; i <= quantidadeOpcoes; i++) {
+            if(escolha == F){
+                return i;
+            }
+            F++;
+            if(F == 69){
+                F = 133;
+            }
+        }
+        printf("voce escolheu uma opcao invalida! Por favor digite novamente!\n");
+    }
 }
 
