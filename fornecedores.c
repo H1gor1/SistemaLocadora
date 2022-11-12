@@ -20,7 +20,9 @@
 void mostraDadosFornecedores(fornecedor *ptr, int quantidade){
     for(int i = 0; i<quantidade; i++){
         if(ptr[i].flag){
-            printf("%d:\nNome Fantasia: %s\nCNPJ: %s\n", i+1, ptr[i].nomeFantasia, ptr[i].CNPJ);
+            printf("Codigo: %d\n"
+                   "Nome Fantasia: %s\n"
+                   "CNPJ: %s\n\n", ptr[i].codigo, ptr[i].nomeFantasia, ptr[i].CNPJ);
         }
     }
 }

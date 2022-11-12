@@ -20,4 +20,5 @@ int escolheOpcao();
 
 int retornaNumeroConformeF(int quantidadeOpcoes, int ignorarEsc);
 
+void listaPeloCodigo(void *ptr, int quantidade, void (*funcaoDeMostrar)(void *, int), char *mensagem, void* (*funcaoDeFiltrar)(void *, int, int, int), void (*funcaoDeBuscar)(void *, int, int ,int));
 #endif

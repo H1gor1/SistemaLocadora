@@ -697,7 +697,7 @@ void filtraCodigo(cliente *ptr, int quantidade, int codigo, int codigo1){
     }
     printf("quantidade de clientes nesta faixa de codigo: %d\n", quantidadeClientes);
 }
-cliente* mostraClienteEspecficoComFaixa(cliente *ptr, int quantidade, int codigo, int codigo1){
+cliente* procuraClienteEspecificoComFaixa(cliente *ptr, int quantidade, int codigo, int codigo1){
     cliente *busca = NULL;
     while(1) {
         printf("digite o codigo do cliente.\n");
@@ -710,38 +710,7 @@ cliente* mostraClienteEspecficoComFaixa(cliente *ptr, int quantidade, int codigo
         printf("digite novamente!\n");
     }
 }
-void filtraFaixaCodigo(cliente *ptr, int quantidade){
-    
-    int codigo, codigo1;
-    int escolha;
-    printf("digite a faixa de codigo:\n");
-    printf("digite o primeiro codigo:\n");
-    verificaNumero(&codigo, "%d");
-    printf("digite o segundo codigo:\n");
-    verificaNumero(&codigo1, "%d");
-    
-    filtraCodigo(ptr, quantidade, (codigo>codigo1)?codigo1:codigo, (codigo<codigo1)?codigo1:codigo);
-    
-    printf("deseja visualizar algum cliente especifico desta faixa?\n");
-    printf("F1-sim\nF2-nao\n");
-    while(1){
-        escolha = escolheOpcao();
-        if(escolha == 60){
-            return;
-        }else
-            if(escolha != 59){
-                printf("digite uma opcao valida!\n");
-                continue;
-            }
-        break;
-    }
 
-    mostraInformacoesClientes(mostraClienteEspecficoComFaixa(ptr, quantidade, (codigo>codigo1)?codigo1:codigo, (codigo<codigo1)?codigo1:codigo), 1);
-
-    
-    
-    
-}
 void filtraSexo(cliente *ptr, int quantidade, int sexo){
     int i = 0;
     int quantidadeClientesSexo = 0;
@@ -795,7 +764,8 @@ void listaClientes(int modoArm){
         escolha = escolheOpcao();
         switch(escolha){
             case 59:
-                filtraFaixaCodigo(todosClientes, quantidadeClientes);
+                listaPeloCodigo(todosClientes, quantidadeClientes, mostraInformacoesClientes, "algum cliente",
+                                filtraCodigo, procuraClienteEspecificoComFaixa);
                 break;
                 
             case 60:
@@ -828,7 +798,7 @@ void mostraInformacoesClientes(cliente *ptr, int quantidade){
         printf("Endereco:\n");
         printf("    Rua: %s\n", ptr[i].rua);
         printf("    Bairro: %s\n", ptr[i].bairro);
-        printf("    Numero: %d\n", ptr[i].rua);
+        printf("    Numero: %d\n", ptr[i].numeroDaCasa);
         printf("CPF: %s\n", ptr[i].cpf);
         printf("Telefone: %d\n", ptr[i].telefone);
         printf("Email: %s\n", ptr[i].email);

@@ -12,7 +12,7 @@
 #include <locale.h>
 #include "ControleCategorias.h"
 #include <windows.h>
-#define filmeNaoExiste '*'
+#define FILMENAOEXISTE 0
 #define ERROMEM "ERRO: Memoria indisponivel!\n"
 
 void limpaDadosFilmeMemoria(filmes *ptr, int quantidade){
@@ -202,7 +202,7 @@ filmes *buscaFilme(filmes *buscar, int quantidade, char *mensagem){
         }
         
         ptr = encontraFilmeNome(buscar, quantidade, dado);
-        if(ptr && ptr->flag != 0){
+        if(ptr && ptr->flag != FILMENAOEXISTE){
             dado = limpaMemoria(dado);
             return ptr;
         }
@@ -379,5 +379,19 @@ void apagaFilme(int modo){
 }
 
 void deletaFilme(filmes *apagar){
-    apagar->flag = 0;
+    apagar->flag = FILMENAOEXISTE;
+}
+void listaFilmesPeloCodigo(int modoArm){
+    filmes *todosFilmes = NULL;
+    int quantidadeFilmes = 0;
+
+    quantidadeFilmes = (modoArm)? leDadosFilmesBin(&todosFilmes):leDadosFilmes(&todosFilmes);
+
+    int codigo1;
+
+
+}
+void listaFilme(int modoArm){
+
+
 }

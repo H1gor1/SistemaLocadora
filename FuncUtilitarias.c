@@ -56,6 +56,8 @@ int contaQuantidadeExistente(size_t tamanho, void *ptr, int quantidade){
             }
             return quantidadeExistente;
 
+
+
     }
 }
 int escolheOpcao(){
@@ -303,5 +305,40 @@ int retornaNumeroConformeF(int quantidadeOpcoes, int ignorarEsc){
         }
         printf("voce escolheu uma opcao invalida! Por favor digite novamente!\n");
     }
+}
+
+void listaPeloCodigo(void *ptr, int quantidade, void (*funcaoDeMostrar)(void *, int), char *mensagem, void (*funcaoDeFiltrar)(void *, int, int, int), void* (*funcaoDeBuscar)(void *, int, int ,int)){
+    int codigo, codigo1;
+    int escolha;
+    void *endOlhar = NULL;
+    printf("digite os numeros da faixa de codigo que deseja filtrar:\n");
+    printf("digite o primeiro numero");
+    verificaNumero(&codigo, "%d");
+    printf("digite o segundo numero");
+    verificaNumero(&codigo1, "%d");
+
+    funcaoDeFiltrar(ptr, quantidade, (codigo > codigo1)?codigo1:codigo, (codigo > codigo1)?codigo:codigo1);
+
+    printf("Deseja visualizar %s nesta faixa de codigos?\nF1-sim\nF2-nao\n", mensagem);
+    while(1){
+        escolha = escolheOpcao();
+        switch (escolha) {
+            case 59:
+                break;
+            case 60:
+                return;
+            default:
+            printf("digite uma opcao valida!\n");
+        }
+        break;
+    }
+
+    endOlhar = funcaoDeBuscar(ptr, quantidade, (codigo > codigo1)?codigo1:codigo, (codigo > codigo1)?codigo:codigo1);
+
+    funcaoDeMostrar(endOlhar, 1);
+
+
+
+
 }
 

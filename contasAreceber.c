@@ -49,11 +49,11 @@ void reescreveLancamentosAprazo(contaArec *contas, int quantidade, char *nomeArq
     }
     fechaArquivo(&f);
     
-    if(strcmp(nomeArq, nomeArqOr)){
+    if(strcmp(nomeArq, nomeArqOr) != 0){
         remove(nomeArqOr);
         rename(nomeArq, nomeArqOr);
     }
-    return;
+
 }
 void reescreveLancamentosAprazoBin(contaArec *contas, int quantidade, char *nomeArq, char *nomeArqOr, char *modo){
     
@@ -74,7 +74,7 @@ void reescreveLancamentosAprazoBin(contaArec *contas, int quantidade, char *nome
     
     fechaArquivo(&f);
     
-    if(strcmp(nomeArq, nomeArqOr)){
+    if(strcmp(nomeArq, nomeArqOr) != 0){
         remove(nomeArqOr);
         rename(nomeArq, nomeArqOr);
     }
@@ -219,7 +219,7 @@ void realizaCompraAprazo(compras *compra, int modoArm){
     verificaLimiteNumero(&Aprazo.entrada, compra->preco*0.30, 0, "%f");
     
     printf("digite a quantidade de parcelas o cliente deseja dividir:\n");
-    verificaLimiteNumero(&Aprazo.parcelas, 3, 1, "%d");
+    verificaLimiteNumero(&Aprazo.parcelas, MAXIMOPARCELAS, 1, "%d");
     
     Aprazo.valorParc = (compra->preco-Aprazo.entrada) / Aprazo.parcelas;
     
@@ -324,8 +324,10 @@ int filtraContasAtrasadas(contaArec *contas, int quantidadeContas, contaArec **a
     time(&seg);
     struct tm dataAgora = *localtime(&seg);
     for(int i = 0; i<quantidadeContas; i++){
-        if(contas[i].dataAluga.tm_mon<dataAgora.tm_mon && contas[i].dataAluga.tm_mday <= dataAgora.tm_mday || 
-                (contas[i].dataAluga.tm_year < dataAgora.tm_year && contas[i].dataAluga.tm_mday <= dataAgora.tm_mday)){
+        if((contas[i].dataAluga.tm_mon<dataAgora.tm_mon && contas[i].dataAluga.tm_mday <= dataAgora.tm_mday ||
+                (contas[i].dataAluga.tm_year < dataAgora.tm_year && contas[i].dataAluga.tm_mday <= dataAgora.tm_mday)
+                || (contas[i].dataAluga.tm_year < dataAgora.tm_year && contas[i].dataAluga.tm_mon < dataAgora.tm_mon-1))
+                && contas[i].parcelas){
                 
             atrasadas[0] = (!quantidadeContasAtrasadas)?malloc(sizeof(contaArec)):realloc(atrasadas[0], sizeof(contaArec)*(quantidadeContasAtrasadas+1));
             
@@ -351,7 +353,7 @@ int filtraContasClientes(contaArec *contas, int quantidadeContas, contaArec **co
     todosClientes = limpaMemoria(todosClientes);
     
     for(int i = 0; i<quantidadeContas; i++){
-        if(contas[i].codigoCliente == codigo){
+        if(contas[i].codigoCliente == codigo && contas[i].parcelas){
             
             contasDeUmCliente[0] = (!quantidadeContasCliente)
                     ?malloc(sizeof(contaArec))
@@ -368,9 +370,15 @@ void mostraContasFiltradas(contaArec *contas, int quantidadeContas, int modoArm,
     contaArec *contasAtrasadas = NULL;
     int quantidadeContasAtrasadas = 0;
     quantidadeContasAtrasadas = (*filtra)(contas, quantidadeContas, &contasAtrasadas, modoArm);
-    
+
+    if(!quantidadeContasAtrasadas){
+        (filtra == filtraContasClientes)?printf("nao existem contas desse cliente!\n"):printf("nao existem contas atrasadas!\n");
+        Sleep(2000);
+        return;
+    }
+
     int escolha;
-    int quantidadeAlugacoes = 0;
+
     
     filmes *todosFilmes = NULL;
     cliente *todosClientes = NULL;
@@ -380,26 +388,30 @@ void mostraContasFiltradas(contaArec *contas, int quantidadeContas, int modoArm,
     quantidades quants = {0,0,0,0};
     
     quants = (modoArm)?leDadosDevolucoesBin(&alocacoes, &todosFuncionarios, &todosClientes, &todosFilmes):leDadosDevolucoes(&alocacoes, &todosFuncionarios, &todosClientes, &todosFilmes);
+    menuGraphics(2, "escolha uma opcao:", "ver detalhes de uma compra", "sair");
+    printf("%s", mensagem);
+    consultaContas(contasAtrasadas, quantidadeContasAtrasadas);
+    while(1){
 
-    while(escolha!=2){
-        printf(mensagem); 
-        menuGraphics(2, "escolha uma opcao:", "ver detalhes de alguma compra", "sair");
-        consultaContas(contasAtrasadas, quantidadeContasAtrasadas);
-        verificaNumero(&escolha, "%d");
+
+
+
+        escolha = escolheOpcao();
         
         switch(escolha){
-            case 1:
+            case 59:
                 printf("digite o codigo da compra:\n");
                 compraEspecifica = buscaCompra(alocacoes, quants.quantidadeAlugacoes, 0);
                 mostraCompra(compraEspecifica,1);
                 break;
-            case 2:
+            case 60:
                 break;
             default:
                 printf("escolha uma opcao valida!\n");
                 continue;
                 
         }
+        break;
     }
     limpaDadosFilmeMemoria(todosFilmes, quants.quantidadesFilmes);
     todosFilmes = limpaMemoria(todosFilmes);
@@ -436,10 +448,10 @@ void consultaLancamentos(int modoArm){
         escolha = escolheOpcao();
         switch(escolha){
             case 59:
-                mostraContasFiltradas(contas, quantidadeContas, modoArm, filtraContasAtrasadas, "Contas atrasadas:");
+                mostraContasFiltradas(contas, quantidadeContas, modoArm, filtraContasAtrasadas, "Contas atrasadas:\n");
                 break;
             case 60:
-                mostraContasFiltradas(contas, quantidadeContas, modoArm, filtraContasClientes, "Contas do cliente:");
+                mostraContasFiltradas(contas, quantidadeContas, modoArm, filtraContasClientes, "Contas do cliente:\n");
                 break;
             case 61:
                 break;

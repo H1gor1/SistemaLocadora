@@ -340,7 +340,7 @@ Funcionarios *encontraFuncionarioNome(Funcionarios *ptr, char *nome, int quantid
     }
     return NULL;
 }
-Funcionarios *encontraFuncionarioCodigo(Funcionarios *ptr, time_t codigo, int quantidade, Funcionarios *posicao){
+Funcionarios *encontraFuncionarioCodigo(Funcionarios *ptr, long int codigo, int quantidade, Funcionarios *posicao){
     
     for(int i = 0; i<quantidade; i++){
         if((ptr+i)!=posicao && ptr[i].flag){

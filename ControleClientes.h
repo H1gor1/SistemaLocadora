@@ -48,8 +48,6 @@ void mostraListaClientes(cliente *ptr, int quantidade);
 
 void filtraCodigo(cliente *ptr, int quantidade, int codigo, int codigo1);
 
-void filtraFaixaCodigo(cliente *ptr, int quantidade);
-
 void filtraSexo(cliente *ptr, int quantidade, int sexo);
 
 void listaClientes(int modoArm);
@@ -58,6 +56,6 @@ int verificaExisteClientes(cliente *ptr, int quantidade);
 
 void mostraInformacoesClientes(cliente *ptr, int quantidade);
 
-cliente* mostraClienteEspecficoComFaixa(cliente *ptr, int quantidade, int codigo, int codigo1);
+cliente* procuraClienteEspecificoComFaixa(cliente *ptr, int quantidade, int codigo, int codigo1);
 
 #endif

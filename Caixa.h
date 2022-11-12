@@ -24,7 +24,7 @@ typedef struct ContagemCaixa{
 }ContagemCaixa;
 
 typedef struct compras{
-    time_t codigo;
+    long int codigo;
     int modoPagamento;
     struct tm data;
     Funcionarios *vendedor;

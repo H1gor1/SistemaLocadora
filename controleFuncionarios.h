@@ -37,5 +37,5 @@ Funcionarios *encontraFuncionarioNome(Funcionarios *ptr, char *nome, int quantid
 
 void mostraFuncionarios(int modoAbertura);
 
-Funcionarios *encontraFuncionarioCodigo(Funcionarios *ptr, time_t codigo, int quantidade, Funcionarios *posicao);
+Funcionarios *encontraFuncionarioCodigo(Funcionarios *ptr, long int codigo, int quantidade, Funcionarios *posicao);
 #endif

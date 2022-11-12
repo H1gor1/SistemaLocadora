@@ -2,6 +2,7 @@
 #include<stdlib.h>
 #include<string.h>
 #include<errno.h>
+#include <conio.h>
 #include <time.h>
 #include "ControleCategorias.h"
 #include "ManipulacoesDeTexto.h"
@@ -138,7 +139,7 @@ quantidades leDadosDevolucoesBin(compras **dev, Funcionarios **func, cliente **c
     
     while(1){
         
-        fread(&codigo, sizeof(time_t), 1, f);
+        fread(&codigo, sizeof(long int), 1, f);
         
         if(feof(f)){
             break;
@@ -413,7 +414,7 @@ void mostraCompra(compras *compra, int resumir){
     printf("Preco: %.2f\n", compra->preco);
     printf("Filmes Comprados:\n");
     for(int i = 0; i<compra->quantidadeFilmesComprados; i++){
-        printf("   %dº filme:\n", i+1);
+        printf("    %d filme:\n", i+1);
         printf("        Nome: %s\n", compra->filmesComprados[i].nome);
         printf("        Codigo: %d\n", compra->filmesComprados[i].codigo);
         printf("        Preco: %.2f\n", compra->filmesComprados[i].valorLocacao);
@@ -423,8 +424,8 @@ void mostraCompra(compras *compra, int resumir){
     }
     printf("Status: %s\n", (compra->devolvido)?"devolvido":"Nao devolvido");
     if(resumir){
-        printf("digite 1 para sair:\n");
-        while(getchar()!='1');
+        printf("digite qualquer tecla pra sair:\n");
+        getch();
 
     }
 }
