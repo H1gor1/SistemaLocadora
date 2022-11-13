@@ -25,41 +25,110 @@
 #define MENUPRINC  menuGraphics(8, "Menu principal, escolha uma opcao:", "Administrativo", "Clientes", "Filmes", "Categorias", "Trocar modo arm BIN/TXT", "Caixa", "Contas", "Sair")
 
 
+void menuGraphicsComSeta(int quantidadeArgumentos, char *frasePrincipal , int linha, char **frases){
+    system("clear");
 
+    printf("\n%55s ____________________________________________________________\n"
+           "%55s|               %-35s          |\n"
+           "%55s|                                                            |\n", "\0", "\0", frasePrincipal, "\0");
+    for(int i = 0; i<quantidadeArgumentos; i++){
+
+
+        if(!strcmp(frases[i], "Sair")|| !strcmp(frases[i], "Voltar")){
+            if(i == linha) {
+
+                printf("%55s|   Esc- %-25s <--                       |\n", "\0", frases[i]);
+            }else{
+                printf("%55s|   Esc- %-25s                           |\n", "\0", frases[i]);
+            }
+        }else {
+
+            if( i == linha){
+                printf("%55s|   F%-2d- %-25s <--                       |\n", "\0", i + 1, frases[i]);
+
+            }else{
+                printf("%55s|   F%-2d- %-25s                           |\n", "\0", i + 1,frases[i]);
+            }
+        }
+    }
+    printf("%55s|____________________________________________________________|\n", "\0");
+
+
+}
 
 
 void menuGraphics(int quantidadeArgumentos, char *frasePrincipal , ...){
     system("clear");
     char *string;
     va_list parametros;
-    
+
     va_start(parametros, quantidadeArgumentos);
-    
-    printf("\n%55s ____________________________________________________________\n"
-            "%55s|               %-35s          |\n"
-            "%55s|                                                            |\n", "\0", "\0", frasePrincipal, "\0");
+
+    printf("\n%55s ___________________________________________________________\n"
+           "%55s|               %-35s         |\n"
+           "%55s|                                                           |\n", "\0", "\0", frasePrincipal, "\0");
+
     for(int i = 0; i<quantidadeArgumentos; i++){
-        
+
         string = va_arg(parametros, char *);
         if(!strcmp(string, "Sair")|| !strcmp(string, "Voltar")){
+
             printf("%55s|   Esc- %-25s                           |\n","\0", string);
         }else {
+            printf("%55s|   F%d- %-25s                           |\n", "\0", i + 1, string);
 
-            printf("%55s|   F%-2d- %-25s                           |\n", "\0", i + 1, string);
+
 
         }
     }
+
     printf("%55s|____________________________________________________________|\n", "\0");
     va_end(parametros);
-    
+
+}
+int escolheMenuPrin(char *mensagem, int quantidade, ...){
+
+    va_list parametros;
+    va_start(parametros, quantidade);
+    char **frases;
+
+    frases = malloc(sizeof(char*)*quantidade);
+
+    for(int i = 0; i<quantidade; i++){
+        frases[i] = va_arg(parametros, char *);
+    }
+
+    int contador = 0;
+    int escolha;
+    while(escolha != 10){
+        menuGraphicsComSeta(8, mensagem, contador, frases);
+        escolha = escolheOpcao();
+
+        switch(escolha){
+            case 80:
+                if(contador <quantidade-1){
+                    contador++;
+                }
+                break;
+
+            case 72:
+                if(contador>0){
+                    contador--;
+                }
+
+        }
+    }
+    va_end(parametros);
+    return contador;
+
 }
 int menuPrincipal(int *modo){
-    menuGraphics(8, "Seja bem Vindo! Escolha uma opcao:", "Administrativo", "Clientes", "Filmes", "Categorias", "Trocar modo arm BIN/TXT", "Caixa", "Contas", "Sair");
+
     int escolha;
     printf("\n");
     
     while(escolha != ESC){
-        escolha = escolheOpcao();
+        escolha = escolheMenuPrin("Seja bem vindo! Escolha uma opcao", 8, "Administrativo", "Clientes", "Filmes", "Categorias", "Trocar modo arm BIN/TXT", "Caixa", "Contas", "Sair");
         switch(escolha){
             case 59:
                 system("clear");
@@ -222,7 +291,7 @@ int MenuFuncionarios(int modo){
 }
 
 int MenuFilmes(int modo){
-    menuGraphics(4, OPCAO, CAD, ED, APG, VLT);  
+    menuGraphics(4, OPCAO, CAD, ED, APG, "Filtrar filme", VLT);
     int escolha;
     while(escolha != ESC){
         escolha = escolheOpcao();
@@ -241,6 +310,9 @@ int MenuFilmes(int modo){
                 system("clear");
                 apagaFilme(modo);
                 menuGraphics(4, OPCAO, CAD, ED, APG, VLT);  
+                break;
+            case 62:
+                listaFilme(modo);
                 break;
             case ESC:
                 break;

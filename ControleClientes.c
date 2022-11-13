@@ -764,8 +764,12 @@ void listaClientes(int modoArm){
         escolha = escolheOpcao();
         switch(escolha){
             case 59:
-                listaPeloCodigo(todosClientes, quantidadeClientes, mostraInformacoesClientes, "algum cliente",
-                                filtraCodigo, procuraClienteEspecificoComFaixa);
+                listaPeloCodigo(todosClientes,
+                                quantidadeClientes,
+                                (void (*)(void *, int))mostraInformacoesClientes,
+                                "algum cliente",
+                        (void (*)(void *, int, int, int))filtraCodigo,
+                        (void *(*)(void *, int, int, int))procuraClienteEspecificoComFaixa);
                 break;
                 
             case 60:

@@ -312,9 +312,9 @@ void listaPeloCodigo(void *ptr, int quantidade, void (*funcaoDeMostrar)(void *, 
     int escolha;
     void *endOlhar = NULL;
     printf("digite os numeros da faixa de codigo que deseja filtrar:\n");
-    printf("digite o primeiro numero");
+    printf("digite o primeiro numero\n");
     verificaNumero(&codigo, "%d");
-    printf("digite o segundo numero");
+    printf("digite o segundo numero\n");
     verificaNumero(&codigo1, "%d");
 
     funcaoDeFiltrar(ptr, quantidade, (codigo > codigo1)?codigo1:codigo, (codigo > codigo1)?codigo:codigo1);

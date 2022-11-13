@@ -120,3 +120,4 @@ void pegaDadoTextEverificaRepeticao(cliente *ptr, int quantidade, cliente *posic
     }
 }
 
+

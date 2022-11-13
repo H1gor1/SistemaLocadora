@@ -13,7 +13,7 @@ typedef struct filmes{
 }filmes;
 
 void apagaFilme(int modo);
-void mostraFilmes(filmes *ptr, int quantidade);
+void mostraFilmes(filmes *ptr, int quantidade, int mostrarExcluidos);
 int leDadosFilmesBin(filmes **ptr);
 
 int leDadosFilmes(filmes **ptr);
@@ -37,4 +37,13 @@ void editaFilme(int modoAbertura);
 
 void deletaFilme(filmes *ptr);
 
+void listaFilme(int modoArm);
+
+void listaFilmesPelaCategoria(int modoArm, filmes *ptr, int quantidadeFilmes);
+
+filmes *buscaFilmeComFaixaDeCodigo(filmes *ptr, int quantidade, int codigo, int codigo1);
+
+void filtraFilmPeloCodigo(filmes *ptr, int quantidade, int codigo1, int codigo2);
+
+void mostraInformacoesFilmes(filmes *todosFilmes, int quantidadeFilmes);
 #endif

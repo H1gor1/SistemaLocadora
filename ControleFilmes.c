@@ -23,10 +23,10 @@ void limpaDadosFilmeMemoria(filmes *ptr, int quantidade){
 }
 
 
-void mostraFilmes(filmes *ptr, int quantidade){
+void mostraFilmes(filmes *ptr, int quantidade, int mostrarExcluidos){
     for(int i = 0; i<quantidade; i++){
                 
-        if(ptr[i].flag != 0){
+        if(ptr[i].flag != 0 || mostrarExcluidos){
                 printf("_________________\n");
                 printf("|Nome: %s\n", ptr[i].nome);
                 printf("|Codigo: %d\n", ptr[i].codigo);
@@ -231,7 +231,7 @@ void editaFilme(int modoAbertura){
         return;
     }
     printf("digite o nome ou codigo do filme que deseja editar\n");
-    mostraFilmes(fil, quantidadeFilmes);
+    mostraFilmes(fil, quantidadeFilmes, 0);
     ptr = buscaFilme(fil, quantidadeFilmes, "Nenhum filme possui o dado digitado, por favor, digite um nome ou codigo");
     
     int dadoEditar;
@@ -367,7 +367,7 @@ void apagaFilme(int modo){
     }
 
     printf("Digite o codigo ou nome do filme que deseja apagar\n");
-    mostraFilmes(filme, quantidadeFilmes);
+    mostraFilmes(filme, quantidadeFilmes,0);
     filmes *apagar;
     apagar = buscaFilme(filme, quantidadeFilmes, "Nenhum filme tem o dado digitado, por favor, digite um nome, cpf ou codigo");
     deletaFilme(apagar);
@@ -381,17 +381,144 @@ void apagaFilme(int modo){
 void deletaFilme(filmes *apagar){
     apagar->flag = FILMENAOEXISTE;
 }
-void listaFilmesPeloCodigo(int modoArm){
-    filmes *todosFilmes = NULL;
-    int quantidadeFilmes = 0;
+void mostraInformacoesFilmes(filmes *todosFilmes, int quantidadeFilmes){
 
-    quantidadeFilmes = (modoArm)? leDadosFilmesBin(&todosFilmes):leDadosFilmes(&todosFilmes);
-
-    int codigo1;
+    for(int i = 0; i<quantidadeFilmes; i++){
+        printf("_____________________________________________\n");
+        printf("|    Nome: %s\n", todosFilmes[i].nome);
+        printf("|    Descricao: \n  %s\n\n", todosFilmes[i].descricao);
+        printf("|    Codigo Categoria: %d\n", todosFilmes[i].codigoCategoria);
+        printf("|    Valor alocacao: %.2f\n", todosFilmes[i].valorLocacao);
+        printf("|    Quantidade exemplares: %d\n", todosFilmes[i].exemplares);
+        printf("|    %s\n", (todosFilmes[i].lingua == 1)?"dublado":"legendado");
+        printf("|    %s\n", (todosFilmes[i].flag)?"Ainda existe na lista de cadastro":"Filme ja foi excluido da lista de cadastro");
+        printf("_____________________________________________");
+    }
 
 
 }
+void filtraFilmPeloCodigo(filmes *ptr, int quantidade, int codigo1, int codigo2){
+    int quantidadeFilmes = 0;
+    for(int i = codigo1; i<quantidade && i<codigo2; i++){
+
+            quantidadeFilmes++;
+            mostraFilmes(ptr+i, 1, 1);
+
+    }
+    printf("quantidade de filmes nesta faixa de codigo: %d\n", quantidadeFilmes);
+}
+filmes *buscaFilmeComFaixaDeCodigo(filmes *ptr, int quantidade, int codigo, int codigo1){
+    filmes *busca = NULL;
+    char *codigoEsp;
+    printf("digite o codigo do filme que deseja olhar na faixa de codigo %d a %d\n", codigo, codigo1);
+
+    while(1) {
+        digText(&codigoEsp, stdin);
+        busca = encontraFilmeCodigo(ptr, quantidade, codigoEsp, 0);
+        if(busca == NULL){
+            printf("nao existe nenhum filme com este codigo!\n");
+            continue;
+        }
+        if(busca->codigo >= codigo && busca->codigo <=codigo1){
+            return busca;
+        }
+        printf("codigo digitado nao esta entre a faixa de codigo!\n");
+
+
+    }
+}
+void listaFilmesPelaCategoria(int modoArm, filmes *ptr, int quantidadeFilmes){
+
+    categoria *todasCategorias = NULL;
+    int quantidadeCategorias = 0;
+    filmes *olhar = NULL;
+    quantidadeCategorias = (modoArm)? leDadosCategoriaBin(&todasCategorias): leDadosCategoria(&todasCategorias);
+
+    int quantidadeDeFilmesDestaCategoria = 0;
+    int codigoCategoria;
+    int escolha;
+
+    mostraListaCategoria(todasCategorias, quantidadeCategorias);
+    limpaDadosCategoriaMemoria(todasCategorias, quantidadeCategorias);
+    todasCategorias = limpaMemoria(todasCategorias);
+    printf("digite o codigo da categoria que deseja filtrar os filmes existentes");
+    verificaNumero(&codigoCategoria, "%d");
+
+    for(int i = 0; i<quantidadeFilmes; i++){
+
+        if(ptr[i].codigoCategoria == codigoCategoria){
+            mostraFilmes(ptr+i, 1, 1);
+            quantidadeDeFilmesDestaCategoria++;
+        }
+    }
+    printf("quantidade de filmes desta categoria: %d\n", quantidadeDeFilmesDestaCategoria);
+
+    printf("deseja olhar algum filme especifico?\n");
+    printf("F1 - sim\nF2 - nao\n");
+
+
+    while(1){
+
+        switch(escolha) {
+
+
+            case 59:
+                if(!quantidadeDeFilmesDestaCategoria){
+                    printf("nao existem filmes pra olhar, pois nao existem filmes nesta categoria!\n");
+                    Sleep(2000);
+                    return;
+                }
+                break;
+            case 60:
+                return;
+            default:
+                printf("escolha uma opcao valida!\n");
+                continue;
+
+        }
+        break;
+
+
+    }
+    while(1) {
+        olhar = buscaFilme(ptr, quantidadeFilmes, "nao existe nenhum filme com este codigo nesta categoria!\n");
+        if(olhar->codigoCategoria == codigoCategoria){
+            break;
+        }
+        printf("nao existe nenhum filme com este codigo nesta categoria!\n");
+    }
+    mostraInformacoesFilmes(olhar, 1);
+}
 void listaFilme(int modoArm){
 
+    filmes *todosFilmes = NULL;
+    int quantidadeFilmes = 0;
+
+    quantidadeFilmes = (modoArm)?leDadosFilmesBin(&todosFilmes): leDadosFilmes(&todosFilmes);
+
+    int escolha;
+
+    menuGraphics(3, "Como deseja filtrar os filmes:", "pelo codigo", "pela categoria", "Voltar");
+
+    while(1){
+
+        escolha = escolheOpcao();
+
+        switch(escolha) {
+            case 59:
+                listaPeloCodigo(todosFilmes,
+                                quantidadeFilmes,
+                                (void (*)(void *, int))mostraInformacoesFilmes,
+                                "algum filme",
+                                (void (*)(void *, int, int, int))filtraFilmPeloCodigo,
+                                (void *(*)(void *, int, int, int))buscaFilmeComFaixaDeCodigo);
+                break;
+
+            case 60:
+                listaFilmesPelaCategoria(modoArm, todosFilmes, quantidadeFilmes);
+                break;
+        }
+
+    }
 
 }
