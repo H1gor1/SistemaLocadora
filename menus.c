@@ -26,7 +26,11 @@
 
 
 void menuGraphicsComSeta(int quantidadeArgumentos, char *frasePrincipal , int linha, char **frases){
-    system("clear");
+    COORD cordenadaIn;
+    cordenadaIn.X = 0;
+    cordenadaIn.Y = 0;
+
+    SetConsoleCursorPosition(GetStdHandle( STD_OUTPUT_HANDLE ), cordenadaIn);
 
     printf("\n%55s ____________________________________________________________\n"
            "%55s|               %-35s          |\n"
@@ -102,7 +106,12 @@ int escolheMenuPrin(char *mensagem, int quantidade, ...){
     int escolha;
     while(escolha != 10){
         menuGraphicsComSeta(8, mensagem, contador, frases);
-        escolha = escolheOpcao();
+
+        do {
+
+            escolha = escolheOpcao();
+        }while(escolha != 80 && escolha != 72);
+
 
         switch(escolha){
             case 80:
@@ -115,6 +124,8 @@ int escolheMenuPrin(char *mensagem, int quantidade, ...){
                 if(contador>0){
                     contador--;
                 }
+                break;
+
 
         }
     }
