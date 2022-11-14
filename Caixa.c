@@ -169,7 +169,7 @@ int leDadosLancamentos(lancamentoCaixa **lancamentos){
     
     
 }
-void geraNotinha(compras *ptr, float valorPago, FILE *f, int modoArm){
+/*void geraNotinha(compras *ptr, float valorPago, FILE *f, int modoArm){
     
     locadora dadosLocadora;
     
@@ -207,7 +207,7 @@ void geraNotinha(compras *ptr, float valorPago, FILE *f, int modoArm){
     limpaCamposLocadoraMemoria(&dadosLocadora);
     
 }
-
+*/
 void compraAvista(compras *compras, int modoArm){
     int escolha;
     
@@ -232,25 +232,8 @@ void compraAvista(compras *compras, int modoArm){
     
     
     Sleep(2000);
-    while(escolha !=2 && escolha != 1){
-        menuGraphics(2, "Deseja imprimir notinha?\n", "Sim", "Nao");
-        escolha = retornaNumeroConformeF(2, 0);
-        if(escolha == 1){
-            char *nomeArq;
-            FILE *f;
-            printf("digite o diretorio para guardar a notinha:\n");
-            digText(&nomeArq, stdin);
-            f = fopen(nomeArq, "w");
-            if(!f){
-                printf("%s\n", strerror(errno));
-                exit(1);
-            }
-            geraNotinha(compras, lancar.valorPago, f, modoArm);
-            fechaArquivo(&f);
-            nomeArq = limpaMemoria(nomeArq);
-        }
-    }
-    
+
+
     lancar.codigoCompra = compras->codigo;
     lancar.modoPagamento = 1;
     lancar.data = compras->data;

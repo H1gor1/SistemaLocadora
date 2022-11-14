@@ -388,7 +388,7 @@ void mostraContasFiltradas(contaArec *contas, int quantidadeContas, int modoArm,
     quantidades quants = {0,0,0,0};
     
     quants = (modoArm)?leDadosDevolucoesBin(&alocacoes, &todosFuncionarios, &todosClientes, &todosFilmes):leDadosDevolucoes(&alocacoes, &todosFuncionarios, &todosClientes, &todosFilmes);
-    menuGraphics(2, "escolha uma opcao:", "ver detalhes de uma compra", "sair");
+    menuGraphics(2, "escolha uma opcao:", "consultar uma compra", "sair");
     printf("%s", mensagem);
     consultaContas(contasAtrasadas, quantidadeContasAtrasadas);
     while(1){
@@ -416,7 +416,7 @@ void mostraContasFiltradas(contaArec *contas, int quantidadeContas, int modoArm,
     limpaDadosFilmeMemoria(todosFilmes, quants.quantidadesFilmes);
     todosFilmes = limpaMemoria(todosFilmes);
     for(int i = 0; i<quants.quantidadeAlugacoes; i++){
-        atribuiNull(alocacoes[i].filmesComprados, alocacoes[i].quantidadeFilmesComprados, 1);
+        atribuiNull(alocacoes[i].filmesComprados, alocacoes[i].quantidadeFilmesComprados, sizeof(filmes));
         alocacoes[i].filmesComprados = limpaMemoria(alocacoes[i].filmesComprados);
     }
     limpaDadosClienteMemoria(todosClientes, quants.quantidadeClientes);
@@ -425,7 +425,7 @@ void mostraContasFiltradas(contaArec *contas, int quantidadeContas, int modoArm,
     apagaDadosStructFuncionarios(todosFuncionarios, quants.quantidadesFuncionarios);
     todosFuncionarios = limpaMemoria(todosFuncionarios);
     
-    atribuiNull(alocacoes, quants.quantidadeAlugacoes, 2);
+    atribuiNull(alocacoes, quants.quantidadeAlugacoes, sizeof(compras));
     alocacoes = limpaMemoria(alocacoes);
     compraEspecifica = NULL;
     contasAtrasadas = limpaMemoria(contasAtrasadas);
@@ -443,26 +443,25 @@ void consultaLancamentos(int modoArm){
     
     
     
-    while(1){
-        menuGraphics(3, "escolha uma opcao:", "filtrar contas atrasadas", "filtrar contas de um cliente", "Voltar");
-        escolha = escolheOpcao();
-        switch(escolha){
-            case 59:
-                mostraContasFiltradas(contas, quantidadeContas, modoArm, filtraContasAtrasadas, "Contas atrasadas:\n");
-                break;
-            case 60:
-                mostraContasFiltradas(contas, quantidadeContas, modoArm, filtraContasClientes, "Contas do cliente:\n");
-                break;
-            case 61:
-                break;
-            case 27:
-                break;
-            default:
-                printf("escolha uma opcao valida!\n");
-                continue;
-        }
+
+
+    escolha = escolheMenu("Escolha o modo de filtragem", 3, "Contas atrasadas", "Contas de um cliente", "Voltar");
+    switch(escolha){
+        case 0:
+            mostraContasFiltradas(contas, quantidadeContas, modoArm, filtraContasAtrasadas, "Contas atrasadas:\n");
+            break;
+
+        case 1:
+            mostraContasFiltradas(contas, quantidadeContas, modoArm, filtraContasClientes, "Contas do cliente:\n");
+            break;
+        case 2:
+            break;
+        case 3:
+            break;
+
+
         
-        break;
+
     }
     contas = limpaMemoria(contas);
     

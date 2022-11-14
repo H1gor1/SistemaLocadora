@@ -273,15 +273,17 @@ void editaDadosLocadora(int modo){
     int escolha;
     FILE *f;
     f = fopen(nomeArq[modo], modoAbertura[modo]);
-    //while e sempre verdadeiro, e so pode ser quebrado se o comando break no fim for executado    
-    while(1){ 
+
+
         
-        menuGraphics(11, "Escolha uma opcao para editar", "Nome fantasia", "Razao social", "Inscricao estadual", "CNPJ", "Endereco", "Telefone", "Email", "Nome responsavel", "Telefone responsavel", "Multa de atraso", "Voltar");
-       
-        escolha = escolheOpcao();
-        /*ifs aninhados para descobrir qual campo o usuario deseja editar*/
-        switch(escolha){
-            case 59:
+
+    escolha = escolheMenu("Escolhe uma opcao para editar",11, "Nome fantasia", "Razao social", "Inscricao estadual", "CNPJ",
+                              "Endereco", "Telefone", "E-mail", "Nome responsavel", "Telefone responsavel", "Multa de atraso",
+                              "Voltar");
+
+
+    switch(escolha){
+        case 0:
             //caso o campo escolha seja igual a nome fantasia
             printf("Digite o novo nome fantasia da locadora:\n");
             editar.nomeFantasia = limpaMemoria(editar.nomeFantasia);
@@ -289,85 +291,79 @@ void editaDadosLocadora(int modo){
             digText(&editar.nomeFantasia, stdin);
             break;
             
-            case 60:
+        case 1:
                
-                //caso seja igual, entao
-                printf("Digite o nome nome para razao social:\n");
-                editar.razaoSocial = limpaMemoria(editar.razaoSocial);
-                //pede a digitacao do novo nome para o campo
-                digText(&editar.razaoSocial, stdin);
-                break;
+            //caso seja igual, entao
+            printf("Digite o nome nome para razao social:\n");
+            editar.razaoSocial = limpaMemoria(editar.razaoSocial);
+            //pede a digitacao do novo nome para o campo
+            digText(&editar.razaoSocial, stdin);
+            break;
                 
-            case 61:
+        case 2:
                 
-                    printf("Digite o novo numero da Inscricao Estadual\n");
-                    /*chama a funcao para o usuario digitar a nova inscricao estadual*/
-                    validaInsEstadual(&editar.inscricaoEstadual);
-                    break;
+            printf("Digite o novo numero da Inscricao Estadual\n");
+            /*chama a funcao para o usuario digitar a nova inscricao estadual*/
+            validaInsEstadual(&editar.inscricaoEstadual);
+            break;
 
-            case 62:
-                        //caso verdadeiro, entao
-                        printf("Digite o novo numero do CNPJ:\n");
-                        //chama a funcao para o usuario digitar o novo valor de cnpj
-                        validaCnpjouCpf(&editar.cnpj, 14, "543298765432", "6543298765432", 12, 12, "CNPJ digitado invalido!", 0, 0);
-                        break;
+        case 3:
+            //caso verdadeiro, entao
+            printf("Digite o novo numero do CNPJ:\n");
+            //chama a funcao para o usuario digitar o novo valor de cnpj
+            validaCnpjouCpf(&editar.cnpj, 14, "543298765432", "6543298765432", 12, 12, "CNPJ digitado invalido!", 0, 0);
+            break;
                         
-            case 63:
+        case 4:
                    
                         
-                        //caso verdadeiro, entao
-                        printf("Digite o novo endereco:\n");
-                         
-                        //pede a digitacao do novo endereco para o usuario
-                        digText(&editar.endereco, stdin);
-                        break;
+            //caso verdadeiro, entao
+            printf("Digite o novo endereco:\n");
+            //pede a digitacao do novo endereco para o usuario
+            digText(&editar.endereco, stdin);
+            break;
+        case 5:
+                
+            //caso verdadeiro, entao
+            printf("Digite o novo telefone:\n");
+            //pede a digitacao do novo numero de telefone
+            verificaNumero(&editar.telefone, "%d");
+            break;
+                        
+        case 6:
+                
+            printf("Digite o novo email:\n");
+            //pede a digitacao do novo email para o usuario
+            verificaText("@.", &editar.email, "Por favor, digite um email valido!\n");
+            break;
 
-            case 64:
-                
-                        //caso verdadeiro, entao
-                        printf("Digite o novo telefone:\n");
-                        //pede a digitacao do novo numero de telefone
-                        verificaNumero(&editar.telefone, "%d");
-                        break;
+        case 7:
+            //caso verdadeiro, entao
+            printf("Digite o novo Nome do Responsavel:\n");
+            //pede a digitacao do novo nome do responsavel
+            digText(&editar.nomeResponsavel, stdin);
+            break;
                         
-            case 65:
-                
-                        printf("Digite o novo email:\n");
-                        //pede a digitacao do novo email para o usuario
-                        verificaText("@.", &editar.email, "Por favor, digite um email valido!\n");
-                        break;
-                               
-            case 66:
-                        //caso verdadeiro, entao 
-                        printf("Digite o novo Nome do Responsavel:\n");           
-                        //pede a digitacao do novo nome do responsavel
-                        digText(&editar.nomeResponsavel, stdin);
-                        break;
-                        
-            case 67:
+        case 8:
                 
                                     
-                        //caso verdadeiro, entao
-                        printf("Digite o novo telefone do responsavel\n");
-                        //pede a digitacao do novo numero do telefone
-                        verificaNumero(&editar.telefoneResp, "%d");
-                        break;
+            //caso verdadeiro, entao
+            printf("Digite o novo telefone do responsavel\n");
+            //pede a digitacao do novo numero do telefone
+            verificaNumero(&editar.telefoneResp, "%d");
+            break;
                         
-            case 68:
+        case 9:
                 
-                printf("digite o valor da multa caso algum cliente atrase:\n");
-                verificaNumero(&editar.multa, "%f");
-                break;
-            case ESC:
-                break;
-            default:
-                        //caso todas as opcoes de cima sejam falsas, entao o usuario nao escolheu um 
-                        //entao o comando continue faz o ciclo while repetir novamente
-                        printf("Escolha um campo valido!\n");
-                        continue;
+            printf("digite o valor da multa caso algum cliente atrase:\n");
+            verificaNumero(&editar.multa, "%f");
+            break;
+        case 10:
+            break;
+
                                         
-        }
-        break;//caso algum dos ifs foi executado e nao o ultimo else, esse break sera alcancado, e o ciclo while sera abandonado
+
+
 
     }
     /*reescreve os dados editados para o arquivo*/

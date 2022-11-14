@@ -12,6 +12,7 @@
 #include <locale.h>
 #include "ControleCategorias.h"
 #include <windows.h>
+#include <conio.h>
 #define FILMENAOEXISTE 0
 #define ERROMEM "ERRO: Memoria indisponivel!\n"
 
@@ -235,59 +236,54 @@ void editaFilme(int modoAbertura){
     ptr = buscaFilme(fil, quantidadeFilmes, "Nenhum filme possui o dado digitado, por favor, digite um nome ou codigo");
     
     int dadoEditar;
-    menuGraphics(6 , "Qual campo deseja editar:", "Nome do filme", "Descricao", "Exemplares", "Codigo da Categoria", "Lingua", "Voltar");
 
 
-    dadoEditar = escolheOpcao();
 
-    while(1){
-        switch(dadoEditar){
+    dadoEditar = escolheMenu("Qual campo deseja editar:", 6, "Nome do filme", "Descricao", "Exemplares", "Codigo da categoria", "Lingua", "Voltar");
+
+
+    switch(dadoEditar){
             
-            case 59:
-                printf("digite o nome do filme\n");
-                ptr->nome = limpaMemoria(ptr->nome);
-                digText(&ptr->nome, stdin);
-                break;
-            case 60:
-                printf("digite a descricao do filme\n");
-                ptr->descricao = limpaMemoria(ptr->descricao);
-                digText(&ptr->descricao, stdin);
-                break;
+        case 0:
+            printf("digite o nome do filme\n");
+            ptr->nome = limpaMemoria(ptr->nome);
+            digText(&ptr->nome, stdin);
+            break;
+        case 1:
+            printf("digite a descricao do filme\n");
+            ptr->descricao = limpaMemoria(ptr->descricao);
+            digText(&ptr->descricao, stdin);
+            break;
 
-            case 61:
-                printf("digite a quantidade de exemplares disponiveis\n");
-                verificaNumero(&ptr->exemplares, "%d");
-                break;
+        case 2:
+            printf("digite a quantidade de exemplares disponiveis\n");
+            verificaNumero(&ptr->exemplares, "%d");
+            break;
                     
-            case 62:
-                categoria *categorias;
-                int quantidadeCategorias;
-                int (*LeDadosCategoria[2])(categoria **) = {leDadosCategoria, leDadosCategoriaBin};
-                quantidadeCategorias = (*LeDadosCategoria[modoAbertura])(&categorias);
+        case 3:
+            categoria *categorias;
+            int quantidadeCategorias;
+            int (*LeDadosCategoria[2])(categoria **) = {leDadosCategoria, leDadosCategoriaBin};
+            quantidadeCategorias = (*LeDadosCategoria[modoAbertura])(&categorias);
                 
-                printf("digite codigo da categoria do filme\n");
-                verificaNumero(&ptr->codigoCategoria, "%d");
-                ptr->valorLocacao = categorias[ptr->codigoCategoria].valorLocacao;
+
+            ptr->codigoCategoria = escolheListaCategorias(categorias, quantidadeCategorias, "Escolha a categoria do filme");
+            ptr->valorLocacao = categorias[ptr->codigoCategoria].valorLocacao;
                 
-                limpaDadosCategoriaMemoria(categorias, quantidadeCategorias);
-                categorias = limpaMemoria(categorias);
-                break;
+            limpaDadosCategoriaMemoria(categorias, quantidadeCategorias);
+            categorias = limpaMemoria(categorias);
+            break;
             
-            case 63:
-                printf("O filme é dublado ou legendado?:\n");
-                printf("1-Dublado\n2-Legendado\n");
-                verificaLimiteNumero(&ptr->lingua, 2, 1, "%d");
-                break;
-            case 27:
-                break;
-            default:
-                printf("Voce digitou uma opcao invalida, por favor, digite novamente!\n");
-                verificaNumero(&dadoEditar, "%d");
-                
-                continue;
+        case 4:
+
+            ptr->lingua = escolheMenu("O filme é dublado ou legendado?", 2, "Dublado", "Legendado")+1;
+
+            break;
+        case 5:
+            break;
+
                                             
-        }
-        break;
+
     
     }
     (*reescreveDados[modoAbertura])(fil, quantidadeFilmes);
@@ -329,15 +325,13 @@ void cadastraFilmes(int modoLeitura){
     printf("digite a quantidade de exemplares para alugar do filme:\n");
     verificaNumero(&filme[quantidadeFilmes-1].exemplares, "%d");
     
-    printf("Digite o codigo da categoria do filme:\n");
-    mostraListaCategoria(categorias, quantidadeCategorias);
-    filme[quantidadeFilmes-1].codigoCategoria = pegaCategoria(categorias, quantidadeCategorias);
+
+    filme[quantidadeFilmes-1].codigoCategoria = escolheListaCategorias(categorias, quantidadeCategorias, "Escolha a categoria");
 
     filme[quantidadeFilmes-1].valorLocacao = categorias[filme[quantidadeFilmes-1].codigoCategoria].valorLocacao;
     
-    printf("Escolha se o filme e dublado ou legendado\n");
-    printf("F1-Dublado\nF2-Legendado\n");
-    filme[quantidadeFilmes-1].lingua = retornaNumeroConformeF(2, 0);
+
+    filme[quantidadeFilmes-1].lingua = 1+escolheMenu("O filme e dublado ou legendado?", 2, "Dublado", "Legendado");
     filme[quantidadeFilmes-1].flag = 1;
 
     (*reescreveDados[modoLeitura])(filme, quantidadeFilmes);
@@ -386,7 +380,8 @@ void mostraInformacoesFilmes(filmes *todosFilmes, int quantidadeFilmes){
     for(int i = 0; i<quantidadeFilmes; i++){
         printf("_____________________________________________\n");
         printf("|    Nome: %s\n", todosFilmes[i].nome);
-        printf("|    Descricao: \n  %s\n\n", todosFilmes[i].descricao);
+        printf("|    Descricao:\n");
+        printf("|       %s\n", todosFilmes[i].descricao);
         printf("|    Codigo Categoria: %d\n", todosFilmes[i].codigoCategoria);
         printf("|    Valor alocacao: %.2f\n", todosFilmes[i].valorLocacao);
         printf("|    Quantidade exemplares: %d\n", todosFilmes[i].exemplares);
@@ -394,6 +389,9 @@ void mostraInformacoesFilmes(filmes *todosFilmes, int quantidadeFilmes){
         printf("|    %s\n", (todosFilmes[i].flag)?"Ainda existe na lista de cadastro":"Filme ja foi excluido da lista de cadastro");
         printf("_____________________________________________");
     }
+
+    printf("\ndigite qualquer tecla pra sair\n");
+    getch();
 
 
 }
@@ -438,11 +436,9 @@ void listaFilmesPelaCategoria(int modoArm, filmes *ptr, int quantidadeFilmes){
     int codigoCategoria;
     int escolha;
 
-    mostraListaCategoria(todasCategorias, quantidadeCategorias);
+    codigoCategoria = escolheListaCategorias(todasCategorias, quantidadeCategorias, "Escolha a categoria");
     limpaDadosCategoriaMemoria(todasCategorias, quantidadeCategorias);
     todasCategorias = limpaMemoria(todasCategorias);
-    printf("digite o codigo da categoria que deseja filtrar os filmes existentes");
-    verificaNumero(&codigoCategoria, "%d");
 
     for(int i = 0; i<quantidadeFilmes; i++){
 
@@ -458,7 +454,7 @@ void listaFilmesPelaCategoria(int modoArm, filmes *ptr, int quantidadeFilmes){
 
 
     while(1){
-
+        escolha = escolheOpcao();
         switch(escolha) {
 
 
@@ -480,7 +476,9 @@ void listaFilmesPelaCategoria(int modoArm, filmes *ptr, int quantidadeFilmes){
 
 
     }
+    printf("digite o codigo do filme que deseja olhar:\n");
     while(1) {
+
         olhar = buscaFilme(ptr, quantidadeFilmes, "nao existe nenhum filme com este codigo nesta categoria!\n");
         if(olhar->codigoCategoria == codigoCategoria){
             break;
@@ -498,26 +496,26 @@ void listaFilme(int modoArm){
 
     int escolha;
 
-    menuGraphics(3, "Como deseja filtrar os filmes:", "pelo codigo", "pela categoria", "Voltar");
 
-    while(1){
+    escolha = escolheMenu("Como deseja filtrar os filmes", 3, "Pelo codigo", "Pela categoria", "Voltar");
 
-        escolha = escolheOpcao();
 
-        switch(escolha) {
-            case 59:
-                listaPeloCodigo(todosFilmes,
-                                quantidadeFilmes,
-                                (void (*)(void *, int))mostraInformacoesFilmes,
-                                "algum filme",
-                                (void (*)(void *, int, int, int))filtraFilmPeloCodigo,
-                                (void *(*)(void *, int, int, int))buscaFilmeComFaixaDeCodigo);
-                break;
 
-            case 60:
-                listaFilmesPelaCategoria(modoArm, todosFilmes, quantidadeFilmes);
-                break;
-        }
+
+    switch(escolha) {
+        case 0:
+            listaPeloCodigo(todosFilmes,
+                            quantidadeFilmes,
+                            (void (*)(void *, int))mostraInformacoesFilmes,
+                            "algum filme",
+                            (void (*)(void *, int, int, int))filtraFilmPeloCodigo,
+                            (void *(*)(void *, int, int, int))buscaFilmeComFaixaDeCodigo);
+            break;
+
+        case 1:
+            listaFilmesPelaCategoria(modoArm, todosFilmes, quantidadeFilmes);
+            break;
+
 
     }
 

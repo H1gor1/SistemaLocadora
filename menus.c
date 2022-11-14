@@ -41,17 +41,17 @@ void menuGraphicsComSeta(int quantidadeArgumentos, char *frasePrincipal , int li
         if(!strcmp(frases[i], "Sair")|| !strcmp(frases[i], "Voltar")){
             if(i == linha) {
 
-                printf("%55s|   Esc- %-25s <--                       |\n", "\0", frases[i]);
+                printf("%55s| -->   %-25s <--                        |\n", "\0", frases[i]);
             }else{
-                printf("%55s|   Esc- %-25s                           |\n", "\0", frases[i]);
+                printf("%55s|   %-25s                                |\n", "\0", frases[i]);
             }
         }else {
 
             if( i == linha){
-                printf("%55s|   F%-2d- %-25s <--                       |\n", "\0", i + 1, frases[i]);
+                printf("%55s| -->   %-25s <--                        |\n", "\0", frases[i]);
 
             }else{
-                printf("%55s|   F%-2d- %-25s                           |\n", "\0", i + 1,frases[i]);
+                printf("%55s|   %-25s                                |\n", "\0", frases[i]);
             }
         }
     }
@@ -86,11 +86,11 @@ void menuGraphics(int quantidadeArgumentos, char *frasePrincipal , ...){
         }
     }
 
-    printf("%55s|____________________________________________________________|\n", "\0");
+    printf("%55s|___________________________________________________________|\n", "\0");
     va_end(parametros);
 
 }
-int escolheMenuPrin(char *mensagem, int quantidade, ...){
+int escolheMenu(char *mensagem, int quantidade, ...){
 
     va_list parametros;
     va_start(parametros, quantidade);
@@ -103,34 +103,43 @@ int escolheMenuPrin(char *mensagem, int quantidade, ...){
     }
 
     int contador = 0;
-    int escolha;
-    while(escolha != 10){
-        menuGraphicsComSeta(8, mensagem, contador, frases);
+    int escolha = 0;
+    system("clear");
+    while(escolha != 13){
+        menuGraphicsComSeta(quantidade, mensagem, contador, frases);
 
         do {
 
             escolha = escolheOpcao();
-        }while(escolha != 80 && escolha != 72);
+        }while(escolha != 80 && escolha != 72 && escolha != 13);
 
 
         switch(escolha){
             case 80:
                 if(contador <quantidade-1){
                     contador++;
+                }else{
+                    contador = 0;
                 }
                 break;
 
             case 72:
                 if(contador>0){
                     contador--;
+                }else{
+                    contador = quantidade-1;
                 }
                 break;
 
+            case 13:
+                frases = limpaMemoria(frases);
+                system("clear");
+                va_end(parametros);
+                return contador;
 
         }
     }
-    va_end(parametros);
-    return contador;
+
 
 }
 int menuPrincipal(int *modo){
@@ -138,39 +147,37 @@ int menuPrincipal(int *modo){
     int escolha;
     printf("\n");
     
-    while(escolha != ESC){
-        escolha = escolheMenuPrin("Seja bem vindo! Escolha uma opcao", 8, "Administrativo", "Clientes", "Filmes", "Categorias", "Trocar modo arm BIN/TXT", "Caixa", "Contas", "Sair");
+    while(escolha != 7){
+        escolha = escolheMenu("Seja bem vindo! Escolha uma opcao", 8, "Administrativo", "Clientes", "Filmes", "Categorias", "Trocar modo arm BIN/TXT", "Caixa", "Contas", "Sair");
         switch(escolha){
-            case 59:
-                system("clear");
+            case 0:
+
                 MenuAdm(*modo);
                 break;
-            case 60:
-                system("clear");
+            case 1:
+
                 MenuClientes(*modo);
                 break;
-            case 61:
-                system("clear");
+            case 2:
+
                 MenuFilmes(*modo);
                 break;
-            case 62:
-                system("clear");
+            case 3:
+
                 MenuCategoria(*modo);
                 break;
-            case 63:
+            case 4:
                 
                 menuTroca(modo);
                 
                 break;
-            case 64:
+            case 5:
                 menuCaixa(*modo);
-                MENUPRINC;
                 break;
-            case 65:
+            case 6:
                 menuContas(*modo);
-                MENUPRINC;
                 break;
-            case ESC:
+            case 7:
                 break;
 
 
@@ -181,151 +188,150 @@ int menuPrincipal(int *modo){
 }
 /*correcao feita em sala de aula apos a apresentacao do trabalho, pelo motivo de nao ser possivel o usuario saber o modo atual de armazenamento*/
 void menuTroca(int *modo){
-    if(*modo){
-        menuGraphics(2, "Atualmente estamos trabalhando com binario.\n", "trocar para texto", VLT);
-    }else{
-        menuGraphics(2, "Atualmente estamos trabalhando com texto.\n", "trocar para binario", VLT);
-    }
     int escolha;
-    
-    while(1){
-        escolha = escolheOpcao();
-        switch(escolha){
-            
-            case 59:
-                trocaModoArmazenamento(modo);
-                printf("Modo de armazenamento trocado com sucesso!\n");
-                Sleep(2000);
-                break;
-                        
-            case ESC:
-                 
-                 break;
-                 
-            default:
-                printf("Voce digitou uma opcao invalida, por favor digite novamente:\n");
-                continue;
-        }
-        break;
+    if(*modo){
+
+        escolha = escolheMenu("Atualmente estamos trabalhando com binario.\n", 2,"Trocar para texto", VLT);
+    }else{
+        escolha = escolheMenu("Atualmente estamos trabalhando com texto.\n", 2,"Trocar para binario", VLT);
     }
-    menuGraphics(9, "Menu Principal! Escolha uma opcao:", "Administrativo", "Clientes", "Filmes", "Categorias", "Trocar modo arm BIN/TXT", "Alugar um filme", "Contas","Devolver filme", "Sair");
+
+    
+
+
+    switch(escolha){
+            
+        case 0:
+            trocaModoArmazenamento(modo);
+            printf("Modo de armazenamento trocado com sucesso!\n");
+            Sleep(2000);
+            break;
+
+        case 1:
+            break;
+
+    }
+
+
+
 }
 int MenuAdm(int modo){
-    menuGraphics(4, OPCAO, "Editar dados Loc.", "Funcionarios", "Fornecedores", VLT);    
+
     int escolha;
-    while(escolha != ESC){
-        escolha = escolheOpcao();
+    while(escolha != 3){
+        escolha = escolheMenu(OPCAO, 4,"Editar dados Loc.", "Funcionarios", "Fornecedores", "Voltar");
         switch(escolha){
-            case 59:
-                system("clear");
+            case 0:
+
                 editaDadosLocadora(modo);
-                menuGraphics(4, OPCAO, "Editar dados Loc.", "Funcionarios", "Fornecedores", VLT);    
+
                 break;
-            case 60:
-                system("clear");
+            case 1:
+
                 MenuFuncionarios(modo);
                 break;
-            case 61:
-                system("clear");
+            case 2:
+
                 menuFornecedores(modo);
                 //Abrir menu fornecedores
                 break;
-            case ESC:
+            case 3:
                 break;
             default:
                 printf("Opcao invalida");
         }
     }
-    MENUPRINC;
+
     
 }
 
 int MenuClientes(int modo){
-    menuGraphics(5, OPCAO, CAD, ED, APG, "filtrar clientes",VLT);    
+
     int escolha;
-    while(escolha != ESC){
-        escolha = escolheOpcao();
+    while(escolha != 4){
+        escolha = escolheMenu(OPCAO, 5, CAD, ED, APG, "Filtrar clientes", VLT);
         switch(escolha){
-            case 59:
-                system("clear");
+            case 0:
+
                 cadastraCliente(modo);
                 break;
-            case 60:
-                system("clear");
+            case 1:
+
                 editaCliente(modo);
                 break;
-            case 61:
-                system("clear");
+            case 2:
+
                 apagaCliente(modo);
                 break;
-            case 62:
+            case 3:
                 listaClientes(modo);
                 break;
-            case ESC:
+            case 4:
                 break;
             default:
                 printf("Opcao invalida");
         }
-        menuGraphics(5, OPCAO, CAD, ED, APG, "filtrar clientes",VLT); 
+
     }
-     MENUPRINC;
+
 }
 
 int MenuFuncionarios(int modo){
-    menuGraphics(4, OPCAO, CAD, ED, APG, VLT);  
+
     int escolha;
-    while(escolha != ESC){
-        escolha = escolheOpcao();
+    while(escolha != 3){
+        escolha = escolheMenu(OPCAO, 4, CAD, ED, APG, VLT);
         switch(escolha){
-            case 59:
-                system("clear");
+            case 0:
+
                 cadastraFuncionario(modo);
-                menuGraphics(4, OPCAO, CAD, ED, APG, VLT);  
+
                 break;
-            case 60:
-                system("clear");
+            case 1:
+
                 editaFuncionario(modo);
-                menuGraphics(4, OPCAO, CAD, ED, APG, VLT); 
+
+
                 break;
-            case 61:
-                system("clear");
+            case 2:
+
                 apagaFuncionario(modo);
-                menuGraphics(4, OPCAO, CAD, ED, APG, VLT); 
+
                 break;
-            case ESC:
+            case 3:
                 break;
             default:
                 printf("Opcao Invalida");
         }
     }
-    menuGraphics(4, OPCAO, "Editar dados Loc.", "Funcionarios", "Fornecedores", VLT);
+
 }
 
 int MenuFilmes(int modo){
-    menuGraphics(4, OPCAO, CAD, ED, APG, "Filtrar filme", VLT);
+
     int escolha;
-    while(escolha != ESC){
-        escolha = escolheOpcao();
+    while(escolha != 4){
+        escolha = escolheMenu(OPCAO, 5, CAD, ED, APG, "Filtrar filme", VLT);
         switch(escolha){
-            case 59:
-                system("clear");
+            case 0:
+
                 cadastraFilmes(modo);
-                menuGraphics(4, OPCAO, CAD, ED, APG, VLT);  
+
                 break;
-            case 60:
-                system("clear");
+            case 1:
+
                 editaFilme(modo);
-                menuGraphics(4, OPCAO, CAD, ED, APG, VLT);  
+
                 break;
-            case 61:
-                system("clear");
+            case 2:
+
                 apagaFilme(modo);
-                menuGraphics(4, OPCAO, CAD, ED, APG, VLT);  
+
                 break;
-            case 62:
+            case 3:
                 listaFilme(modo);
                 break;
-            case ESC:
+            case 4:
                 break;
             default:
                 printf("Opcao invalida");
@@ -335,56 +341,53 @@ int MenuFilmes(int modo){
 }
 
 int MenuCategoria(int modo){
-    menuGraphics(4, OPCAO, CAD, ED, APG, VLT);     
+
     int escolha;
-    while(escolha != ESC){
-        escolha = escolheOpcao();
+    while(escolha != 3){
+        escolha = escolheMenu(OPCAO, 4, CAD, ED, APG, VLT);
         switch(escolha){
-            case 59:
-                system("clear");
+            case 0:
+
                 cadastraCategoria(modo);
-                menuGraphics(4, OPCAO, CAD, ED, APG, VLT);  
                 break;
-            case 60:
-                system("clear");
+            case 1:
+
                 editaCategoria(modo);
-                menuGraphics(4, OPCAO, CAD, ED, APG, VLT);  
                 break;
-            case 61:
-                system("clear");
+            case 2:
+
                 apagaCategoria(modo);
-                menuGraphics(4, OPCAO, CAD, ED, APG, VLT);  
                 break;
-            case ESC:
+            case 3:
                 break;
             default:
                 printf("Opcao invalida");
         }
     }
-    MENUPRINC;
+
 }
 int menuFornecedores(int modo){
-    menuGraphics(4, OPCAO, CAD, ED, APG, VLT); 
+
     int escolha;
-    while(escolha != ESC){
-        escolha = escolheOpcao();
+    while(escolha != 3){
+        escolha = escolheMenu(OPCAO, 4, CAD, ED, APG, VLT);
         switch(escolha){
-            case 59:
-                system("clear");
+            case 0:
+
                 cadastraFornecedor(modo);
-                menuGraphics(4, OPCAO, CAD, ED, APG, VLT);  
+
                 break;
-            case 60:
-                system("clear");
+            case 1:
+
                 editaFornecedor(modo);
-                menuGraphics(4, OPCAO, CAD, ED, APG, VLT);  
+
                 break;
-            case 61:
-                system("clear");
+            case 2:
+
                 apagaFornecedor(modo);
-                menuGraphics(4, OPCAO, CAD, ED, APG, VLT);  
+
                 break;
-            case ESC:
+            case 3:
                 break;
             default:
                 printf("Opcao invalida");
@@ -392,68 +395,66 @@ int menuFornecedores(int modo){
 
         
     }
-    menuGraphics(4, OPCAO, "Editar dados Loc.", "Funcionarios", "Fornecedores", VLT);
+
 }
 void menuContas(int modoArm){
     
-    menuGraphics(3, "Menu de contas", "Dar baixa", "Consultar Conta", "Sair");
+
     
     int escolha;
-    while(escolha!=ESC){
-        escolha = escolheOpcao();
+    while(escolha!=2){
+        escolha = escolheMenu("Menu de contas", 3, "Dar baixa", "Consultar conta", "Sair");
         
         switch(escolha){
             
-            case 59:
+            case 0:
                 daBaixa(modoArm);
-                menuGraphics(3, "Menu de contas", "Dar baixa", "Consultar Conta", "Sair");
+
                 continue;
                 
-            case 60:
+            case 1:
                  consultaLancamentos(modoArm);
-                 menuGraphics(3, "Menu de contas", "Dar baixa", "Consultar Conta", "Sair");
+
                 //....
                 continue;
                 
-            case ESC:
+            case 2:
                 break;
-            default:
-                printf("escolha uma opcao valida!\n");
-                continue;
+
         }
         break;
     }
     
 }
 void menuCaixa(int modoArm){
-    menuGraphics(4, "Menu do caixa", "Realizar venda", "devolver filme", "Contar caixa","Voltar");
+
     int escolha;
     
-    while(escolha !=ESC){
+    while(escolha !=3){
         
-        escolha = escolheOpcao();
+        escolha = escolheMenu("Menu do caixa", 4, "Realizar venda", "Devolver filme", "Contar caixa", "Voltar");
         
         switch(escolha){
             
-            case 59:
+            case 0:
                 realizaVenda(modoArm);
                 break;
                 
-            case 60:
+            case 1:
                 devolveFilme(modoArm);
                 break;
                 
-            case 61:
+            case 2:
                 contaCaixa(modoArm);
                 break;
                 
-            case ESC:
+            case 3:
                 break;
             default:
                 printf("escolha uma opcao valida!\n");
                 break;
                 
         }
-        menuGraphics(4, "Menu do caixa", "Realizar venda", "devolver filme","contarCaixa", "Voltar");
+
     }
 }

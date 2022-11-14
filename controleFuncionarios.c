@@ -50,7 +50,7 @@ int leDadosFuncionarios(Funcionarios **ptr){
         return 0;//retorna 0 para a quantidade de cliente que existiam
     }
     /*codigo do cliente atual, e necessario guardar em uma var temporaria para evitar jogar memoria fora, mais abaixo sera explicado*/
-    time_t codigo;
+    long int codigo;
     int i; // i e igual a quantidade de funcionarios
     
     for(i = 0; 1; i++){
@@ -103,7 +103,7 @@ int leDadosFuncionariosBin(Funcionarios **ptr){
     /*se f nao for null, entao continua a leitura normalmente*/
     int i; // i e igual a quantidade de funcionarios
     int quantidadeLetras;//quantidade de letras de cada palavra
-    time_t codigo;//variavel que guarda o codigo do cliente atual, como ja explicado na funcao acima, o motivo de ter uma variavel temporaria
+    long int codigo;//variavel que guarda o codigo do cliente atual, como ja explicado na funcao acima, o motivo de ter uma variavel temporaria
     //pra isso e o mesmo
     
     
@@ -111,7 +111,7 @@ int leDadosFuncionariosBin(Funcionarios **ptr){
         
         
         /*le um tamanho de uma var time_t para o codigo*/
-        fread(&codigo, sizeof(time_t), 1, f);
+        fread(&codigo, sizeof(long int), 1, f);
         /*feof verifica se ja foi marcado o fim do arquivo*/
         if(feof(f)){
             //se sim, entao para a operacao
@@ -189,7 +189,7 @@ void reescreveDadosFuncionariosBin(Funcionarios *ptr, int quantidadeFuncionarios
     //enquanto nao reescreveu toda a quantidade precisa, entao continuar escrevendo
     for(int i = 0; i<quantidadeFuncionarios; i++){
         //escreve o codig ono arquivo
-        fwrite(&ptr[i].codigo, sizeof(time_t), 1, f);
+        fwrite(&ptr[i].codigo, sizeof(long int), 1, f);
         
         //faz a leitura de quantos caracteres o campo de texto atual tem e acrescenta 1
         quantidadeLetras = strlen(ptr[i].nome)+1;
@@ -250,7 +250,7 @@ void reescreveDadosFuncionarios(Funcionarios *ptr, int quantidadeFuncionarios, c
     /*enquanto nao reescrever todos os campos pedidos na chamada da funcao, continuar escrevendo*/
     for(int i = 0; i<quantidadeFuncionarios; i++){
         
-        fprintf(f, "%d\n", ptr[i].codigo);
+        fprintf(f, "%ld\n", ptr[i].codigo);
         
         fprintf(f, "%s\n", ptr[i].nome);
         
@@ -324,6 +324,8 @@ void cadastraFuncionario(int modoAbertura){
     
     (*reescrita[modoAbertura])(&novo, 1, modoEscrita[modoAbertura], nomeArqOr[modoAbertura], nomeArqOr[modoAbertura]);
     apagaDadosStructFuncionarios(&novo, 1);
+
+
     
    
     
@@ -361,7 +363,7 @@ Funcionarios *buscaFuncionarios(Funcionarios *ptr, int quantidade, Funcionarios 
             itemBusca = limpaMemoria(itemBusca);
             return busca;
         }
-        time_t codigo = atoi(itemBusca);
+        long int codigo = atoi(itemBusca);
         busca = encontraFuncionarioCodigo(ptr, codigo, quantidade, posicao);
         if(busca){
             itemBusca = limpaMemoria(itemBusca);
@@ -417,68 +419,64 @@ void editaFuncionario(int modoAbertura){
     editar = buscaFuncionarios(ptr, quantidadeFuncionarios, (ptr-1));
     
     
-    while(1){
-        menuGraphics(8, "Qual informacao deseja editar:", "Nome Completo", "Cargo", "Rua", "Bairro", "Numero Da Casa", "Telefone", "Email", "Voltar");
-        
-        dado = escolheOpcao();
-        
-        switch(dado){
-            
-            case 59:
-                editar->nome = limpaMemoria(editar->nome);
-                printf("digite o nome do funcionario:\n");
-                digText(&editar->nome, stdin);
-                break;
-                
-            case 60:
-         
-                editar->cargo = limpaMemoria(editar->cargo);
-                printf("digite o cargo do funcionario:\n");
-                digText(&editar->cargo, stdin);
-                break;
-                
-            case 61:
-                
-                editar->rua = limpaMemoria(editar->rua);
-                printf("digite a rua do funcionario:\n");
-                digText(&editar->rua, stdin);
-                break;
-                
-            case 62:
-                
-                editar->bairro = limpaMemoria(editar->bairro);
-                printf("digite o bairro do funcionario:\n");
-                digText(&editar->bairro, stdin);
-                break;
-                
-            case 63:
-                
-                printf("digite o numero da casa do funcionario:\n");
-                verificaNumero(&editar->numero, "%d");
-                break;
-            
-            case 64:
-                printf("digite o telefone do funcionario:\n");
-                verificaNumero(&editar->telefone, "%d");
-                break;
-                       
-            case 65:
-                                                   
-                editar->email = limpaMemoria(editar->email);                   
-                printf("digite o email do funcionario:\n");
-                verificaText("@.", &editar->email, "email invalido, por favor, digite um email valido!\n");
-                break;           
 
-            case 27:
-                break;
-            default:
+
+        
+    dado = escolheMenu("Qual informacao deseja editar:", 8,"Nome Completo", "Cargo", "Rua", "Bairro", "Numero da casa", "Telefone", "E-mail", "Voltar");
+        
+    switch(dado){
+            
+        case 0:
+            editar->nome = limpaMemoria(editar->nome);
+            printf("digite o nome do funcionario:\n");
+            digText(&editar->nome, stdin);
+            break;
+
+        case 1:
+         
+            editar->cargo = limpaMemoria(editar->cargo);
+            printf("digite o cargo do funcionario:\n");
+            digText(&editar->cargo, stdin);
+            break;
                 
-                printf("digite uma opcao valida!");
-                continue;
+        case 2:
+                
+            editar->rua = limpaMemoria(editar->rua);
+            printf("digite a rua do funcionario:\n");
+            digText(&editar->rua, stdin);
+            break;
+                
+        case 3:
+                
+            editar->bairro = limpaMemoria(editar->bairro);
+            printf("digite o bairro do funcionario:\n");
+            digText(&editar->bairro, stdin);
+            break;
+
+        case 4:
+                
+            printf("digite o numero da casa do funcionario:\n");
+            verificaNumero(&editar->numero, "%d");
+            break;
+            
+        case 5:
+            printf("digite o telefone do funcionario:\n");
+            verificaNumero(&editar->telefone, "%d");
+            break;
+                       
+        case 6:
+                                                   
+            editar->email = limpaMemoria(editar->email);
+            printf("digite o email do funcionario:\n");
+            verificaText("@.", &editar->email, "email invalido, por favor, digite um email valido!\n");
+            break;
+
+        case 7:
+            break;
 
                                 
-        }
-        break;
+
+
     
     
     }

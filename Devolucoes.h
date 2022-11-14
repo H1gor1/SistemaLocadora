@@ -25,9 +25,12 @@ compras * encontraCompraCodigo(compras *ptr, int quantidade, time_t codigo);
 
 compras *buscaCompra(compras *ptr, int quantidade, int ignoraDev);
 
-void atribuiNull(void *endereco, int quantidade, int oqueLimpar);
+void atribuiNull(void *endereco, int quantidade, size_t oqueLimpar);
 
 void devolveFilme(int modoArm);
 
 void mostraCompra(compras *compra, int resumir);
+
+void limpaDadosDevolucoesMemoria(filmes **todosFilmes, cliente ** todosClientes,Funcionarios **todosFuncionarios,
+                                 compras **todasAlocacoes, quantidades quant);
 #endif

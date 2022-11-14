@@ -265,10 +265,10 @@ void trocaModoArmazenamento(int *modo){
     limpaDadosFilmeMemoria(Filmes, quant.quantidadesFilmes);
     
     for(int i = 0; i<quant.quantidadeAlugacoes; i++){
-        atribuiNull(&devolucoes[i].filmesComprados, devolucoes[i].quantidadeFilmesComprados, 1);
+        atribuiNull(devolucoes[i].filmesComprados, devolucoes[i].quantidadeFilmesComprados, sizeof(filmes));
         devolucoes[i].filmesComprados = limpaMemoria(devolucoes[i].filmesComprados);
     }
-    atribuiNull(devolucoes, quant.quantidadeAlugacoes, 2);
+    atribuiNull(devolucoes, quant.quantidadeAlugacoes, sizeof(compras));
     devolucoes = limpaMemoria(devolucoes);
     
     if(Filmes){
@@ -329,6 +329,7 @@ void listaPeloCodigo(void *ptr, int quantidade, void (*funcaoDeMostrar)(void *, 
                 return;
             default:
             printf("digite uma opcao valida!\n");
+            continue;
         }
         break;
     }

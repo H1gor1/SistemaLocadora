@@ -13,5 +13,5 @@ int menuFornecedores(int modo);
 void menuTroca(int *modo);
 void menuContas(int modoArm);
 void menuCaixa(int modoArm);
-int escolheMenuPrin(char *mensagem, int quantidade, ...);
+int escolheMenu(char *mensagem, int quantidade, ...);
 #endif

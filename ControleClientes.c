@@ -435,102 +435,94 @@ void editaCliente(int modoAbertura){
     /*variavel que representa o dado que o usuario deseja editar*/
     int dadoEditar;
 
-    /*mostra o menu de opcoes de edicao e pede a digitacao do campo desejado para o usuario*/
-    menuGraphics(11,"qual campo deseja editar:", "Nome completo", "Rua", "Bairro",
-                 "Numero da casa", "Cpf", "Telefone", "E-mail", "Sexo", "Estado civil", "Data de Nascimento", "Voltar");
-    dadoEditar = escolheOpcao();
+
+
+    dadoEditar = escolheMenu("Qual campo deseja editar:", 11, "Nome completo", "Rua", "Bairro", "Numero da casa", "CPF", "Telefone",
+                             "E-mail", "Sexo", "Estado civil", "Data de nascimento", "Voltar");
     
 
-    while(1){
-    /*ifs encadeados para encontrar qual campo o usuario escolheu editar*/
-        switch(dadoEditar){
+
+    switch(dadoEditar){
             
-            case 59:
-                /*caso seja um campo de string, limpa a posicao de memoria anterior onde estava guardado a string, e pede a digitacao de uma nova
-                 string*/
-                printf("digite o nome do cliente\n");
-                ptr->nomeCompleto = limpaMemoria(ptr->nomeCompleto);
-                pegaDadoTextEverificaRepeticao(clientes, quantidadeClientes, ptr, &ptr->nomeCompleto, "ja existe um cliente com este nome no sistema, por favor, digite outro nome!");
-                break;
+        case 0:
+            /*caso seja um campo de string, limpa a posicao de memoria anterior onde estava guardado a string, e pede a digitacao de uma nova
+            string*/
+            printf("digite o nome do cliente\n");
+            ptr->nomeCompleto = limpaMemoria(ptr->nomeCompleto);
+            pegaDadoTextEverificaRepeticao(clientes, quantidadeClientes, ptr, &ptr->nomeCompleto, "ja existe um cliente com este nome no sistema, por favor, digite outro nome!");
+            break;
         
-            case 60:
-                printf("digite o nome da rua do cliente\n");
-                ptr->rua = limpaMemoria(ptr->rua);
-                digText(&ptr->rua, stdin);
-                break;
+        case 1:
+            printf("digite o nome da rua do cliente\n");
+            ptr->rua = limpaMemoria(ptr->rua);
+            digText(&ptr->rua, stdin);
+            break;
 
             
-            case 61:
-                printf("digite o nome do bairro do cliente\n");
-                ptr->bairro = limpaMemoria(ptr->bairro);
-                digText(&ptr->bairro, stdin);
-                break;
+        case 2:
+            printf("digite o nome do bairro do cliente\n");
+            ptr->bairro = limpaMemoria(ptr->bairro);
+            digText(&ptr->bairro, stdin);
+            break;
                 
-            case 62:
+        case 3:
                     
-                /*caso seja um campo numerico, somente pede a digitacao do novo numero*/
-                printf("digite o numero da casa do cliente\n");
-                verificaNumero(&ptr->numeroDaCasa, "%d");
-                break;
+            /*caso seja um campo numerico, somente pede a digitacao do novo numero*/
+            printf("digite o numero da casa do cliente\n");
+            verificaNumero(&ptr->numeroDaCasa, "%d");
+            break;
                     
-            case 63:
+        case 4:
                 
-                printf("digite o numero do cpf do cliente\n");
-                ptr->cpf = limpaMemoria(ptr->cpf);
-                pegaDadoTextEverificaRepeticao(clientes, quantidadeClientes, ptr, &ptr->cpf, "ja existe um cliente com este cpf no sistema!");
-                break;
+            printf("digite o numero do cpf do cliente\n");
+            ptr->cpf = limpaMemoria(ptr->cpf);
+            pegaDadoTextEverificaRepeticao(clientes, quantidadeClientes, ptr, &ptr->cpf, "ja existe um cliente com este cpf no sistema!");
+            break;
                     
-            case 64:
+        case 5:
                             
 
-                printf("digite o telefone do cliente\n");
-                verificaNumero(&ptr->telefone, "%d");
-                break;
-            
-            case 65:
-                
-                printf("digite o email do cliente\n");
-                ptr->email = limpaMemoria(ptr->email);
-                digText(&ptr->email, stdin);
-                break;
-               
-            case 66:
-                printf("digite o sexo do cliente:\n");
-                printf("1-masculino\n2-feminino\n");
-                verificaLimiteNumero(&ptr->sexo, 2, 1, "%d");
-                break;      
+            printf("digite o telefone do cliente\n");
+            verificaNumero(&ptr->telefone, "%d");
+            break;
 
-            case 67:
+        case 6:
+                
+            printf("digite o email do cliente\n");
+            ptr->email = limpaMemoria(ptr->email);
+            digText(&ptr->email, stdin);
+            break;
+               
+        case 7:
+            printf("digite o sexo do cliente:\n");
+            printf("1-masculino\n2-feminino\n");
+            verificaLimiteNumero(&ptr->sexo, 2, 1, "%d");
+            break;
+
+        case 8:
                                         
 
-                printf("digite o estado civil do cliente\n");
-                printf("1-solteiro\n2-casado\n3-viuvo\n4-divorciado\n");
-                verificaLimiteNumero(&ptr->estadoCivil, 4, 1, "%d");
-                break;                           
+            printf("digite o estado civil do cliente\n");
+            printf("1-solteiro\n2-casado\n3-viuvo\n4-divorciado\n");
+            verificaLimiteNumero(&ptr->estadoCivil, 4, 1, "%d");
+            break;
 
-            case 68:
+        case 9:
                   
-                printf("digite o mes de nascimento\n");
-                verificaLimiteNumero(&ptr->mes, 12, 0, "%d");
-                printf("digite o dia de nascimento\n");
-                verificaLimiteNumero(&ptr->diaNascimento, (ptr->mes == 2)?28:31, 1, "%d");
-                printf("digite o ano de nascimento\n");
-                verificaNumero(&ptr->ano, "%d");
-                break;
+            printf("digite o mes de nascimento\n");
+            verificaLimiteNumero(&ptr->mes, 12, 0, "%d");
+            printf("digite o dia de nascimento\n");
+            verificaLimiteNumero(&ptr->diaNascimento, (ptr->mes == 2)?28:31, 1, "%d");
+            printf("digite o ano de nascimento\n");
+            verificaNumero(&ptr->ano, "%d");
+            break;
 
-            case 27:
-                break;
-            default:
-                 /*se nenhum dos campos for testado como verdadeiro, entao o usuario digitou uma opcao invalida*/
-                printf("voce digitou uma opcao invalida, por favor, digite novamente!\n");
-                //pega a digitacao de uma nova opcao
-                verificaNumero(&dadoEditar, "%d");
-                
-                continue;//manda o loop executar mais uma vez
+        case 10:
+            break;
+
                                             
-        }
-        break;//se qualquer um dos cases foi executado, o comando break sera executado, agora se o else foi alcancado, o comando continue
-        //nao deixa o break ser alcancado nesse laco
+
+
     
     }
     /*reescreve os dados novos que foram editados segundo a foram passada como parametro, como ja explicado na funcao de leitura*/
@@ -593,14 +585,11 @@ void cadastraCliente(int modoLeitura){
     printf("digite o email do cliente\n");
     verificaText("@.", &client[quantidadeCliente-1].email, "Email digitado esta incompleto!\n");
     
-    printf("digite o sexo do cliente\n");
-    printf("1-Masculino\n2-Feminino\n");
-    verificaLimiteNumero(&client[quantidadeCliente-1].sexo, 2, 1, "%d");
+    client[quantidadeCliente-1].sexo = escolheMenu("Qual sexo do cliente?", 2, "Masculino", "Femino")+1;
     
-    printf("digite o estado civil do cliente\n");
-    printf("1-solteiro\n2-casado\n3-viuvo\n4-divorciado\n");
-    verificaLimiteNumero(&client[quantidadeCliente-1].estadoCivil, 4, 1, "%d");
-    
+
+    client[quantidadeCliente-1].estadoCivil = 1+escolheMenu("Qual estado civil do cliente?", 4, "Solteiro", "Casado", "Viuvo", "Divorciado");
+
     printf("digite o mes de nascimento do cliente\n");
     verificaLimiteNumero(&client[quantidadeCliente-1].mes, 12, 0, "%d");
     
@@ -758,38 +747,36 @@ void listaClientes(int modoArm){
     quantidadeClientes = (modoArm)?leDadosClientesBin(&todosClientes):leDadosClientes(&todosClientes);
     
     int escolha;
-    menuGraphics(3, "Como deseja filtrar os clientes\n", "filtrar pela faixa de codigo", "filtrar pelo sexo", "Voltar");
-    
-    while(1){
-        escolha = escolheOpcao();
-        switch(escolha){
-            case 59:
-                listaPeloCodigo(todosClientes,
-                                quantidadeClientes,
-                                (void (*)(void *, int))mostraInformacoesClientes,
-                                "algum cliente",
-                        (void (*)(void *, int, int, int))filtraCodigo,
-                        (void *(*)(void *, int, int, int))procuraClienteEspecificoComFaixa);
-                break;
-                
-            case 60:
-                int sexo;
-                menuGraphics(3, "escolha o sexo:", "Masculino", "Feminino", "Voltar");
-                sexo = retornaNumeroConformeF(3, 1);
-                if(sexo == 27){
-                    break;
-                }
-                filtraSexo(todosClientes, quantidadeClientes, sexo);
-                
-                break;
 
-            case 27:
+    escolha = escolheMenu("Como deseja filtrar os clientes", 3, "Faixa de codigo", "Sexo", "Voltar");
+
+
+    switch(escolha){
+        case 0:
+            listaPeloCodigo(todosClientes,
+                            quantidadeClientes,
+                            (void (*)(void *, int))mostraInformacoesClientes,
+                            "algum cliente",
+                            (void (*)(void *, int, int, int))filtraCodigo,
+                            (void *(*)(void *, int, int, int))procuraClienteEspecificoComFaixa);
+            break;
+                
+        case 1:
+            int sexo;
+
+            sexo = escolheMenu("Escolha o sexo", 3,"Masculino", "Femino", "Voltar")+1;
+            if(sexo == 3){
                 break;
-            default:
-                printf("voce digitou uma opcao invalida! Por favor digite novamente:\n");
-                continue;
-        }
-        break;
+            }
+            filtraSexo(todosClientes, quantidadeClientes, sexo);
+                
+            break;
+
+        case 2:
+            break;
+
+
+
     }
     limpaDadosClienteMemoria(todosClientes, quantidadeClientes);
     todosClientes = limpaMemoria(todosClientes);

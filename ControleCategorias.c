@@ -249,33 +249,30 @@ void editaCategoria(int modoAbertura){
     ptr = buscaCategoria(categorias, quantidadeCategorias, "Nenhuma categoria possui o dado digitado, por favor digite nome ou codigo");
     
     int dadoEditar;
-    menuGraphics(4, "Qual campo deseja editar:", "Nome", "Descricao", "Valor locacao", "Voltar");
-    dadoEditar = escolheOpcao();
 
-    while(1){
-        switch(dadoEditar){
-            case 59:
-                printf("Digite o nome:\n");
-                ptr->nome = limpaMemoria(ptr->nome);
-                digText(&ptr->nome, stdin);
-                break;
-            case 60:
-                printf("Digite a nova descricao de categoria: \n");
-                ptr->descricao = limpaMemoria(ptr->descricao);
-                digText(&ptr->descricao, stdin);
-                break;
-            case 61:
-                printf("Digite o valor da locacao:\n");
-                verificaNumero(&ptr->valorLocacao, "%f");
-                break;
-            case 27:
-                break;
-            default:
-                printf("voce digitou uma opcao invalida, por favor, digite novamente!\n");
-                dadoEditar = escolheOpcao();
-                continue;                        
-        }
-        break;
+    dadoEditar = escolheMenu("Qual campo deseja editar", 4, "Nome", "Descricao", "Valor locacao", "Voltar");
+
+
+    switch(dadoEditar){
+        case 0:
+            printf("Digite o nome:\n");
+            ptr->nome = limpaMemoria(ptr->nome);
+            digText(&ptr->nome, stdin);
+            break;
+        case 1:
+            printf("Digite a nova descricao de categoria: \n");
+            ptr->descricao = limpaMemoria(ptr->descricao);
+            digText(&ptr->descricao, stdin);
+            break;
+        case 2:
+            printf("Digite o valor da locacao:\n");
+            verificaNumero(&ptr->valorLocacao, "%f");
+            break;
+        case 3:
+            break;
+
+
+
     }
     (*reescreveDados[modoAbertura])(categorias, quantidadeCategorias);
     limpaDadosCategoriaMemoria(categorias, quantidadeCategorias);
@@ -374,4 +371,49 @@ void mostraListaCategoria(categoria *ptr, int quantidade){
             printf("|________________\n");
         }
     }
+}
+
+int escolheListaCategorias(categoria *categorias, int quantidadeCategorias, char *mensagem){
+    system("clear");
+    int quantidadeCategoriasExistentes = contaQuantidadeExistente(sizeof(categoria), categorias, quantidadeCategorias);
+    int indiceNomes = 0;
+    int contador = 0;
+    int escolha = 0;
+    char **nomes;
+
+
+    nomes  = malloc(sizeof(char *)*quantidadeCategoriasExistentes);
+    verificaOperacao(nomes, "ERRO: Memoria indisponivel!", 1);
+
+    for(int i = 0; i<quantidadeCategorias; i++){
+        if(categorias[i].flag){
+            nomes[indiceNomes] = categorias[i].nome;
+            indiceNomes++;
+        }
+    }
+
+    while(escolha != 13){
+        menuGraphicsComSeta(quantidadeCategoriasExistentes, mensagem, contador, nomes);
+        escolha = escolheOpcao();
+
+        switch(escolha){
+            case 80:
+                if(contador < quantidadeCategoriasExistentes-1){
+                    contador++;
+                }else{
+                    contador = 0;
+                }
+                break;
+            case 72:
+                if(contador > 0){
+                    contador--;
+                }else{
+                    contador = quantidadeCategoriasExistentes-1;
+                }
+
+        }
+
+    }
+    nomes = limpaMemoria(nomes);
+    return contador;
 }

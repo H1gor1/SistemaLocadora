@@ -37,4 +37,6 @@ int verificaExisteCategoria(categoria *ptr, int quantidade);
 
 void mostraListaCategoria(categoria *ptr, int quantidade);
 
+int escolheListaCategorias(categoria *categorias, int quantidadeCategorias, char *mensagem);
+
 #endif

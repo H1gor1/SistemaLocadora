@@ -109,7 +109,7 @@ void alocaFilmes(filmes **filmesAlocados, int *quantidade, filmes *lista, int qu
                 Sleep(1000);
                 break;
         }
-        menuGraphics(2, "Selecione uma opcao:", "adicionar filme", "fechar lista");
+
     }
     
     
@@ -147,14 +147,14 @@ void realizaVenda(int modoArm){
         Sleep(4000);
         return;
     }
-    if(!contaQuantidadeExistente(sizeof(cliente), funcionarios, quantidadeFuncionarios)){
+    if(!contaQuantidadeExistente(sizeof(cliente), funcionarios, quantidadeClientes)){
 
         printf("Nao existem clientes cadastrados, primeiro cadastre um clientes pra depois realizar a venda!\n");
         limpaMemoriaRealizaVenda(&clientes, quantidadeClientes, &funcionarios, quantidadeFuncionarios, &TodosFilmes, quantidadeTotalFilmes);
         Sleep(4000);
         return;
     }
-    if(!contaQuantidadeExistente(sizeof(filmes), funcionarios, quantidadeFuncionarios)){
+    if(!contaQuantidadeExistente(sizeof(filmes), funcionarios, quantidadeTotalFilmes)){
 
         printf("Nao existem filmes cadastrados, primeiro cadastre um filme pra depois realizar a venda!\n");
         limpaMemoriaRealizaVenda(&clientes, quantidadeClientes, &funcionarios, quantidadeFuncionarios, &TodosFilmes, quantidadeTotalFilmes);
@@ -176,23 +176,17 @@ void realizaVenda(int modoArm){
     compraAtual.data = *localtime(&seg);
     compraAtual.codigo = time(NULL);
     
-    while(1){
-        menuGraphics(2, "Escolha o modo de pagamento:", "A vista", "A prazo");
-        compraAtual.modoPagamento = retornaNumeroConformeF(2, 0);
-        switch(compraAtual.modoPagamento){
+
+    compraAtual.modoPagamento = escolheMenu("Escolha o modo de pagamento", 2, "A vista", "A prazo")+1;
+    switch(compraAtual.modoPagamento){
             
-            case 1:
-                compraAvista(&compraAtual, modoArm);
-                break;
-            case 2:
-                realizaCompraAprazo(&compraAtual, modoArm);
-                break;
-            default:
-                printf("voce digitou uma opcao invalida! Por favor, digite novamente:\n");
-                Sleep(1500);
-                continue;
-        }
-        break;
+        case 1:
+            compraAvista(&compraAtual, modoArm);
+            break;
+        case 2:
+            realizaCompraAprazo(&compraAtual, modoArm);
+            break;
+
     }
     (modoArm)?reescreveDadosDevolucoesBin(&compraAtual, 1, "devolucoes.bin", "devolucoes.bin", "ab"):reescreveDadosDevolucoes(&compraAtual, 1, "devolucoes.txt", "devolucoes.txt", "a");
     (modoArm)?reescreveDadosFilmeBin(TodosFilmes, quantidadeTotalFilmes):reescreveDadosFilme(TodosFilmes, quantidadeTotalFilmes);

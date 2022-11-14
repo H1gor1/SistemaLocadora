@@ -43,7 +43,7 @@ void reescreveLancamentosCaixaBin(lancamentoCaixa *lancamentos, int quantidade, 
 int leDadosLancamentosBin(lancamentoCaixa **lancamentos);
 float calculaPreco(filmes *filmesAlocados, int quantidade);
 int leDadosLancamentos(lancamentoCaixa **lancamentos);
-void geraNotinha(compras *ptr, float valorPago, FILE *f, int modoArm);
+//void geraNotinha(compras *ptr, float valorPago, FILE *f, int modoArm);
 void compraAvista(compras *compras, int modoArm);
 float calculaTroco(float valorPagar, float *valorPago);
 void compraAvista(compras *compras, int modoArm);

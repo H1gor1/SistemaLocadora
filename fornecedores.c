@@ -398,72 +398,66 @@ void editaFornecedor(int modoAbertura){
     editar = buscaFornecedor(fornecedores, quantidadeFornecedores);
     
 
-    menuGraphics(8, "escolha um dado pra editar:", "nome fantasia", "razao social", "inscricao estadual", "CNPJ", "endereco", "telefone", "email", "Voltar");
-    
+
+    escolha = escolheMenu("escolha um dado pra editar", 8, "Nome fantasia", "Razao social", "Inscricao estadual", "CNPJ", "Endereco", "telefone", "E-mail", "Voltar");
 
     
-    while(1){
-        escolha = escolheOpcao();
-        switch(escolha){
 
-            case 59:
-                printf("digite o novo nome fantasia:\n");
-                editar->nomeFantasia = limpaMemoria(editar->nomeFantasia);
-                digText(&editar->nomeFantasia, stdin);
-                break;
+    switch(escolha){
 
-            case 60:
-                printf("digite a razao social:\n");
-                editar->razaoSocial = limpaMemoria(editar->razaoSocial);
-                digText(&editar->razaoSocial, stdin);
-                break;
+        case 0:
+            printf("digite o novo nome fantasia:\n");
+            editar->nomeFantasia = limpaMemoria(editar->nomeFantasia);
+            digText(&editar->nomeFantasia, stdin);
+            break;
 
-            case 61:
-                printf("digite a inscricao estadual:\n");
-                editar->inscricaoEstadual = limpaMemoria(editar->inscricaoEstadual);
-                validaInsEstadual(&editar->inscricaoEstadual);
-                break;
+        case 1:
+            printf("digite a razao social:\n");
+            editar->razaoSocial = limpaMemoria(editar->razaoSocial);
+            digText(&editar->razaoSocial, stdin);
+            break;
 
-            case 62:
-                printf("digite o CNPJ:\n");
-                editar->CNPJ = limpaMemoria(editar->CNPJ);
-                validaCnpjouCpf(&editar->CNPJ, 14, "543298765432", "6543298765432", 12, 12, "CNPJ digitado invalido!", 0, 0);
-                break;
+        case 2:
+            printf("digite a inscricao estadual:\n");
+            editar->inscricaoEstadual = limpaMemoria(editar->inscricaoEstadual);
+            validaInsEstadual(&editar->inscricaoEstadual);
+            break;
 
-            case 63:
-                editar->bairro = limpaMemoria(editar->bairro);
-                editar->rua = limpaMemoria(editar->rua);
-                printf("digite o bairro:\n");
-                digText(&editar->bairro, stdin);
-                printf("digite a rua:\n");
-                digText(&editar->rua, stdin);
-                printf("digite o numero:\n");
-                verificaNumero(&editar->numero, "%d");
-                break;
+        case 3:
+            printf("digite o CNPJ:\n");
+            editar->CNPJ = limpaMemoria(editar->CNPJ);
+            validaCnpjouCpf(&editar->CNPJ, 14, "543298765432", "6543298765432", 12, 12, "CNPJ digitado invalido!", 0, 0);
+            break;
 
-            case 64:
-                printf("digite o telefone:\n");
-                verificaNumero(&editar->telefone, "%d");
-                break;
+        case 4:
+            editar->bairro = limpaMemoria(editar->bairro);
+            editar->rua = limpaMemoria(editar->rua);
+            printf("digite o bairro:\n");
+            digText(&editar->bairro, stdin);
+            printf("digite a rua:\n");
+            digText(&editar->rua, stdin);
+            printf("digite o numero:\n");
+            verificaNumero(&editar->numero, "%d");
+            break;
 
-            case 65:
-                editar->email = limpaMemoria(editar->email);
-                printf("digite o email:\n");
-                verificaText("@.", &editar->email, "Email invalido, por favor digite novamente!\n");
-                break;
+        case 5:
+            printf("digite o telefone:\n");
+            verificaNumero(&editar->telefone, "%d");
+            break;
 
-            case 27:
-                break;
-            default:
-                printf("voce digitou uma opcao invalida, por favor, digite novamente:\n");
-                menuGraphics(8, "Opcoes:", "nome fantasia", "razao social", "inscricao estadual", "CNPJ", "endereco", "telefone", "email", "Voltar");
+        case 6:
+            editar->email = limpaMemoria(editar->email);
+            printf("digite o email:\n");
+            verificaText("@.", &editar->email, "Email invalido, por favor digite novamente!\n");
+            break;
 
-                continue;
+        case 7:
+            break;
+
+
                 
         }
-        break;
-    
-    }
+
     
     (*reescreveDados[modoAbertura])(fornecedores, quantidadeFornecedores);
     limpaMemoriaStringsFornecedor(fornecedores, quantidadeFornecedores);

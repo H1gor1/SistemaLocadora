@@ -3,7 +3,7 @@
 
 typedef struct Funcionarios{
     
-    time_t codigo;
+    long int codigo;
     char *nome;
     char *cargo;
     char *rua;

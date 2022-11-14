@@ -23,15 +23,15 @@
 #define MAXIMOPARCELAS 3
 
 
-void atribuiNull(void *endereco, int quantidade, int oqueLimpar){
+void atribuiNull(void *endereco, int quantidade, size_t oqueLimpar){
     switch(oqueLimpar){
-        case 1:
+        case sizeof(filmes):
             for(int i = 0; i<quantidade; i++){
                 ((filmes *)endereco)[i].nome = NULL;
                 ((filmes *)endereco)[i].descricao = NULL;
             }
             return;
-        case 2:
+        case sizeof(compras):
             for(int i = 0; i<quantidade; i++){
                 ((compras *)endereco)[i].comprador = NULL;
                 ((compras *)endereco)[i].vendedor = NULL;
@@ -42,7 +42,7 @@ void atribuiNull(void *endereco, int quantidade, int oqueLimpar){
 }
 quantidades leDadosDevolucoes(compras ** dev, Funcionarios **func, cliente **clients, filmes **movies){
     
-    time_t codigo;
+    long int codigo;
     quantidades quants = {0,0,0,0};
 
     
@@ -114,7 +114,7 @@ quantidades leDadosDevolucoes(compras ** dev, Funcionarios **func, cliente **cli
 
 quantidades leDadosDevolucoesBin(compras **dev, Funcionarios **func, cliente **clients, filmes **movies){
     
-    time_t codigo;
+    long int codigo;
     int codigo1;
     quantidades quants = {0,0,0,0};
     
@@ -154,7 +154,7 @@ quantidades leDadosDevolucoesBin(compras **dev, Funcionarios **func, cliente **c
         
         fread(&dev[0][quants.quantidadeAlugacoes].data, sizeof(struct tm), 1, f);
         
-        fread(&codigo, sizeof(time_t), 1, f);
+        fread(&codigo, sizeof(long int), 1, f);
         dev[0][quants.quantidadeAlugacoes].vendedor = encontraFuncionarioCodigo(func[0], codigo, quants.quantidadesFuncionarios, NULL);
         
         fread(&codigo1, sizeof(int), 1, f);
@@ -225,13 +225,13 @@ void reescreveDadosDevolucoesBin(compras *dev, int quantidade, char *nomeArq, ch
     }
     
     for(int i = 0; i<quantidade; i++){
-        fwrite(&dev[i].codigo, sizeof(time_t), 1, f);
+        fwrite(&dev[i].codigo, sizeof(long int), 1, f);
         
         fwrite(&dev[i].modoPagamento, sizeof(int), 1, f);
         
         fwrite(&dev[i].data, sizeof(struct tm), 1, f);
         
-        fwrite(&dev[i].vendedor->codigo, sizeof(time_t), 1, f);
+        fwrite(&dev[i].vendedor->codigo, sizeof(long int), 1, f);
         
         fwrite(&dev[i].comprador->codigo, sizeof(int), 1, f);
         
@@ -288,6 +288,28 @@ compras *buscaCompra(compras *ptr, int quantidade, int ignoraDev){
     
     
 }
+void limpaDadosDevolucoesMemoria(filmes **todosFilmes, cliente ** todosClientes,Funcionarios **todosFuncionarios,
+                                compras **todasAlocacoes, quantidades quant){
+
+    limpaDadosFilmeMemoria(todosFilmes[0], quant.quantidadesFilmes);
+    for(int i = 0; i<quant.quantidadeAlugacoes; i++){
+        atribuiNull(todasAlocacoes[0][i].filmesComprados, todasAlocacoes[0][i].quantidadeFilmesComprados, sizeof(filmes));
+        todasAlocacoes[0][i].filmesComprados = limpaMemoria(todasAlocacoes[0][i].filmesComprados);
+    }
+
+    todosFilmes[0] = limpaMemoria(todosFilmes[0]);
+
+    limpaDadosClienteMemoria(todosClientes[0], quant.quantidadeClientes);
+    todosClientes[0] = limpaMemoria(todosClientes[0]);
+
+    apagaDadosStructFuncionarios(todosFuncionarios[0], quant.quantidadesFuncionarios);
+    todosFuncionarios[0] = limpaMemoria(todosFuncionarios[0]);
+
+    atribuiNull(todasAlocacoes[0], quant.quantidadeAlugacoes, sizeof(compras));
+    todasAlocacoes[0] = limpaMemoria(todasAlocacoes[0]);
+
+
+}
 void devolveFilme(int modoArm){
     cliente *todosClientes = NULL;
     Funcionarios *funcs = NULL;
@@ -311,27 +333,12 @@ void devolveFilme(int modoArm){
     mostraCompra(devolvida,0);
     
     while(1){
-        verificaNumero(&escolha, "%d");
-        if(escolha == 2){
-            limpaDadosFilmeMemoria(todosFilmes, quant.quantidadesFilmes);
-            for(int i = 0; i<quant.quantidadeAlugacoes; i++){
-                atribuiNull(alocacoes[i].filmesComprados, alocacoes[i].quantidadeFilmesComprados, 1);
-                alocacoes[i].filmesComprados = limpaMemoria(alocacoes[i].filmesComprados);
-            }
-            todosFilmes = limpaMemoria(todosFilmes);
-
-            limpaDadosClienteMemoria(todosClientes, quant.quantidadeClientes);
-            todosClientes = limpaMemoria(todosClientes);
-
-            apagaDadosStructFuncionarios(funcs, quant.quantidadesFuncionarios);
-            funcs = limpaMemoria(funcs);
-
-            atribuiNull(alocacoes, quant.quantidadeAlugacoes, 2);
-
-            alocacoes = limpaMemoria(alocacoes);
+        escolha = escolheOpcao();
+        if(escolha == 60){
+            limpaDadosDevolucoesMemoria( &todosFilmes, &todosClientes, &funcs, &alocacoes, quant);
     
             return;
-        }else if(escolha != 1){
+        }else if(escolha != 59){
             printf("escolha uma opcao valida!\n");
         }
         break;
@@ -371,24 +378,8 @@ void devolveFilme(int modoArm){
     (modoArm)?reescreveDadosFilmeBin(todosFilmes, quant.quantidadesFilmes):reescreveDadosFilme(todosFilmes, quant.quantidadesFilmes);
     
     (modoArm)?reescreveDadosDevolucoesBin(alocacoes, quant.quantidadeAlugacoes, "devolucoesRes.bin", "devolucoes.bin", "wb"):reescreveDadosDevolucoes(alocacoes, quant.quantidadeAlugacoes, "devolucoesRes.txt", "devolucoes.txt", "w");
-    
-    limpaDadosFilmeMemoria(todosFilmes, quant.quantidadesFilmes);
-    for(int i = 0; i<quant.quantidadeAlugacoes; i++){
-        atribuiNull(alocacoes[i].filmesComprados, alocacoes[i].quantidadeFilmesComprados, 1);
-        alocacoes[i].filmesComprados = limpaMemoria(alocacoes[i].filmesComprados);
-    }
-    todosFilmes = limpaMemoria(todosFilmes);
-    
-    limpaDadosClienteMemoria(todosClientes, quant.quantidadeClientes);
-    todosClientes = limpaMemoria(todosClientes);
-    
-    apagaDadosStructFuncionarios(funcs, quant.quantidadesFuncionarios);
-    funcs = limpaMemoria(funcs);
-    
-    atribuiNull(alocacoes, quant.quantidadeAlugacoes, 2);
-    
-    alocacoes = limpaMemoria(alocacoes);
-    
+
+    limpaDadosDevolucoesMemoria( &todosFilmes, &todosClientes, &funcs, &alocacoes, quant);
    
 }
 void mostraCompra(compras *compra, int resumir){
