@@ -399,7 +399,7 @@ void editaFornecedor(int modoAbertura){
     
 
 
-    escolha = escolheMenu("escolha um dado pra editar", 8, "Nome fantasia", "Razao social", "Inscricao estadual", "CNPJ", "Endereco", "telefone", "E-mail", "Voltar");
+    escolha = escolheMenu("escolha um dado pra editar", 8, 0,"Nome fantasia", "Razao social", "Inscricao estadual", "CNPJ", "Endereco", "telefone", "E-mail", "Voltar");
 
     
 

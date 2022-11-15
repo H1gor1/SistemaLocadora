@@ -23,39 +23,60 @@
 #define VLT "Voltar"
 #define ESC 27
 #define MENUPRINC  menuGraphics(8, "Menu principal, escolha uma opcao:", "Administrativo", "Clientes", "Filmes", "Categorias", "Trocar modo arm BIN/TXT", "Caixa", "Contas", "Sair")
+void imprimeEspacamentoMaior(int espacamento, char letra, char letraFim){
+    for(int i = 0; i<espacamento; i++){
+        printf("%c", letra);
+    }
+    if(letraFim != '\n'){
+        printf("%c", letraFim);
+        printf("\n");
+    }else{
+        printf("\n");
+    }
 
+}
 
-void menuGraphicsComSeta(int quantidadeArgumentos, char *frasePrincipal , int linha, char **frases){
+void menuGraphicsComSeta(int quantidadeArgumentos, char *frasePrincipal , int linha, char **frases, int espacamentoMaior){
     COORD cordenadaIn;
     cordenadaIn.X = 0;
     cordenadaIn.Y = 0;
 
     SetConsoleCursorPosition(GetStdHandle( STD_OUTPUT_HANDLE ), cordenadaIn);
+    printf("\n%55s ", "\0");
 
-    printf("\n%55s ____________________________________________________________\n"
-           "%55s|               %-35s          |\n"
-           "%55s|                                                            |\n", "\0", "\0", frasePrincipal, "\0");
+    imprimeEspacamentoMaior(75+espacamentoMaior, '_', '\n');
+
+
+    printf("%55s|               %-50s", "\0", frasePrincipal);
+    imprimeEspacamentoMaior(10+espacamentoMaior, ' ', '|');
+    printf("%55s|", "\0", "\0", frasePrincipal, "\0");
+    imprimeEspacamentoMaior(75+espacamentoMaior, ' ', '|');
     for(int i = 0; i<quantidadeArgumentos; i++){
 
 
         if(!strcmp(frases[i], "Sair")|| !strcmp(frases[i], "Voltar")){
             if(i == linha) {
 
-                printf("%55s| -->   %-25s <--                        |\n", "\0", frases[i]);
+                printf("%55s| -->   %-40s <--", "\0", frases[i]);
+                imprimeEspacamentoMaior(24+espacamentoMaior, ' ', '|');
             }else{
-                printf("%55s|   %-25s                                |\n", "\0", frases[i]);
+                printf("%55s|   %-40s", "\0", frases[i]);
+                imprimeEspacamentoMaior(32+espacamentoMaior, ' ', '|');
             }
         }else {
 
             if( i == linha){
-                printf("%55s| -->   %-25s <--                        |\n", "\0", frases[i]);
+                printf("%55s| -->   %-40s <--", "\0", frases[i]);
+                imprimeEspacamentoMaior(24+espacamentoMaior, ' ', '|');
 
             }else{
-                printf("%55s|   %-25s                                |\n", "\0", frases[i]);
+                printf("%55s|   %-40s", "\0", frases[i]);
+                imprimeEspacamentoMaior(32+espacamentoMaior, ' ', '|');
             }
         }
     }
-    printf("%55s|____________________________________________________________|\n", "\0");
+    printf("%55s|", "\0");
+    imprimeEspacamentoMaior(75+espacamentoMaior, '_', '|');
 
 
 }
@@ -90,7 +111,7 @@ void menuGraphics(int quantidadeArgumentos, char *frasePrincipal , ...){
     va_end(parametros);
 
 }
-int escolheMenu(char *mensagem, int quantidade, ...){
+int escolheMenu(char *mensagem, int quantidade,int espacamentoMaior, ...){
 
     va_list parametros;
     va_start(parametros, quantidade);
@@ -106,7 +127,7 @@ int escolheMenu(char *mensagem, int quantidade, ...){
     int escolha = 0;
     system("clear");
     while(escolha != 13){
-        menuGraphicsComSeta(quantidade, mensagem, contador, frases);
+        menuGraphicsComSeta(quantidade, mensagem, contador, frases, espacamentoMaior);
 
         do {
 
@@ -148,7 +169,7 @@ int menuPrincipal(int *modo){
     printf("\n");
     
     while(escolha != 7){
-        escolha = escolheMenu("Seja bem vindo! Escolha uma opcao", 8, "Administrativo", "Clientes", "Filmes", "Categorias", "Trocar modo arm BIN/TXT", "Caixa", "Contas", "Sair");
+        escolha = escolheMenu("Seja bem vindo! Escolha uma opcao", 8, 0,"Administrativo", "Clientes", "Filmes", "Categorias", "Trocar modo arm BIN/TXT", "Caixa", "Contas", "Sair");
         switch(escolha){
             case 0:
 
@@ -191,9 +212,9 @@ void menuTroca(int *modo){
     int escolha;
     if(*modo){
 
-        escolha = escolheMenu("Atualmente estamos trabalhando com binario.\n", 2,"Trocar para texto", VLT);
+        escolha = escolheMenu("Atualmente estamos trabalhando com binario.\n", 2,0,"Trocar para texto", VLT);
     }else{
-        escolha = escolheMenu("Atualmente estamos trabalhando com texto.\n", 2,"Trocar para binario", VLT);
+        escolha = escolheMenu("Atualmente estamos trabalhando com texto.\n", 2,0,"Trocar para binario", VLT);
     }
 
     
@@ -219,7 +240,7 @@ int MenuAdm(int modo){
 
     int escolha;
     while(escolha != 3){
-        escolha = escolheMenu(OPCAO, 4,"Editar dados Loc.", "Funcionarios", "Fornecedores", "Voltar");
+        escolha = escolheMenu(OPCAO, 4,0,"Editar dados Loc.", "Funcionarios", "Fornecedores", "Voltar");
         switch(escolha){
             case 0:
 
@@ -249,7 +270,7 @@ int MenuClientes(int modo){
 
     int escolha;
     while(escolha != 4){
-        escolha = escolheMenu(OPCAO, 5, CAD, ED, APG, "Filtrar clientes", VLT);
+        escolha = escolheMenu(OPCAO, 5, 0,CAD, ED, APG, "Filtrar clientes", VLT);
         switch(escolha){
             case 0:
 
@@ -280,7 +301,7 @@ int MenuFuncionarios(int modo){
 
     int escolha;
     while(escolha != 3){
-        escolha = escolheMenu(OPCAO, 4, CAD, ED, APG, VLT);
+        escolha = escolheMenu(OPCAO, 4, 0,CAD, ED, APG, VLT);
         switch(escolha){
             case 0:
 
@@ -311,7 +332,7 @@ int MenuFilmes(int modo){
 
     int escolha;
     while(escolha != 4){
-        escolha = escolheMenu(OPCAO, 5, CAD, ED, APG, "Filtrar filme", VLT);
+        escolha = escolheMenu(OPCAO, 5, 0,CAD, ED, APG, "Filtrar filme", VLT);
         switch(escolha){
             case 0:
 
@@ -344,7 +365,7 @@ int MenuCategoria(int modo){
 
     int escolha;
     while(escolha != 3){
-        escolha = escolheMenu(OPCAO, 4, CAD, ED, APG, VLT);
+        escolha = escolheMenu(OPCAO, 4, 0,CAD, ED, APG, VLT);
         switch(escolha){
             case 0:
 
@@ -370,7 +391,7 @@ int menuFornecedores(int modo){
 
     int escolha;
     while(escolha != 3){
-        escolha = escolheMenu(OPCAO, 4, CAD, ED, APG, VLT);
+        escolha = escolheMenu(OPCAO, 4, 0,CAD, ED, APG, VLT);
         switch(escolha){
             case 0:
 
@@ -403,7 +424,7 @@ void menuContas(int modoArm){
     
     int escolha;
     while(escolha!=2){
-        escolha = escolheMenu("Menu de contas", 3, "Dar baixa", "Consultar conta", "Sair");
+        escolha = escolheMenu("Menu de contas", 3, 0,"Dar baixa", "Consultar conta", "Sair");
         
         switch(escolha){
             
@@ -432,7 +453,7 @@ void menuCaixa(int modoArm){
     
     while(escolha !=3){
         
-        escolha = escolheMenu("Menu do caixa", 5, "Realizar venda", "Devolver filme", "Contar caixa", "Filtra compras" , "Voltar");
+        escolha = escolheMenu("Menu do caixa", 5, 0,"Realizar venda", "Devolver filme", "Contar caixa", "Filtra compras" , "Voltar");
         
         switch(escolha){
             

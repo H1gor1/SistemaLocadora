@@ -210,7 +210,7 @@ filmes *buscaFilme(filmes *buscar, int quantidade, char *mensagem){
         }
         if(!strcmp(dado, "open list")){
             dado = limpaMemoria(dado);
-            return menuEscolhaFilmes(buscar, quantidade, "lista de filmes", 0);
+            return menuEscolhaFilmes(buscar, quantidade, "lista completa de filmes da locadora:", 0);
         }
         dado = limpaMemoria(dado);
         printf("%s\n", mensagem);
@@ -243,7 +243,7 @@ void editaFilme(int modoAbertura){
 
 
 
-    dadoEditar = escolheMenu("Qual campo deseja editar:", 6, "Nome do filme", "Descricao", "Exemplares", "Codigo da categoria", "Lingua", "Voltar");
+    dadoEditar = escolheMenu("Qual campo deseja editar:", 6, 0,"Nome do filme", "Descricao", "Exemplares", "Codigo da categoria", "Lingua", "Voltar");
 
 
     switch(dadoEditar){
@@ -280,7 +280,7 @@ void editaFilme(int modoAbertura){
             
         case 4:
 
-            ptr->lingua = escolheMenu("O filme é dublado ou legendado?", 2, "Dublado", "Legendado")+1;
+            ptr->lingua = escolheMenu("O filme é dublado ou legendado?", 2, 0,"Dublado", "Legendado")+1;
 
             break;
         case 5:
@@ -335,7 +335,7 @@ void cadastraFilmes(int modoLeitura){
     filme[quantidadeFilmes-1].valorLocacao = categorias[filme[quantidadeFilmes-1].codigoCategoria].valorLocacao;
     
 
-    filme[quantidadeFilmes-1].lingua = 1+escolheMenu("O filme e dublado ou legendado?", 2, "Dublado", "Legendado");
+    filme[quantidadeFilmes-1].lingua = 1+escolheMenu("O filme e dublado ou legendado?", 2, 0,"Dublado", "Legendado");
     filme[quantidadeFilmes-1].flag = 1;
 
     (*reescreveDados[modoLeitura])(filme, quantidadeFilmes);
@@ -501,7 +501,7 @@ void listaFilme(int modoArm){
     int escolha;
 
 
-    escolha = escolheMenu("Como deseja filtrar os filmes", 3, "Pelo codigo", "Pela categoria", "Voltar");
+    escolha = escolheMenu("Como deseja filtrar os filmes", 3, 0,"Pelo codigo", "Pela categoria", "Voltar");
 
 
 
@@ -547,14 +547,14 @@ filmes* menuEscolhaFilmes(filmes *todosOsfilmes, int quantidade, char *mensagem,
 
             strcpy(informacoesFilmes[indiceFilme], todosOsfilmes[i].nome);
 
-            strcat(informacoesFilmes[indiceFilme], " valor: ");
+            strcat(informacoesFilmes[indiceFilme], "; val:");
 
             nomeConcat = converteFloatemString(todosOsfilmes[i].valorLocacao, 2);
             strcat(informacoesFilmes[indiceFilme],
                    nomeConcat);
             nomeConcat = limpaMemoria(nomeConcat);
 
-            strcat(informacoesFilmes[indiceFilme], " quantidade: ");
+            strcat(informacoesFilmes[indiceFilme], "; quant:");
 
             nomeConcat = converteIntEmString(todosOsfilmes[i].exemplares);
 
@@ -568,7 +568,7 @@ filmes* menuEscolhaFilmes(filmes *todosOsfilmes, int quantidade, char *mensagem,
 
     while(escolha != 13){
 
-        menuGraphicsComSeta(quantidadeExistente, "escolha um filme", contador, informacoesFilmes);
+        menuGraphicsComSeta(quantidadeExistente, mensagem, contador, informacoesFilmes,50);
         escolha = escolheOpcao();
 
         switch(escolha){
@@ -590,7 +590,7 @@ filmes* menuEscolhaFilmes(filmes *todosOsfilmes, int quantidade, char *mensagem,
 
         }
     }
-    filmeProcurado = encontraFilmeNome(todosOsfilmes, quantidade, informacoesFilmes[contador]);
+    filmeProcurado = encontraFilmeNome(todosOsfilmes, quantidade, strtok(informacoesFilmes[contador], ";"));
     for(int i = 0; i<quantidadeExistente; i++){
         informacoesFilmes[i] = limpaMemoria(informacoesFilmes[i]);
 
