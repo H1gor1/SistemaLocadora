@@ -369,7 +369,7 @@ int filtraContasClientes(contaArec *contas, int quantidadeContas, contaArec **co
 int filtraContasQuantidadeParcelas(contaArec *contas, int quantidadeContas, contaArec **contasRetornar, int parcelas){
 
     int quantidadeContasComFiltro = 0;
-    parcelas = escolheMenu("Escolha a quantidade de parcelas", 3, "Uma parcela", "Duas parcelas", "Tres parcelas")+1;
+    parcelas = escolheMenu("Escolha a quantidade de parcelas", 3, 0,"Uma parcela", "Duas parcelas", "Tres parcelas")+1;
 
     for(int i = 0; i<quantidadeContas; i++){
         if(contas[i].parcelas == parcelas){
@@ -471,7 +471,7 @@ void consultaLancamentos(int modoArm){
     
 
 
-    escolha = escolheMenu("Escolha o modo de filtragem", 4, "Contas atrasadas", "Contas de um cliente", "parcelas restantes","Voltar");
+    escolha = escolheMenu("Escolha o modo de filtragem", 4, 0,"Contas atrasadas", "Contas de um cliente", "parcelas restantes","Voltar");
     switch(escolha){
         case 0:
             mostraContasFiltradas(contas, quantidadeContas, modoArm, filtraContasAtrasadas, "Contas atrasadas:\n");

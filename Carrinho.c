@@ -189,7 +189,7 @@ void realizaVenda(int modoArm){
     compraAtual.codigo = time(NULL);
     
 
-    compraAtual.modoPagamento = escolheMenu("Escolha o modo de pagamento", 2, "A vista", "A prazo")+1;
+    compraAtual.modoPagamento = escolheMenu("Escolha o modo de pagamento", 2, 0,"A vista", "A prazo")+1;
     switch(compraAtual.modoPagamento){
             
         case 1:

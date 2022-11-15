@@ -437,7 +437,7 @@ void editaCliente(int modoAbertura){
 
 
 
-    dadoEditar = escolheMenu("Qual campo deseja editar:", 11, "Nome completo", "Rua", "Bairro", "Numero da casa", "CPF", "Telefone",
+    dadoEditar = escolheMenu("Qual campo deseja editar:", 11, 0,"Nome completo", "Rua", "Bairro", "Numero da casa", "CPF", "Telefone",
                              "E-mail", "Sexo", "Estado civil", "Data de nascimento", "Voltar");
     
 
@@ -585,10 +585,10 @@ void cadastraCliente(int modoLeitura){
     printf("digite o email do cliente\n");
     verificaText("@.", &client[quantidadeCliente-1].email, "Email digitado esta incompleto!\n");
     
-    client[quantidadeCliente-1].sexo = escolheMenu("Qual sexo do cliente?", 2, "Masculino", "Femino")+1;
+    client[quantidadeCliente-1].sexo = escolheMenu("Qual sexo do cliente?", 2, 0,"Masculino", "Femino")+1;
     
 
-    client[quantidadeCliente-1].estadoCivil = 1+escolheMenu("Qual estado civil do cliente?", 4, "Solteiro", "Casado", "Viuvo", "Divorciado");
+    client[quantidadeCliente-1].estadoCivil = 1+escolheMenu("Qual estado civil do cliente?", 4, 0,"Solteiro", "Casado", "Viuvo", "Divorciado");
 
     printf("digite o mes de nascimento do cliente\n");
     verificaLimiteNumero(&client[quantidadeCliente-1].mes, 12, 0, "%d");
@@ -748,7 +748,7 @@ void listaClientes(int modoArm){
     
     int escolha;
 
-    escolha = escolheMenu("Como deseja filtrar os clientes", 3, "Faixa de codigo", "Sexo", "Voltar");
+    escolha = escolheMenu("Como deseja filtrar os clientes", 3, 0,"Faixa de codigo", "Sexo", "Voltar");
 
 
     switch(escolha){
@@ -764,7 +764,7 @@ void listaClientes(int modoArm){
         case 1:
             int sexo;
 
-            sexo = escolheMenu("Escolha o sexo", 3,"Masculino", "Femino", "Voltar")+1;
+            sexo = escolheMenu("Escolha o sexo", 3,0,"Masculino", "Femino", "Voltar")+1;
             if(sexo == 3){
                 break;
             }

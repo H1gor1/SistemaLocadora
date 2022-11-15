@@ -8,10 +8,10 @@ int MenuFilmes(int modo);
 int MenuFuncionarios(int modo);
 int MenuCategoria(int modo);
 void menuGraphics(int quantidadeArgumentos, char *frasePrincipal, ...);
-void menuGraphicsComSeta(int quantidadeArgumentos, char *frasePrincipal , int linha, char **);
+void menuGraphicsComSeta(int quantidadeArgumentos, char *frasePrincipal , int linha, char **, int espacamentoMaior);
 int menuFornecedores(int modo);
 void menuTroca(int *modo);
 void menuContas(int modoArm);
 void menuCaixa(int modoArm);
-int escolheMenu(char *mensagem, int quantidade, ...);
+int escolheMenu(char *mensagem, int quantidade,int espacamento, ...);
 #endif
