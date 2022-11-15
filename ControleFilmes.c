@@ -542,22 +542,22 @@ filmes* menuEscolhaFilmes(filmes *todosOsfilmes, int quantidade, char *mensagem,
 
     for(int i = 0; i<quantidade; i++){
         if(todosOsfilmes[i].flag || ignoraApagados){
-            informacoesFilmes[indiceFilme] = malloc(sizeof(char)*(strlen(todosOsfilmes[i].nome+60)));
+            informacoesFilmes[indiceFilme] = malloc(sizeof(char)*(strlen(todosOsfilmes[i].nome)+60));
             verificaOperacao(informacoesFilmes[indiceFilme], "ERRO: Memoria indisponivel!", 1);
 
             strcpy(informacoesFilmes[indiceFilme], todosOsfilmes[i].nome);
 
-            strcat(informacoesFilmes[indiceFilme], "    valor: ");
+            strcat(informacoesFilmes[indiceFilme], " valor: ");
 
             nomeConcat = converteFloatemString(todosOsfilmes[i].valorLocacao, 2);
             strcat(informacoesFilmes[indiceFilme],
                    nomeConcat);
             nomeConcat = limpaMemoria(nomeConcat);
 
-            strcat(informacoesFilmes[indiceFilme], "      quantidade: ");
+            strcat(informacoesFilmes[indiceFilme], " quantidade: ");
 
             nomeConcat = converteIntEmString(todosOsfilmes[i].exemplares);
-            printf("oi");
+
             strcat(informacoesFilmes[indiceFilme], nomeConcat);
             nomeConcat = limpaMemoria(nomeConcat);
 
