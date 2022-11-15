@@ -16,6 +16,7 @@
 #include "Carrinho.h"
 #include "ContasAreceber.h"
 #include "Devolucoes.h"
+#include "EntradaDeFilmes.h"
 #define OPCAO "Escolha a opcao desejada:"
 #define CAD "Cadastrar"
 #define ED "Editar"
@@ -310,8 +311,8 @@ int MenuFuncionarios(int modo){
 int MenuFilmes(int modo){
 
     int escolha;
-    while(escolha != 4){
-        escolha = escolheMenu(OPCAO, 5, CAD, ED, APG, "Filtrar filme", VLT);
+    while(escolha != 5){
+        escolha = escolheMenu(OPCAO, 6, CAD, ED, APG, "Filtrar filme", "Realizar Entrada", VLT);
         switch(escolha){
             case 0:
 
@@ -332,6 +333,9 @@ int MenuFilmes(int modo){
                 listaFilme(modo);
                 break;
             case 4:
+                realizaEntrada(modo);
+                break;
+            case 5:
                 break;
             default:
                 printf("Opcao invalida");

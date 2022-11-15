@@ -61,8 +61,8 @@ filmes *deletaFilmeCarrinho(filmes *lista, int *quantidade, filmes *listaOrigina
     
     
 }
-void alocaFilmes(filmes **filmesAlocados, int *quantidade, filmes *lista, int quantidadeLista, int ignora, char *frase){
-    
+void alocaFilmes(filmes **filmesAlocados, int *quantidade, filmes *lista, int quantidadeLista, int ignora, char *frase){ //Se EntradaOuVenda == 1 Realiza venda
+                                                                                                                                             //Se EntradaOuVenda == 2 Realiza Entrada
     (*quantidade) = 0;
     filmes *alocAgr = NULL;
     int escolha;
@@ -91,10 +91,22 @@ void alocaFilmes(filmes **filmesAlocados, int *quantidade, filmes *lista, int qu
 
                 filmesAlocados[0][(*quantidade)-1] = *alocAgr;
 
+
                 printf("digite a quantidade:\n");
-                verificaLimiteNumero(&filmesAlocados[0][(*quantidade)-1].exemplares, filmesAlocados[0][(*quantidade)-1].exemplares, 1, "%d");
-                printf("%s\n", frase);
-                alocAgr->exemplares -= filmesAlocados[0][(*quantidade)-1].exemplares;
+                if(ignora == 1) {
+                    verificaLimiteNumero(&filmesAlocados[0][(*quantidade) - 1].exemplares,
+                                         filmesAlocados[0][(*quantidade) - 1].exemplares, 1, "%d");
+                    printf("%s\n", frase);
+                } else {
+                    verificaNumero(&filmesAlocados[0][(*quantidade - 1)].exemplares, "%d");
+                }
+
+                if(ignora == 1){
+                    alocAgr->exemplares -= filmesAlocados[0][(*quantidade)-1].exemplares;
+                } else {
+                    alocAgr->exemplares += filmesAlocados[0][(*quantidade)-1].exemplares;
+                }
+
                 Sleep(1000);
             
                 continue;
