@@ -222,3 +222,22 @@ char *converteIntEmString(int valorInt){
     }
     return valor;
 }
+char *converteFloatemString(float valorFloat, int quantidadeCasasDecimais){
+    char *valor = converteIntEmString(valorFloat);
+    valor = realloc(valor, sizeof(char)*(strlen(valor)+quantidadeCasasDecimais+2));
+    int valorQuebrado;
+    int indice = strlen(valor);
+    valor[indice] = ',';
+    indice++;
+    for(int i = 0; i<quantidadeCasasDecimais;i++){
+
+        valorQuebrado = (valorFloat*=10);
+
+        valor[indice] = (valorQuebrado%10)+'0';
+        indice++;
+    }
+    valor[indice] = '\0';
+    return valor;
+
+}
+

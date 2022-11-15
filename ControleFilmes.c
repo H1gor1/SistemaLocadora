@@ -191,6 +191,7 @@ filmes *encontraFilmeNome(filmes *ptr, int quantidade, char *nome){
 }
 
 filmes *buscaFilme(filmes *buscar, int quantidade, char *mensagem){
+
     char *dado;
     filmes *ptr;
     do{
@@ -207,7 +208,10 @@ filmes *buscaFilme(filmes *buscar, int quantidade, char *mensagem){
             dado = limpaMemoria(dado);
             return ptr;
         }
-        
+        if(!strcmp(dado, "open list")){
+            dado = limpaMemoria(dado);
+            return menuEscolhaFilmes(buscar, quantidade, "lista de filmes", 0);
+        }
         dado = limpaMemoria(dado);
         printf("%s\n", mensagem);
         
@@ -518,5 +522,83 @@ void listaFilme(int modoArm){
 
 
     }
+
+}
+filmes* menuEscolhaFilmes(filmes *todosOsfilmes, int quantidade, char *mensagem, int ignoraApagados){
+    system("clear");
+    int quantidadeExistente = (!ignoraApagados)?contaQuantidadeExistente(sizeof(filmes), todosOsfilmes, quantidade):quantidade;
+    int indiceFilme = 0;
+    int contador = 0;
+    int escolha = 0;
+    char **informacoesFilmes = NULL;
+    char *nomeConcat = NULL;
+
+    int quantidadeCategorias;
+    filmes *filmeProcurado =NULL;
+
+
+    informacoesFilmes = malloc(sizeof(char*)*quantidadeExistente);
+    verificaOperacao(informacoesFilmes, "ERRO: Memoria indisponivel!", 1);
+
+    for(int i = 0; i<quantidade; i++){
+        if(todosOsfilmes[i].flag || ignoraApagados){
+            informacoesFilmes[indiceFilme] = malloc(sizeof(char)*(strlen(todosOsfilmes[i].nome+60)));
+            verificaOperacao(informacoesFilmes[indiceFilme], "ERRO: Memoria indisponivel!", 1);
+
+            strcpy(informacoesFilmes[indiceFilme], todosOsfilmes[i].nome);
+
+            strcat(informacoesFilmes[indiceFilme], "    valor: ");
+
+            nomeConcat = converteFloatemString(todosOsfilmes[i].valorLocacao, 2);
+            strcat(informacoesFilmes[indiceFilme],
+                   nomeConcat);
+            nomeConcat = limpaMemoria(nomeConcat);
+
+            strcat(informacoesFilmes[indiceFilme], "      quantidade: ");
+
+            nomeConcat = converteIntEmString(todosOsfilmes[i].exemplares);
+            printf("oi");
+            strcat(informacoesFilmes[indiceFilme], nomeConcat);
+            nomeConcat = limpaMemoria(nomeConcat);
+
+            indiceFilme++;
+
+        }
+    }
+
+    while(escolha != 13){
+
+        menuGraphicsComSeta(quantidadeExistente, "escolha um filme", contador, informacoesFilmes);
+        escolha = escolheOpcao();
+
+        switch(escolha){
+
+            case 80:
+                if(contador<quantidadeExistente-1){
+                    contador++;
+                }else{
+                    contador = 0;
+                }
+                break;
+            case 72:
+                if(contador>0){
+                    contador--;
+                }else{
+                    contador = quantidadeExistente-1;
+                }
+                break;
+
+        }
+    }
+    filmeProcurado = encontraFilmeNome(todosOsfilmes, quantidade, informacoesFilmes[contador]);
+    for(int i = 0; i<quantidadeExistente; i++){
+        informacoesFilmes[i] = limpaMemoria(informacoesFilmes[i]);
+
+    }
+    informacoesFilmes = limpaMemoria(informacoesFilmes);
+    return filmeProcurado;
+
+
+
 
 }

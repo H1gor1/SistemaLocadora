@@ -366,13 +366,39 @@ int filtraContasClientes(contaArec *contas, int quantidadeContas, contaArec **co
     return quantidadeContasCliente;
    
 }
+int filtraContasQuantidadeParcelas(contaArec *contas, int quantidadeContas, contaArec **contasRetornar, int parcelas){
+
+    int quantidadeContasComFiltro = 0;
+    parcelas = escolheMenu("Escolha a quantidade de parcelas", 3, "Uma parcela", "Duas parcelas", "Tres parcelas")+1;
+
+    for(int i = 0; i<quantidadeContas; i++){
+        if(contas[i].parcelas == parcelas){
+            contasRetornar[0] = (!quantidadeContasComFiltro)?malloc(sizeof(contaArec)):realloc(contasRetornar[0], sizeof(contaArec)*(quantidadeContasComFiltro+1));
+            verificaOperacao(contasRetornar[0], "ERRO: Memoria indisponivel", 1);
+
+            contasRetornar[0][quantidadeContasComFiltro] = contas[i];
+            quantidadeContasComFiltro++;
+        }
+    }
+
+    return quantidadeContasComFiltro;
+
+}
 void mostraContasFiltradas(contaArec *contas, int quantidadeContas, int modoArm, int (*filtra)(contaArec *, int, contaArec **, int), char *mensagem){
     contaArec *contasAtrasadas = NULL;
     int quantidadeContasAtrasadas = 0;
     quantidadeContasAtrasadas = (*filtra)(contas, quantidadeContas, &contasAtrasadas, modoArm);
 
     if(!quantidadeContasAtrasadas){
-        (filtra == filtraContasClientes)?printf("nao existem contas desse cliente!\n"):printf("nao existem contas atrasadas!\n");
+
+        if(filtra == filtraContasClientes) {
+            printf("nao existem contas desse cliente!\n");
+        }else
+            if(filtra == filtraContasQuantidadeParcelas) {
+                printf("nao existem contas que restam essa quantidade de parcelas!\n");
+            }else{
+                printf("nao existem contas atrasadas!\n");
+            }
         Sleep(2000);
         return;
     }
@@ -445,7 +471,7 @@ void consultaLancamentos(int modoArm){
     
 
 
-    escolha = escolheMenu("Escolha o modo de filtragem", 3, "Contas atrasadas", "Contas de um cliente", "Voltar");
+    escolha = escolheMenu("Escolha o modo de filtragem", 4, "Contas atrasadas", "Contas de um cliente", "parcelas restantes","Voltar");
     switch(escolha){
         case 0:
             mostraContasFiltradas(contas, quantidadeContas, modoArm, filtraContasAtrasadas, "Contas atrasadas:\n");
@@ -454,11 +480,12 @@ void consultaLancamentos(int modoArm){
         case 1:
             mostraContasFiltradas(contas, quantidadeContas, modoArm, filtraContasClientes, "Contas do cliente:\n");
             break;
+
         case 2:
+            mostraContasFiltradas(contas, quantidadeContas, modoArm, filtraContasQuantidadeParcelas, "Contas pela quantidade de parcelas");
             break;
         case 3:
             break;
-
 
         
 

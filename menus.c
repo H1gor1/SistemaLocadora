@@ -337,7 +337,7 @@ int MenuFilmes(int modo){
                 printf("Opcao invalida");
         }
     }
-    MENUPRINC;
+
 }
 
 int MenuCategoria(int modo){
@@ -432,7 +432,7 @@ void menuCaixa(int modoArm){
     
     while(escolha !=3){
         
-        escolha = escolheMenu("Menu do caixa", 4, "Realizar venda", "Devolver filme", "Contar caixa", "Voltar");
+        escolha = escolheMenu("Menu do caixa", 5, "Realizar venda", "Devolver filme", "Contar caixa", "Filtra compras" , "Voltar");
         
         switch(escolha){
             
@@ -449,6 +449,9 @@ void menuCaixa(int modoArm){
                 break;
                 
             case 3:
+                listaCompra(modoArm);
+                break;
+            case 4:
                 break;
             default:
                 printf("escolha uma opcao valida!\n");

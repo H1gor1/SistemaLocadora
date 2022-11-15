@@ -21,11 +21,13 @@ void reescreveDadosDevolucoes(compras *dev, int quantidade, char *nomeArq, char 
 
 void reescreveDadosDevolucoesBin(compras *dev, int quantidade, char *nomeArq, char *nomeArqOr, char *modo);
 
-compras * encontraCompraCodigo(compras *ptr, int quantidade, time_t codigo);
+compras * encontraCompraCodigo(compras *ptr, int quantidade, long int codigo);
 
 compras *buscaCompra(compras *ptr, int quantidade, int ignoraDev);
 
 void atribuiNull(void *endereco, int quantidade, size_t oqueLimpar);
+
+void listaCompra(int modoArm);
 
 void devolveFilme(int modoArm);
 

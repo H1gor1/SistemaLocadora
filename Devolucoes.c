@@ -256,7 +256,7 @@ void reescreveDadosDevolucoesBin(compras *dev, int quantidade, char *nomeArq, ch
     }
     return;
 }
-compras * encontraCompraCodigo(compras *ptr, int quantidade, time_t codigo){
+compras * encontraCompraCodigo(compras *ptr, int quantidade, long int codigo){
     
     for(int i = 0; i<quantidade; i++){
         if(ptr[i].codigo == codigo){
@@ -419,4 +419,80 @@ void mostraCompra(compras *compra, int resumir){
         getch();
 
     }
+}
+int filtraCompras(compras *todasAsCompras, int quantidadeCompras, compras **comprasFiltradas, int modoPagamento){
+
+    int quantidadesComprasFiltra = 0;
+
+    for(int i = 0; i<quantidadeCompras; i++){
+        if(todasAsCompras[i].modoPagamento == modoPagamento || todasAsCompras[i].vendedor->codigo == modoPagamento){
+            comprasFiltradas[0] = (!quantidadesComprasFiltra)?malloc(sizeof(compras)):realloc(comprasFiltradas[0], sizeof(compras)*(quantidadesComprasFiltra+1));
+            verificaOperacao(comprasFiltradas[0], "ERRO: Memoria indisponivel!", 1);
+
+            comprasFiltradas[0][quantidadesComprasFiltra] = todasAsCompras[i];
+            quantidadesComprasFiltra++;
+        }
+    }
+    return quantidadesComprasFiltra;
+}
+void listaCompra(int modoArm){
+    compras  *todasAsCompras = NULL;
+    compras *compraEsp = NULL;
+    compras *comprasFiltradas = NULL;
+    int quantidadeComprasFiltradas = 0;
+    cliente *clientes = NULL;
+    filmes *filmes = NULL;
+    Funcionarios *todosFuncionarios;
+    long int modoPagamentoEsc;
+    int codigo;
+    quantidades quant = {0,0,0,0};
+
+    quant = (modoArm)
+            ?leDadosDevolucoesBin(&todasAsCompras, &todosFuncionarios, &clientes, &filmes)
+            :leDadosDevolucoes(&todasAsCompras, &todosFuncionarios, &clientes, &filmes);
+
+
+    modoPagamentoEsc = escolheMenu("escolha o modo de filtro", 5, "A vista", "A prazo", "A prazo com entrada", "Por vendedor","Voltar")+1;
+
+    if(modoPagamentoEsc <= 3) {
+        quantidadeComprasFiltradas = filtraCompras(todasAsCompras, quant.quantidadeAlugacoes,
+                                                   &comprasFiltradas,modoPagamentoEsc);
+    }else{
+        printf("digite o nome ou codigo do funcionario:\n");
+        modoPagamentoEsc = buscaFuncionarios(todosFuncionarios, quant.quantidadesFuncionarios, NULL)->codigo;
+        quantidadeComprasFiltradas = filtraCompras(todasAsCompras, quant.quantidadeAlugacoes, &comprasFiltradas, modoPagamentoEsc);
+    }
+    if(!quantidadeComprasFiltradas){
+        printf("nao existe nenhuma compra %s", (modoPagamentoEsc == 1)?"a vista":(modoPagamentoEsc == 2)?"a prazo":(modoPagamentoEsc == 3)?"a prazo com entrada":"deste vendedor");
+        Sleep(2000);
+        limpaDadosDevolucoesMemoria(&filmes, &clientes, &todosFuncionarios, &todasAsCompras, quant);
+        return;
+    }
+    for(int i = 0; i<quantidadeComprasFiltradas; i++){
+        mostraCompra(comprasFiltradas+i, 0);
+        printf("\n\n");
+    }
+
+    printf("digite o codigo da compra que deseja visualizar:\n");
+    printf("se nao desejar visualizar nenhuma, digite um codigo invalido\n");
+    verificaNumero(&codigo, "%ld");
+    compraEsp = encontraCompraCodigo(comprasFiltradas, quantidadeComprasFiltradas, codigo);
+    if(!compraEsp){
+        goto fim;
+    }
+    mostraCompra(compraEsp, 1);
+    fim:
+    limpaDadosDevolucoesMemoria(&filmes, &clientes, &todosFuncionarios, &todasAsCompras, quant);
+    compraEsp = NULL;
+
+    for(int i = 0; i<quantidadeComprasFiltradas; i++){
+        comprasFiltradas[i].comprador = NULL;
+        comprasFiltradas[i].vendedor = NULL;
+        comprasFiltradas[i].filmesComprados = NULL;
+
+    }
+    comprasFiltradas = limpaMemoria(comprasFiltradas);
+
+
+
 }

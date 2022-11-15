@@ -20,5 +20,7 @@ int verificaLimiteNumero(void *ptr, float limiteAlto, float limiteBaixo, char *c
 
 char *converteIntEmString(int valorInt);
 
+char *converteFloatemString(float valorFloat, int quantidadeCasasDecimais);
+
 #endif
 
