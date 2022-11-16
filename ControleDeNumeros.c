@@ -189,12 +189,14 @@ int verificaLimiteNumero(void *ptr, float limiteAlto, float limiteBaixo, char *c
 
 char *converteIntEmString(int valorInt){
     
-    if(valorInt == 0){
-        return "0";
-    }
+
     char *valor;
     int indice = 0;
-    
+    if(valorInt == 0){
+        valor = malloc(sizeof(char)*2);
+        strcpy(valor, "0");
+        return valor;
+    }
     while(valorInt>0){
         
         valor = (indice == 0)?malloc(sizeof(char)):realloc(valor, sizeof(char)*(indice+1));

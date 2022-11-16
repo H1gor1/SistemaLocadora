@@ -47,5 +47,5 @@ void filtraFilmPeloCodigo(filmes *ptr, int quantidade, int codigo1, int codigo2)
 
 void mostraInformacoesFilmes(filmes *todosFilmes, int quantidadeFilmes);
 
-filmes* menuEscolhaFilmes(filmes *todosOsfilmes, int quantidade, char *mensagem, int ignoraApagados);
+
 #endif

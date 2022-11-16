@@ -369,6 +369,10 @@ Funcionarios *buscaFuncionarios(Funcionarios *ptr, int quantidade, Funcionarios 
             itemBusca = limpaMemoria(itemBusca);
             return busca;
         }
+        if(!strcmp(itemBusca, "open list")){
+            itemBusca = limpaMemoria(itemBusca);
+            return menuOpcoesFilmesOuClientes(ptr, quantidade, "Lista completa de todos os funcionarios", 0, sizeof(Funcionarios));
+        }
         printf("nenhum funcionario com esse dado foi encontrado, por favor, verifique se digitou certo!\n");
         itemBusca = limpaMemoria(itemBusca);
     }while(1);

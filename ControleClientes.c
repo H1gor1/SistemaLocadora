@@ -331,6 +331,7 @@ cliente *encontraClienteCodigo(cliente *ptr, int quantidade, char *codigo, int i
 }
 /*funcao responsavel por encontrar um cliente pelo nome*/
 cliente *encontraClienteNome(cliente *ptr, int quantidade, char *nome){
+
     /*enquanto nao conferir se todos os clientes tem o nome pedido, continuar conferindo*/
     for(int i = 0; i<quantidade; i++){
         //se nome completo for igual a nome, entao retorne o ponteiro atual
@@ -388,7 +389,10 @@ cliente *buscaCliente(cliente *buscar, int quantidade, char *mensagem){
             /*retorna o ponteiro*/
             return ptr;
         }
-        /*se o if anterior tb foi falso, entao o usuario digitou um dado que nenhum cliente possui*/
+        if(!strcmp(dado, "open list")){
+            dado = limpaMemoria(dado);
+            return menuOpcoesFilmesOuClientes(buscar, quantidade, "escolha um cliente da lista de clientes", 0, sizeof(cliente));
+        }
         dado = limpaMemoria(dado);
         /*mosta a mensagem de erro, e o loop reinicia pro usuario digitar novamente*/
         printf("%s\n", mensagem);
@@ -800,5 +804,10 @@ void mostraInformacoesClientes(cliente *ptr, int quantidade){
     }
     printf("\n\nDigite qualquer tecla para sair");
     escolheOpcao();
+
+}
+cliente listaMenuClientes(cliente *todosClientes, int quantidadeClientes, char *mensagem){
+
+    int quantidadeExistente = contaQuantidadeExistente(sizeof(cliente), todosClientes, quantidadeClientes);
 
 }

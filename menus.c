@@ -451,7 +451,7 @@ void menuCaixa(int modoArm){
 
     int escolha;
     
-    while(escolha !=3){
+    while(escolha !=4){
         
         escolha = escolheMenu("Menu do caixa", 5, 0,"Realizar venda", "Devolver filme", "Contar caixa", "Filtra compras" , "Voltar");
         

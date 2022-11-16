@@ -315,7 +315,21 @@ int daBaixa(int modoArm){
 
     return quantidadesNotinhasPagar;
 }
+int filtraContasVencimentoMes(contaArec *contas, int quantidadeContas, contaArec **atrasadas, int mesVenc){
 
+    mesVenc = escolheMenu("Qual mes deseja filtrar?", 12, 0, "Janeiro", "Fevereiro", "Marco", "Abril", "Maio" ,"Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro");
+    int quantidadeContasVencem = 0;
+    for(int i = 0; i<quantidadeContas; i++){
+        if((contas[i].dataAluga.tm_mon + contas[i].parcelas) >=mesVenc && (mesVenc - contas[i].dataAluga.tm_mon) <= 3 && contas[i].parcelas){
+            atrasadas[0] = (!quantidadeContasVencem)?malloc(sizeof(contaArec)): realloc(atrasadas[0], sizeof(contaArec)*(quantidadeContasVencem+1));
+            verificaOperacao(atrasadas[0], "ERRO: Memoria indisponivel!", 1);
+
+            atrasadas[0][quantidadeContasVencem] = contas[i];
+            quantidadeContasVencem++;
+        }
+    }
+    return quantidadeContasVencem;
+}
 
 int filtraContasAtrasadas(contaArec *contas, int quantidadeContas, contaArec **atrasadas, int modoArm){
     
@@ -384,21 +398,65 @@ int filtraContasQuantidadeParcelas(contaArec *contas, int quantidadeContas, cont
     return quantidadeContasComFiltro;
 
 }
-void mostraContasFiltradas(contaArec *contas, int quantidadeContas, int modoArm, int (*filtra)(contaArec *, int, contaArec **, int), char *mensagem){
+int filtraPorData(contaArec *contas, int quantidade, contaArec **dest, int modo){
+    struct tm data;
+    struct tm dataFim;
+    int quantidadeContasFiltradas = 0;
+    printf("digite a data inicial:\n");
+    printf("mes: ");
+    verificaLimiteNumero(&data.tm_mon, 12,1, "%d");
+    printf("dia: ");
+    verificaLimiteNumero(&data.tm_mday, (data.tm_mon == 2)?28:31, 1, "%d");
+    printf("ano: ");
+    verificaNumero(&data.tm_year, "%d");
+
+    printf("digite a data final:\n");
+    printf("mes: ");
+    verificaLimiteNumero(&dataFim.tm_mon, 12,1,"%d");
+    printf("dia: ");
+    verificaLimiteNumero(&dataFim.tm_mday, (dataFim.tm_mon == 2)?28:31, 1, "%d");
+    printf("ano: ");
+    verificaNumero(&dataFim.tm_year, "%d");
+
+    data.tm_mon--;
+    data.tm_year-=1900;
+    dataFim.tm_mday--;
+    dataFim.tm_year-=1900;
+
+
+
+    for(int i = 0; i<quantidade; i++){
+        if(contas[i].dataAluga.tm_year >= data.tm_year && contas[i].dataAluga.tm_year <= dataFim.tm_year ||
+
+        (contas[i].dataAluga.tm_year >= data.tm_year && contas[i].dataAluga.tm_year <= dataFim.tm_year &&
+        contas[i].dataAluga.tm_mon >= data.tm_mon && contas[i].dataAluga.tm_mon <= dataFim.tm_mon) ||
+
+        (contas[i].dataAluga.tm_year >= data.tm_year && contas[i].dataAluga.tm_year <= dataFim.tm_year &&
+        contas[i].dataAluga.tm_mon >= data.tm_mon && contas[i].dataAluga.tm_mon <= dataFim.tm_mon &&
+        contas[i].dataAluga.tm_mday >= data.tm_mday && contas[i].dataAluga.tm_mday <= dataFim.tm_mday)
+        ){
+
+
+            dest[0] = (!quantidadeContasFiltradas)?malloc(sizeof(contaArec)):realloc(dest[0], sizeof(contaArec)*(quantidadeContasFiltradas+1));
+            verificaOperacao(dest[0], "ERRO: Memoria indisponivel!", 1);
+
+            dest[0][quantidadeContasFiltradas] = contas[i];
+            quantidadeContasFiltradas++;
+
+        }
+    }
+    return quantidadeContasFiltradas;
+
+
+}
+void mostraContasFiltradas(contaArec *contas, int quantidadeContas, int modoArm, int (*filtra)(contaArec *, int, contaArec **, int), char *mensagem, char *mensagemCasoNaoExis){
     contaArec *contasAtrasadas = NULL;
     int quantidadeContasAtrasadas = 0;
     quantidadeContasAtrasadas = (*filtra)(contas, quantidadeContas, &contasAtrasadas, modoArm);
 
     if(!quantidadeContasAtrasadas){
 
-        if(filtra == filtraContasClientes) {
-            printf("nao existem contas desse cliente!\n");
-        }else
-            if(filtra == filtraContasQuantidadeParcelas) {
-                printf("nao existem contas que restam essa quantidade de parcelas!\n");
-            }else{
-                printf("nao existem contas atrasadas!\n");
-            }
+        printf(mensagemCasoNaoExis);
         Sleep(2000);
         return;
     }
@@ -471,23 +529,25 @@ void consultaLancamentos(int modoArm){
     
 
 
-    escolha = escolheMenu("Escolha o modo de filtragem", 4, 0,"Contas atrasadas", "Contas de um cliente", "parcelas restantes","Voltar");
+    escolha = escolheMenu("Escolha o modo de filtragem", 6, 0,"Contas atrasadas", "Contas de um cliente", "parcelas restantes", "Filtrar por data especifica", "Filtrar contas que vencem em algum mes","Voltar");
     switch(escolha){
         case 0:
-            mostraContasFiltradas(contas, quantidadeContas, modoArm, filtraContasAtrasadas, "Contas atrasadas:\n");
+            mostraContasFiltradas(contas, quantidadeContas, modoArm, filtraContasAtrasadas, "Contas atrasadas:\n", "Nao existem contas atrasadas");
             break;
 
         case 1:
-            mostraContasFiltradas(contas, quantidadeContas, modoArm, filtraContasClientes, "Contas do cliente:\n");
+            mostraContasFiltradas(contas, quantidadeContas, modoArm, filtraContasClientes, "Contas do cliente:\n", "Nao existem contas deste cliente");
             break;
 
         case 2:
-            mostraContasFiltradas(contas, quantidadeContas, modoArm, filtraContasQuantidadeParcelas, "Contas pela quantidade de parcelas");
+            mostraContasFiltradas(contas, quantidadeContas, modoArm, filtraContasQuantidadeParcelas, "Contas pela quantidade de parcelas\n", "Nao existem contas com essa quantidade de parcelas faltando");
             break;
         case 3:
+            mostraContasFiltradas(contas, quantidadeContas, modoArm, filtraPorData, "Contas pela filtragem da data especifica digitada\n", "Nao existe conta neste periodo digitado");
             break;
-
-        
+        case 4:
+            mostraContasFiltradas(contas, quantidadeContas, modoArm, filtraContasVencimentoMes, "Contas que vencem no mes escolhido:\n", "Nao existem contas que vencem neste mes");
+            break;
 
     }
     contas = limpaMemoria(contas);

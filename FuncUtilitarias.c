@@ -15,6 +15,7 @@
 #include "ContasAreceber.h"
 #include "Devolucoes.h"
 #include <conio.h>
+#include "menus.h"
 #define ESC 27
 #define VAZIO NULL
 
@@ -29,7 +30,7 @@ int contaQuantidadeExistente(size_t tamanho, void *ptr, int quantidade){
                     quantidadeExistente++;
                 }
             }
-            return quantidade;
+            return quantidadeExistente;
 
         case sizeof(categoria):
             for(int i = 0; i<quantidade; i++){
@@ -339,6 +340,165 @@ void listaPeloCodigo(void *ptr, int quantidade, void (*funcaoDeMostrar)(void *, 
     funcaoDeMostrar(endOlhar, 1);
 
 
+
+
+}
+
+void* menuOpcoesFilmesOuClientes(void *todos, int quantidade, char *mensagem, int ignoraApagados, size_t tamanho){
+    system("clear");
+    int quantidadeExistente = (!ignoraApagados)?contaQuantidadeExistente(tamanho, todos, quantidade):quantidade;
+    int indice = 0;
+    int contador = 0;
+    int escolha = 0;
+    char **informacoesEmText = NULL;
+    char *nomeConcat = NULL;
+    cliente *ptrClient = NULL;
+    filmes *ptrMovies = NULL;
+    Funcionarios  *ptrFuncs = NULL;
+
+    void *itemProcurado =NULL;
+
+
+    informacoesEmText = malloc(sizeof(char *)*quantidadeExistente);
+
+    switch (tamanho) {
+
+        case sizeof(cliente):
+            ptrClient = todos;
+
+            for(int i = 0; i<quantidade; i++){
+                if(ptrClient[i].flag){
+                    escolha = strlen(ptrClient[i].nomeCompleto)+1;
+                    informacoesEmText[indice] = malloc(sizeof(char)*escolha);
+                    strcpy(informacoesEmText[indice], ptrClient[i].nomeCompleto);
+
+                    escolha+=strlen("; CPF: ")+1;
+                    informacoesEmText[indice] = realloc(informacoesEmText[indice], sizeof(char)*escolha);
+                    strcat(informacoesEmText[indice], "; CPF: ");
+
+                    escolha += strlen(ptrClient[i].cpf)+1;
+                    informacoesEmText[indice] = realloc(informacoesEmText[indice], sizeof(char)*escolha);
+                    strcat(informacoesEmText[indice], ptrClient[i].cpf);
+
+                    indice++;
+
+                }
+            }
+            break;
+
+        case sizeof(filmes):
+            ptrMovies = todos;
+
+            for(int i = 0; i<quantidade; i++){
+                if(ptrMovies[i].flag){
+                    escolha += strlen(ptrMovies[i].nome)+1;
+                    informacoesEmText[indice] = malloc(sizeof(char)*escolha);
+                    strcpy(informacoesEmText[indice], ptrMovies[i].nome);
+
+                    escolha += strlen("; Quant: ")+1;
+                    informacoesEmText[indice] = realloc(informacoesEmText[indice], sizeof(char)*escolha);
+                    strcat(informacoesEmText[indice], "; Quant: ");
+
+                    nomeConcat = converteIntEmString(ptrMovies[i].exemplares);
+                    escolha += strlen(nomeConcat)+1;
+                    informacoesEmText[indice] = realloc(informacoesEmText[indice], sizeof(char)*escolha);
+                    strcat(informacoesEmText[indice], nomeConcat);
+                    nomeConcat = limpaMemoria(nomeConcat);
+
+                    escolha += strlen("; Val: ")+1;
+                    informacoesEmText[indice] = realloc(informacoesEmText[indice], sizeof(char)*escolha);
+                    strcat(informacoesEmText[indice], "; Val: ");
+
+                    nomeConcat = converteFloatemString(ptrMovies[i].valorLocacao, 2);
+                    escolha += strlen(nomeConcat)+1;
+                    informacoesEmText[indice] = realloc(informacoesEmText[indice], sizeof(char)*escolha);
+                    strcat(informacoesEmText[indice], nomeConcat);
+                    nomeConcat = limpaMemoria(nomeConcat);
+
+                    indice++;
+
+                }
+            }
+            break;
+
+        case sizeof(Funcionarios):
+            ptrFuncs = todos;
+
+            for(int i = 0; i<quantidade; i++){
+                if(ptrFuncs[i].flag){
+                    escolha = strlen(ptrFuncs[i].nome)+1;
+                    informacoesEmText[indice] = malloc(sizeof(char)*escolha);
+                    strcpy(informacoesEmText[indice], ptrFuncs[i].nome);
+
+                    escolha += strlen("; Cod: ")+1;
+                    informacoesEmText[indice] = realloc(informacoesEmText[indice], sizeof(char)*escolha);
+                    strcat(informacoesEmText[indice], "; Cod: ");
+
+                    nomeConcat = converteIntEmString(ptrFuncs[i].codigo);
+                    escolha += strlen(nomeConcat)+1;
+                    informacoesEmText[indice] = realloc(informacoesEmText[indice], sizeof(char)*escolha);
+                    strcat(informacoesEmText[indice], nomeConcat);
+                    nomeConcat = limpaMemoria(nomeConcat);
+
+                    escolha += strlen(ptrFuncs[i].cargo)+4;
+                    informacoesEmText[indice] = realloc(informacoesEmText[indice], sizeof(char)*escolha);
+                    strcat(informacoesEmText[indice], "; ");
+                    strcat(informacoesEmText[indice], ptrFuncs[i].cargo);
+
+                    indice++;
+
+
+
+                }
+            }
+            break;
+
+
+
+
+    }
+    while(escolha != 13){
+        menuGraphicsComSeta(quantidadeExistente, mensagem, contador, informacoesEmText, 60);
+        escolha = escolheOpcao();
+
+        switch (escolha) {
+
+            case 80:
+                if(contador <quantidadeExistente-1){
+                    contador++;
+                }else{
+                    contador = 0;
+                }
+                break;
+            case 72:
+                if(contador > 0){
+                    contador--;
+                }else{
+                    contador = quantidadeExistente-1;
+                }
+                break;
+        }
+    }
+    switch(tamanho){
+        case sizeof(cliente):
+            itemProcurado = (void *)encontraClienteNome(ptrClient, quantidade, strtok(informacoesEmText[contador], ";"));
+            break;
+        case sizeof(Funcionarios):
+            itemProcurado = (void *) encontraFuncionarioNome(ptrFuncs, strtok(informacoesEmText[contador], ";"), quantidade, NULL);
+            break;
+
+        case sizeof(filmes):
+            itemProcurado = (void *) encontraFilmeNome(ptrMovies, quantidade, strtok(informacoesEmText[contador], ";"));
+            break;
+    }
+
+    for(int i = 0; i<quantidadeExistente; i++){
+        informacoesEmText[i] = limpaMemoria(informacoesEmText[i]);
+    }
+    informacoesEmText = limpaMemoria(informacoesEmText);
+
+
+    return itemProcurado;
 
 
 }

@@ -103,6 +103,12 @@ void alocaFilmes(filmes **filmesAlocados, int *quantidade, filmes *lista, int qu
                 filmesAlocados[0] = deletaFilmeCarrinho(filmesAlocados[0], quantidade, lista, quantidadeLista);
                 continue;
             case 61:
+                if(*quantidade == 0){
+                    printf("primeiro, selecione algum filme!\n");
+                    escolha = 0;
+                    Sleep(2000);
+                    continue;
+                }
                 break;
             default:
                 printf("voce escolheu uma opcao invalida, escolha novamente!\n");

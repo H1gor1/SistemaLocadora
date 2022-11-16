@@ -1382,6 +1382,7 @@ CMakeFiles/untitled.dir/ControleFilmes.c.obj: ../ControleFilmes.c \
   C:/Program\ Files/JetBrains/CLion\ 2022.2.4/bin/mingw/x86_64-w64-mingw32/include/winsvc.h \
   C:/Program\ Files/JetBrains/CLion\ 2022.2.4/bin/mingw/x86_64-w64-mingw32/include/mcx.h \
   C:/Program\ Files/JetBrains/CLion\ 2022.2.4/bin/mingw/x86_64-w64-mingw32/include/imm.h \
+  ../ControleClientes.h \
   C:/Program\ Files/JetBrains/CLion\ 2022.2.4/bin/mingw/x86_64-w64-mingw32/include/conio.h \
   C:/Program\ Files/JetBrains/CLion\ 2022.2.4/bin/mingw/x86_64-w64-mingw32/include/sec_api/conio_s.h
 
@@ -1703,7 +1704,8 @@ CMakeFiles/untitled.dir/FuncUtilitarias.c.obj: ../FuncUtilitarias.c \
   C:/Program\ Files/JetBrains/CLion\ 2022.2.4/bin/mingw/x86_64-w64-mingw32/include/conio.h \
   C:/Program\ Files/JetBrains/CLion\ 2022.2.4/bin/mingw/lib/gcc/x86_64-w64-mingw32/11.2.0/include/stddef.h \
   C:/Program\ Files/JetBrains/CLion\ 2022.2.4/bin/mingw/x86_64-w64-mingw32/include/stddef.h \
-  C:/Program\ Files/JetBrains/CLion\ 2022.2.4/bin/mingw/x86_64-w64-mingw32/include/sec_api/conio_s.h
+  C:/Program\ Files/JetBrains/CLion\ 2022.2.4/bin/mingw/x86_64-w64-mingw32/include/sec_api/conio_s.h \
+  ../menus.h
 
 CMakeFiles/untitled.dir/ManipulacoesDeTexto.c.obj: ../ManipulacoesDeTexto.c \
   C:/Program\ Files/JetBrains/CLion\ 2022.2.4/bin/mingw/x86_64-w64-mingw32/include/stdio.h \
