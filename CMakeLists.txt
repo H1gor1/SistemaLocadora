@@ -17,4 +17,4 @@ add_executable(untitled main.c Caixa.c Caixa.h
         FuncUtilitarias.c FuncUtilitarias.h
         ManipulacoesDeTexto.c ManipulacoesDeTexto.h
         menus.c menus.h
-        EntradaDeFilmes.c EntradaDeFilmes.h)
+        EntradaDeFilmes.c EntradaDeFilmes.h ContasAPagar.c ContasAPagar.h)
