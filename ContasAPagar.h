@@ -19,7 +19,7 @@ void reescreveEntradasAprazoBin(contaApag *contas, int quantidade, char *nomeArq
 int leDadosEntradasAprazo(contaApag **contas);
 int leDadosEntradasAprazoBin(contaApag **contas);
 void LancaEntradaOuParcela_EntradaFilmes(contaApag *contaP, int modoArm, float preco);
-void realizaEntradaAprazo(entrada *entradas, int modoArm);
+void realizaEntradaAprazo(entrada *entradas, int modoArm, float valorCaixa);
 contaApag *encontraEntradaCodigo(contaApag *conta, int quantidade, long int codigo);
 void consultaEntradas(contaApag *contas, int quantidade);
 int BaixaEntradasFilmes(int modoArm);

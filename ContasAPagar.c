@@ -172,14 +172,21 @@ void LancaEntradaOuParcela_EntradaFilmes(contaApag *contaP, int modoArm, float p
     return;
 }
 
-void realizaEntradaAprazo(entrada *entradas, int modoArm){
+void realizaEntradaAprazo(entrada *entradas, int modoArm, float valorCaixa){
     contaApag Aprazo;
 
     Aprazo.dataAluga = entradas->data;
     Aprazo.codigoCompra = entradas->codigo;
+    double porcentagem = 0.30;
 
-    printf("Digite o valor de entrada:\n");
-    verificaLimiteNumero(&Aprazo.entrada, entradas->precoTotal*0.30, 0, "%f");
+    if((100*valorCaixa)/entradas->precoTotal < 0.30){
+        porcentagem = (100*valorCaixa)/entradas->precoTotal;
+    }
+
+    if(porcentagem > 0){
+        printf("Digite o valor de entrada:\n");
+        verificaLimiteNumero(&Aprazo.entrada, porcentagem, 0, "%f");
+    }
 
     printf("Digite a quantidade de parcelas o cliente deseja dividir:\n");
     verificaLimiteNumero(&Aprazo.parcelas, MAXIMOPARCELAS, 1, "%d");

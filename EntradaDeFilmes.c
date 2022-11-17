@@ -294,16 +294,15 @@ void realizaEntrada(int modoAbertura){
                 compraAvistaEntrada(&EntradaAtual, modoAbertura);
                 break;
             case 2:
-                realizaEntradaAprazo(&EntradaAtual, modoAbertura);
+                realizaEntradaAprazo(&EntradaAtual, modoAbertura, valorCaixa);
                 break;
 
         }
     } else {
         EntradaAtual.modoPagamento = escolheMenu("Escolha o modo de pagamento", 2, 0,"A prazo", "Sair")+1;
         switch(EntradaAtual.modoPagamento){
-
             case 1:
-                realizaEntradaAprazo(&EntradaAtual, modoAbertura);
+                realizaEntradaAprazo(&EntradaAtual, modoAbertura, valorCaixa);
                 break;
             case 2:
                 break;
