@@ -88,6 +88,12 @@
 		<Unit filename="C:/Users/vitor/CLionProjects/SistemaLocadora/Carrinho.h">
 			<Option target="untitled"/>
 		</Unit>
+		<Unit filename="C:/Users/vitor/CLionProjects/SistemaLocadora/ContasAPagar.c">
+			<Option target="untitled"/>
+		</Unit>
+		<Unit filename="C:/Users/vitor/CLionProjects/SistemaLocadora/ContasAPagar.h">
+			<Option target="untitled"/>
+		</Unit>
 		<Unit filename="C:/Users/vitor/CLionProjects/SistemaLocadora/ContasAreceber.h">
 			<Option target="untitled"/>
 		</Unit>
@@ -125,6 +131,12 @@
 			<Option target="untitled"/>
 		</Unit>
 		<Unit filename="C:/Users/vitor/CLionProjects/SistemaLocadora/Devolucoes.h">
+			<Option target="untitled"/>
+		</Unit>
+		<Unit filename="C:/Users/vitor/CLionProjects/SistemaLocadora/EntradaDeFilmes.c">
+			<Option target="untitled"/>
+		</Unit>
+		<Unit filename="C:/Users/vitor/CLionProjects/SistemaLocadora/EntradaDeFilmes.h">
 			<Option target="untitled"/>
 		</Unit>
 		<Unit filename="C:/Users/vitor/CLionProjects/SistemaLocadora/FuncUtilitarias.c">

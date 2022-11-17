@@ -16,6 +16,8 @@
 #include "Devolucoes.h"
 #include <conio.h>
 #include "menus.h"
+#include "EntradaDeFilmes.h"
+#include "ContasAPagar.h"
 #define ESC 27
 #define VAZIO NULL
 
@@ -162,6 +164,9 @@ void trocaModoArmazenamento(int *modo){
     lancamentoCaixa *lancamentos = NULL;
     contaArec *lancAprazo = NULL;
     compras *devolucoes = NULL;
+    contaApag *contasApagar = NULL;
+    lancamentoEntradas *lancamentosDeEntradas = NULL;
+
     
     int quantidadeFornecedores;
     quantidades quant;
@@ -169,6 +174,8 @@ void trocaModoArmazenamento(int *modo){
     
     int quantidadeLancamentosCaixa;
     int quantidadeLancamentosAprazo;
+    int quantidadeLancamentosEntradas;
+    int quantidadeContaApag;
     FILE *f;//ponteiro para o arquivo de onde os dados serao lidos ou guardados
     
     /*se modo for 1, entao trocar de binario pra texto*/
@@ -181,6 +188,8 @@ void trocaModoArmazenamento(int *modo){
         quantidadeFornecedores = leDadosFornecedoresBin(&fornecedores);
         quantidadeLancamentosCaixa = leDadosLancamentosBin(&lancamentos);
         quantidadeLancamentosAprazo = leDadosLancamentosAprazoBin(&lancAprazo);
+        quantidadeContaApag = leDadosEntradasAprazoBin(&contasApagar);
+        quantidadeLancamentosEntradas = leDadosEntradasFilmesBin(&lancamentosDeEntradas);
         
         
         
@@ -201,8 +210,10 @@ void trocaModoArmazenamento(int *modo){
         reescreveLancamentosCaixa(lancamentos, quantidadeLancamentosCaixa, "lancamentos.txt", "lancamentos.txt", "w");
         reescreveLancamentosAprazo(lancAprazo, quantidadeLancamentosAprazo, "lancamentosAprazo.txt", "lancamentosAprazo.txt", "w");
         reescreveDadosDevolucoes(devolucoes, quant.quantidadeAlugacoes, "devolucoes.txt", "devolucoes.txt", "w");
+        reescreveEntradaAprazo(contasApagar, quantidadeContaApag, "entradaAprazo.txt", "entradaAprazo.txt", "w");
+        reescreveLancamentosEntrada(lancamentosDeEntradas, quantidadeLancamentosEntradas, "lancamentosEntrada.txt", "lancamentosEntrada.txt", "w");
         //correcao feita apos a apresentacao, problema apontado pelo manoel
-        removeArquivos(9, "locadora.bin", "clientes.bin", "Funcionarios.bin", "categorias.bin", "filmes.bin", "fornecedores.bin", "lancamentos.bin", "lancamentosAprazo.bin", "devolucoes.bin");
+        removeArquivos(11, "lancamentosEntrada.bin","entradaAprazo.bin","locadora.bin", "clientes.bin", "Funcionarios.bin", "categorias.bin", "filmes.bin", "fornecedores.bin", "lancamentos.bin", "lancamentosAprazo.bin", "devolucoes.bin");
         *modo = 0;
         
         
@@ -217,6 +228,8 @@ void trocaModoArmazenamento(int *modo){
         quantidadeFornecedores = leDadosFornecedores(&fornecedores);
         quantidadeLancamentosCaixa = leDadosLancamentos(&lancamentos);
         quantidadeLancamentosAprazo = leDadosLancamentosAprazo(&lancAprazo);
+        quantidadeContaApag = leDadosEntradasAprazo(&contasApagar);
+        quantidadeLancamentosEntradas = leDadosLancamentoEntradasFilmes(&lancamentosDeEntradas);
         /*apaga os arquivos de texto*/
        
         
@@ -238,9 +251,9 @@ void trocaModoArmazenamento(int *modo){
         reescreveLancamentosCaixaBin(lancamentos, quantidadeLancamentosCaixa, "lancamentos.bin", "lancamentos.bin", "wb");
         reescreveLancamentosAprazoBin(lancAprazo, quantidadeLancamentosAprazo, "lancamentosAprazo.bin", "lancamentosAprazo.bin", "wb");
         reescreveDadosDevolucoesBin(devolucoes, quant.quantidadeAlugacoes, "devolucoes.bin", "devolucoes.bin", "wb");
-        
-        /*correcao feita em sala de aula de um problema apontado pelo manoel*/
-        removeArquivos(9, "locadora.txt", "clientes.txt", "Funcionarios.txt", "categorias.txt", "filmes.txt", "fornecedores.txt", "lancamentos.txt", "lancamentosAprazo.txt", "devolucoes.txt");
+        reescreveEntradasAprazoBin(contasApagar, quantidadeContaApag, "entradaAprazo.bin", "entradaAprazo.bin", "wb");
+        reescreveLancamentosEntradaBin(lancamentosDeEntradas, quantidadeLancamentosEntradas, "lancamentosEntrada.bin", "lancamentosEntrada.bin", "wb");
+        removeArquivos(11, "lancamentosEntrada.txt","entradaAprazo.txt","locadora.txt", "clientes.txt", "Funcionarios.txt", "categorias.txt", "filmes.txt", "fornecedores.txt", "lancamentos.txt", "lancamentosAprazo.txt", "devolucoes.txt");
         *modo = 1;//muda o modo de abertura pra 1, que significa binario
         
     }
@@ -280,6 +293,12 @@ void trocaModoArmazenamento(int *modo){
     
     if(categorias){
         categorias = limpaMemoria(categorias);
+    }
+    if(contasApagar){
+        contasApagar = limpaMemoria(contasApagar);
+    }
+    if(lancamentosDeEntradas){
+        lancamentosDeEntradas = limpaMemoria(lancamentosDeEntradas);
     }
     
     

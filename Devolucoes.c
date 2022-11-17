@@ -112,7 +112,7 @@ quantidades leDadosDevolucoes(compras ** dev, Funcionarios **func, cliente **cli
         
         for(int j = 0; j<dev[0][quants.quantidadeAlugacoes].quantidadeFilmesComprados; j++){
             fscanf(f, "%d ", &codigo);
-            dev[0][quants.quantidadeAlugacoes].filmesComprados[j] = *encontraFilmeCodigo(movies[0], quants.quantidadesFilmes, converteIntEmString(codigo), 0);
+            dev[0][quants.quantidadeAlugacoes].filmesComprados[j] = *encontraFilmeCodigo(movies[0], quants.quantidadesFilmes, converteIntEmString(codigo), 1);
             fscanf(f, "%d ", &dev[0][quants.quantidadeAlugacoes].filmesComprados[j].exemplares);
         }
         fscanf(f, "%d  ", &dev[0][quants.quantidadeAlugacoes].devolvido);
@@ -179,7 +179,7 @@ quantidades leDadosDevolucoesBin(compras **dev, Funcionarios **func, cliente **c
         dev[0][quants.quantidadeAlugacoes].filmesComprados = malloc(sizeof(filmes)*(dev[0][quants.quantidadeAlugacoes].quantidadeFilmesComprados));
         for(int j = 0; j<dev[0][quants.quantidadeAlugacoes].quantidadeFilmesComprados; j++){
             fread(&codigo1, sizeof(int), 1, f);
-            dev[0][quants.quantidadeAlugacoes].filmesComprados[j] = *encontraFilmeCodigo(movies[0], quants.quantidadesFilmes, converteIntEmString(codigo1), 0);
+            dev[0][quants.quantidadeAlugacoes].filmesComprados[j] = *encontraFilmeCodigo(movies[0], quants.quantidadesFilmes, converteIntEmString(codigo1), 1);
             fread(&dev[0][quants.quantidadeAlugacoes].filmesComprados[j].exemplares, sizeof(int), 1, f);
         }
         fread(&dev[0][quants.quantidadeAlugacoes].devolvido, sizeof(int), 1, f);

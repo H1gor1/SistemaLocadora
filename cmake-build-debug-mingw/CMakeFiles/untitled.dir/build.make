@@ -278,6 +278,34 @@ CMakeFiles/untitled.dir/menus.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/untitled.dir/menus.c.s"
 	C:\PROGRA~1\JETBRA~1\CLION2~1.4\bin\mingw\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\vitor\CLionProjects\SistemaLocadora\menus.c -o CMakeFiles\untitled.dir\menus.c.s
 
+CMakeFiles/untitled.dir/ContasAPagar.c.obj: CMakeFiles/untitled.dir/flags.make
+CMakeFiles/untitled.dir/ContasAPagar.c.obj: ../ContasAPagar.c
+CMakeFiles/untitled.dir/ContasAPagar.c.obj: CMakeFiles/untitled.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\vitor\CLionProjects\SistemaLocadora\cmake-build-debug-mingw\CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Building C object CMakeFiles/untitled.dir/ContasAPagar.c.obj"
+	C:\PROGRA~1\JETBRA~1\CLION2~1.4\bin\mingw\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/untitled.dir/ContasAPagar.c.obj -MF CMakeFiles\untitled.dir\ContasAPagar.c.obj.d -o CMakeFiles\untitled.dir\ContasAPagar.c.obj -c C:\Users\vitor\CLionProjects\SistemaLocadora\ContasAPagar.c
+
+CMakeFiles/untitled.dir/ContasAPagar.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/untitled.dir/ContasAPagar.c.i"
+	C:\PROGRA~1\JETBRA~1\CLION2~1.4\bin\mingw\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\vitor\CLionProjects\SistemaLocadora\ContasAPagar.c > CMakeFiles\untitled.dir\ContasAPagar.c.i
+
+CMakeFiles/untitled.dir/ContasAPagar.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/untitled.dir/ContasAPagar.c.s"
+	C:\PROGRA~1\JETBRA~1\CLION2~1.4\bin\mingw\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\vitor\CLionProjects\SistemaLocadora\ContasAPagar.c -o CMakeFiles\untitled.dir\ContasAPagar.c.s
+
+CMakeFiles/untitled.dir/EntradaDeFilmes.c.obj: CMakeFiles/untitled.dir/flags.make
+CMakeFiles/untitled.dir/EntradaDeFilmes.c.obj: ../EntradaDeFilmes.c
+CMakeFiles/untitled.dir/EntradaDeFilmes.c.obj: CMakeFiles/untitled.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\vitor\CLionProjects\SistemaLocadora\cmake-build-debug-mingw\CMakeFiles --progress-num=$(CMAKE_PROGRESS_17) "Building C object CMakeFiles/untitled.dir/EntradaDeFilmes.c.obj"
+	C:\PROGRA~1\JETBRA~1\CLION2~1.4\bin\mingw\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/untitled.dir/EntradaDeFilmes.c.obj -MF CMakeFiles\untitled.dir\EntradaDeFilmes.c.obj.d -o CMakeFiles\untitled.dir\EntradaDeFilmes.c.obj -c C:\Users\vitor\CLionProjects\SistemaLocadora\EntradaDeFilmes.c
+
+CMakeFiles/untitled.dir/EntradaDeFilmes.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/untitled.dir/EntradaDeFilmes.c.i"
+	C:\PROGRA~1\JETBRA~1\CLION2~1.4\bin\mingw\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\vitor\CLionProjects\SistemaLocadora\EntradaDeFilmes.c > CMakeFiles\untitled.dir\EntradaDeFilmes.c.i
+
+CMakeFiles/untitled.dir/EntradaDeFilmes.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/untitled.dir/EntradaDeFilmes.c.s"
+	C:\PROGRA~1\JETBRA~1\CLION2~1.4\bin\mingw\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\vitor\CLionProjects\SistemaLocadora\EntradaDeFilmes.c -o CMakeFiles\untitled.dir\EntradaDeFilmes.c.s
+
 # Object files for target untitled
 untitled_OBJECTS = \
 "CMakeFiles/untitled.dir/main.c.obj" \
@@ -294,7 +322,9 @@ untitled_OBJECTS = \
 "CMakeFiles/untitled.dir/fornecedores.c.obj" \
 "CMakeFiles/untitled.dir/FuncUtilitarias.c.obj" \
 "CMakeFiles/untitled.dir/ManipulacoesDeTexto.c.obj" \
-"CMakeFiles/untitled.dir/menus.c.obj"
+"CMakeFiles/untitled.dir/menus.c.obj" \
+"CMakeFiles/untitled.dir/ContasAPagar.c.obj" \
+"CMakeFiles/untitled.dir/EntradaDeFilmes.c.obj"
 
 # External object files for target untitled
 untitled_EXTERNAL_OBJECTS =
@@ -314,11 +344,13 @@ untitled.exe: CMakeFiles/untitled.dir/fornecedores.c.obj
 untitled.exe: CMakeFiles/untitled.dir/FuncUtilitarias.c.obj
 untitled.exe: CMakeFiles/untitled.dir/ManipulacoesDeTexto.c.obj
 untitled.exe: CMakeFiles/untitled.dir/menus.c.obj
+untitled.exe: CMakeFiles/untitled.dir/ContasAPagar.c.obj
+untitled.exe: CMakeFiles/untitled.dir/EntradaDeFilmes.c.obj
 untitled.exe: CMakeFiles/untitled.dir/build.make
 untitled.exe: CMakeFiles/untitled.dir/linklibs.rsp
 untitled.exe: CMakeFiles/untitled.dir/objects1.rsp
 untitled.exe: CMakeFiles/untitled.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=C:\Users\vitor\CLionProjects\SistemaLocadora\cmake-build-debug-mingw\CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Linking C executable untitled.exe"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=C:\Users\vitor\CLionProjects\SistemaLocadora\cmake-build-debug-mingw\CMakeFiles --progress-num=$(CMAKE_PROGRESS_18) "Linking C executable untitled.exe"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles\untitled.dir\link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

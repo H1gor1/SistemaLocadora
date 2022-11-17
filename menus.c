@@ -21,6 +21,8 @@
 #define ED "Editar"
 #define APG "Apagar"
 #define VLT "Voltar"
+#include "ContasAPagar.h"
+#include "EntradaDeFilmes.h"
 #define ESC 27
 #define MENUPRINC  menuGraphics(8, "Menu principal, escolha uma opcao:", "Administrativo", "Clientes", "Filmes", "Categorias", "Trocar modo arm BIN/TXT", "Caixa", "Contas", "Sair")
 void imprimeEspacamentoMaior(int espacamento, char letra, char letraFim){
@@ -167,8 +169,8 @@ int menuPrincipal(int *modo){
 
     int escolha;
     printf("\n");
-    escolha = escolheMenu("Seja bem vindo! Escolha uma opcao", 8, 0,"Administrativo", "Clientes", "Filmes", "Categorias", "Trocar modo arm BIN/TXT", "Caixa", "Contas", "Sair");
-    while(escolha != 7){
+    escolha = escolheMenu("Seja bem vindo! Escolha uma opcao", 9, 0,"Administrativo", "Clientes", "Filmes", "Categorias", "Trocar modo arm BIN/TXT", "Caixa", "Contas a receber","Contas a Pagar", "Sair");
+    while(escolha != 8){
 
         switch(escolha){
             case 0:
@@ -199,14 +201,17 @@ int menuPrincipal(int *modo){
                 menuContas(*modo);
                 break;
             case 7:
+                menuContasPagar(*modo);
+                break;
+            case 8:
                 break;
 
 
             default:
                 printf("Opcao invalida!\n");
         }
-        if(escolha != 7){
-            escolha = escolheMenu("Menu principal. Escolha uma opcao", 8, 0,"Administrativo", "Clientes", "Filmes", "Categorias", "Trocar modo arm BIN/TXT", "Caixa", "Contas", "Sair");
+        if(escolha != 8){
+            escolha = escolheMenu("Menu principal. Escolha uma opcao", 9, 0,"Administrativo", "Clientes", "Filmes", "Categorias", "Trocar modo arm BIN/TXT", "Caixa", "Contas a receber", "Contas a pagar" ,"Sair");
         }
     }
 }
@@ -334,8 +339,8 @@ int MenuFuncionarios(int modo){
 int MenuFilmes(int modo){
 
     int escolha;
-    while(escolha != 4){
-        escolha = escolheMenu(OPCAO, 5, 0,CAD, ED, APG, "Filtrar filme", VLT);
+    while(escolha != 5){
+        escolha = escolheMenu(OPCAO, 6, 0,CAD, ED, APG, "Filtrar filme", "Realizar entrada", VLT);
         switch(escolha){
             case 0:
 
@@ -356,6 +361,9 @@ int MenuFilmes(int modo){
                 listaFilme(modo);
                 break;
             case 4:
+                realizaEntrada(modo);
+                break;
+            case 5:
                 break;
             default:
                 printf("Opcao invalida");
@@ -483,5 +491,27 @@ void menuCaixa(int modoArm){
                 
         }
 
+    }
+}
+void menuContasPagar(int modoArm){
+    int escolha;
+    while(escolha!=2){
+        escolha = escolheMenu("Menu de contas a pagar", 3, 0,"Dar baixa", "Consultar conta", "Sair");
+
+        switch(escolha){
+
+            case 0:
+                BaixaEntradasFilmes(modoArm);
+                continue;
+
+            case 1:
+                consultaLancamentosEntrada(modoArm);
+                continue;
+
+            case 2:
+                break;
+
+        }
+        break;
     }
 }

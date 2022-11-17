@@ -8,6 +8,8 @@
 #include "FuncUtilitarias.h"
 #include "ControleClientes.h"
 #include "controleFuncionarios.h"
+#include "EntradaDeFilmes.h"
+#include "ContasAPagar.h"
 #include "ControleFilmes.h"
 #include "menus.h"
 

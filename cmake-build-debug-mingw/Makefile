@@ -176,6 +176,30 @@ Carrinho.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\untitled.dir\build.make CMakeFiles/untitled.dir/Carrinho.c.s
 .PHONY : Carrinho.c.s
 
+ContasAPagar.obj: ContasAPagar.c.obj
+.PHONY : ContasAPagar.obj
+
+# target to build an object file
+ContasAPagar.c.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\untitled.dir\build.make CMakeFiles/untitled.dir/ContasAPagar.c.obj
+.PHONY : ContasAPagar.c.obj
+
+ContasAPagar.i: ContasAPagar.c.i
+.PHONY : ContasAPagar.i
+
+# target to preprocess a source file
+ContasAPagar.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\untitled.dir\build.make CMakeFiles/untitled.dir/ContasAPagar.c.i
+.PHONY : ContasAPagar.c.i
+
+ContasAPagar.s: ContasAPagar.c.s
+.PHONY : ContasAPagar.s
+
+# target to generate assembly for a file
+ContasAPagar.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\untitled.dir\build.make CMakeFiles/untitled.dir/ContasAPagar.c.s
+.PHONY : ContasAPagar.c.s
+
 ControleCategorias.obj: ControleCategorias.c.obj
 .PHONY : ControleCategorias.obj
 
@@ -319,6 +343,30 @@ Devolucoes.s: Devolucoes.c.s
 Devolucoes.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\untitled.dir\build.make CMakeFiles/untitled.dir/Devolucoes.c.s
 .PHONY : Devolucoes.c.s
+
+EntradaDeFilmes.obj: EntradaDeFilmes.c.obj
+.PHONY : EntradaDeFilmes.obj
+
+# target to build an object file
+EntradaDeFilmes.c.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\untitled.dir\build.make CMakeFiles/untitled.dir/EntradaDeFilmes.c.obj
+.PHONY : EntradaDeFilmes.c.obj
+
+EntradaDeFilmes.i: EntradaDeFilmes.c.i
+.PHONY : EntradaDeFilmes.i
+
+# target to preprocess a source file
+EntradaDeFilmes.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\untitled.dir\build.make CMakeFiles/untitled.dir/EntradaDeFilmes.c.i
+.PHONY : EntradaDeFilmes.c.i
+
+EntradaDeFilmes.s: EntradaDeFilmes.c.s
+.PHONY : EntradaDeFilmes.s
+
+# target to generate assembly for a file
+EntradaDeFilmes.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\untitled.dir\build.make CMakeFiles/untitled.dir/EntradaDeFilmes.c.s
+.PHONY : EntradaDeFilmes.c.s
 
 FuncUtilitarias.obj: FuncUtilitarias.c.obj
 .PHONY : FuncUtilitarias.obj
@@ -503,6 +551,9 @@ help:
 	@echo ... Carrinho.obj
 	@echo ... Carrinho.i
 	@echo ... Carrinho.s
+	@echo ... ContasAPagar.obj
+	@echo ... ContasAPagar.i
+	@echo ... ContasAPagar.s
 	@echo ... ControleCategorias.obj
 	@echo ... ControleCategorias.i
 	@echo ... ControleCategorias.s
@@ -521,6 +572,9 @@ help:
 	@echo ... Devolucoes.obj
 	@echo ... Devolucoes.i
 	@echo ... Devolucoes.s
+	@echo ... EntradaDeFilmes.obj
+	@echo ... EntradaDeFilmes.i
+	@echo ... EntradaDeFilmes.s
 	@echo ... FuncUtilitarias.obj
 	@echo ... FuncUtilitarias.i
 	@echo ... FuncUtilitarias.s

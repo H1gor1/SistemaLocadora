@@ -174,13 +174,13 @@ filmes *encontraFilmeCodigo(filmes *ptr, int quantidade, char *codigo, int ignor
         return NULL;
     }
     int cod = atoi(codigo);
-    if(cod>=quantidade){
-        return NULL;
+
+    for(int i = 0; i<quantidade; i++){
+        if(ptr[i].codigo == cod && (ptr[i].flag || ignorar)){
+            return ptr+i;
+        }
     }
-    if(ptr[cod].flag == 0 && ignorar){
-        return NULL;
-    }
-    return (ptr+cod);
+    return NULL;
 }
 
 filmes *encontraFilmeNome(filmes *ptr, int quantidade, char *nome){

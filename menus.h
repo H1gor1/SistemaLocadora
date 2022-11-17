@@ -14,4 +14,5 @@ void menuTroca(int *modo);
 void menuContas(int modoArm);
 void menuCaixa(int modoArm);
 int escolheMenu(char *mensagem, int quantidade,int espacamento, ...);
+void menuContasPagar(int modoArm);
 #endif

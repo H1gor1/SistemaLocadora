@@ -34,7 +34,7 @@ void mostraListaFilmesAlocados(filmes *listaAlocacao, int quantidade){
         printf("valor: %.2f\n", calculaPreco(listaAlocacao, quantidade));
     }
 }
-filmes *deletaFilmeCarrinho(filmes *lista, int *quantidade, filmes *listaOriginal, int quantidadeListOriginal){
+filmes *deletaFilmeCarrinho(filmes *lista, int *quantidade, filmes *listaOriginal, int quantidadeListOriginal, int vendaOuEntrada){
     char *codigo;
     filmes *apagar = NULL;
     filmes *novaLista = NULL;
@@ -51,7 +51,7 @@ filmes *deletaFilmeCarrinho(filmes *lista, int *quantidade, filmes *listaOrigina
             
         }else{
             codigo = converteIntEmString(apagar->codigo);
-            encontraFilmeCodigo(listaOriginal, quantidadeListOriginal, codigo, 1)->exemplares +=apagar->exemplares;
+            encontraFilmeCodigo(listaOriginal, quantidadeListOriginal, codigo, 1)->exemplares +=(vendaOuEntrada)?apagar->exemplares:-apagar->exemplares;
             codigo = limpaMemoria(codigo);
         }
     }
@@ -62,53 +62,80 @@ filmes *deletaFilmeCarrinho(filmes *lista, int *quantidade, filmes *listaOrigina
     
 }
 void alocaFilmes(filmes **filmesAlocados, int *quantidade, filmes *lista, int quantidadeLista, int ignora, char *frase){
-    
+
     (*quantidade) = 0;
     filmes *alocAgr = NULL;
+    filmes *casoRepetir = NULL;
     int escolha;
     while(escolha != 61){
         menuGraphics(3, "Selecione uma opcao:", "adicionar filme", "Deletar filme", "fechar lista");
         mostraListaFilmesAlocados(filmesAlocados[0], *quantidade);
         escolha = escolheOpcao();
-        /*adicionar no if uma funcao para verificar se todos os filmes estao zerados*/
+
         switch(escolha){
             case 59:
-            
-                (*quantidade)++;
-                filmesAlocados[0] = (*quantidade==1)
-                        ?malloc(sizeof(filmes)*(*quantidade))
-                        :realloc(filmesAlocados[0], sizeof(filmes)*(*quantidade));
-                verificaOperacao(filmesAlocados[0], ERROMEM, 1);
-                printf("digite o nome ou codigo do filme\n");
-
+                printf("digite o nome ou codigo do filme:\n");
                 do{
 
                     alocAgr = buscaFilme(lista, quantidadeLista, "Nao existe um filme cadastrado com este dado, digite novamente:");
                     if(alocAgr->exemplares == 0 && ignora){
                         printf("Estoque do filme %s esta vazio!\n", alocAgr->nome);
                     }
-                }while(alocAgr->exemplares == 0);
+                }while(alocAgr->exemplares == ((ignora)?0:-1));
+                casoRepetir = encontraFilmeCodigo(filmesAlocados[0], *quantidade, converteIntEmString(alocAgr->codigo), 1);
+                if(casoRepetir && *quantidade){
+                    int quantidadeTemporaria = 0;
+                    printf("digite a quantidade:\n");
+                    if(ignora) {
+                        verificaLimiteNumero(&quantidadeTemporaria, alocAgr->exemplares, 1, "%d");
+                        casoRepetir->exemplares += quantidadeTemporaria;
+                        alocAgr->exemplares-=quantidadeTemporaria;
+                    }else{
+                        verificaNumero(&quantidadeTemporaria, "%d");
+                        casoRepetir->exemplares+=quantidadeTemporaria;
+                        alocAgr->exemplares+=quantidadeTemporaria;
+                    }
+                    printf("%s\n", frase);
+
+                break;
+                }
+                (*quantidade)++;
+                filmesAlocados[0] = (*quantidade==1)
+                                    ?malloc(sizeof(filmes)*(*quantidade))
+                                    :realloc(filmesAlocados[0], sizeof(filmes)*(*quantidade));
+                verificaOperacao(filmesAlocados[0], ERROMEM, 1);
+
+
+
 
                 filmesAlocados[0][(*quantidade)-1] = *alocAgr;
 
+
                 printf("digite a quantidade:\n");
-                verificaLimiteNumero(&filmesAlocados[0][(*quantidade)-1].exemplares, filmesAlocados[0][(*quantidade)-1].exemplares, 1, "%d");
+                if(ignora == 1) {
+                    verificaLimiteNumero(&filmesAlocados[0][(*quantidade) - 1].exemplares,
+                                         alocAgr->exemplares, 1, "%d");
+
+                } else {
+                    verificaNumero(&filmesAlocados[0][(*quantidade - 1)].exemplares, "%d");
+
+                }
                 printf("%s\n", frase);
-                alocAgr->exemplares -= filmesAlocados[0][(*quantidade)-1].exemplares;
+
+                if(ignora == 1){
+                    alocAgr->exemplares -= filmesAlocados[0][(*quantidade)-1].exemplares;
+                } else {
+                    alocAgr->exemplares += filmesAlocados[0][(*quantidade)-1].exemplares;
+                }
+
                 Sleep(1000);
-            
+
                 continue;
-        
+
             case 60:
-                filmesAlocados[0] = deletaFilmeCarrinho(filmesAlocados[0], quantidade, lista, quantidadeLista);
+                filmesAlocados[0] = deletaFilmeCarrinho(filmesAlocados[0], quantidade, lista, quantidadeLista, ignora);
                 continue;
             case 61:
-                if(*quantidade == 0){
-                    printf("primeiro, selecione algum filme!\n");
-                    escolha = 0;
-                    Sleep(2000);
-                    continue;
-                }
                 break;
             default:
                 printf("voce escolheu uma opcao invalida, escolha novamente!\n");
@@ -117,8 +144,8 @@ void alocaFilmes(filmes **filmesAlocados, int *quantidade, filmes *lista, int qu
         }
 
     }
-    
-    
+
+
 }
 void limpaMemoriaRealizaVenda(cliente** clients, int quantidadeClientes, Funcionarios ** func, int quantidadeFuncionarios, filmes ** todosFilmes, int quantidadeFilmes){
     limpaDadosClienteMemoria(clients[0], quantidadeClientes);
