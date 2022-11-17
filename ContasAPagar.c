@@ -16,6 +16,7 @@
 #include <locale.h>
 #include <conio.h>
 #include <windows.h>
+#include "Caixa.h"
 #define ERROMEM "ERRO: Memoria indisponivel!\n"
 #define MAXIMOPARCELAS 3
 #include "ContasAPagar.h"
@@ -177,10 +178,11 @@ void realizaEntradaAprazo(entrada *entradas, int modoArm, float valorCaixa){
 
     Aprazo.dataAluga = entradas->data;
     Aprazo.codigoCompra = entradas->codigo;
-    double porcentagem = 0.30;
+    double porcentagem = 0.30 * entradas->precoTotal;
 
-    if((100*valorCaixa)/entradas->precoTotal < 0.30){
-        porcentagem = (100*valorCaixa)/entradas->precoTotal;
+
+    if(porcentagem > valorCaixa){
+        porcentagem = (valorCaixa/entradas->precoTotal)*entradas->precoTotal;
     }
 
     if(porcentagem > 0){
@@ -206,6 +208,18 @@ void realizaEntradaAprazo(entrada *entradas, int modoArm, float valorCaixa){
     (modoArm == 1)
     ?reescreveEntradasAprazoBin(&Aprazo, 1, "entradaAprazo.bin", "entradaAprazo.bin", "ab")
     :reescreveEntradaAprazo(&Aprazo, 1, "entradaAprazo.txt", "entradaAprazo.txt", "a");
+
+    if(entradas->modoPagamento == 3){
+        lancamentoCaixa caixa = {0,0,0,0,0,0,0,0,0,0, 0, 0, 0,0};
+        caixa.modoPagamento = entradas->modoPagamento;
+        caixa.codigoCompra = entradas->codigo;
+        caixa.data = entradas->data;
+        caixa.valor -= entradas->precoTotal;
+
+        (modoArm)
+        ? reescreveLancamentosCaixaBin(&caixa, 1, "lancamentos.bin", "lancamentos.bin", "ab")
+        : reescreveLancamentosCaixa(&caixa, 1, "lancamentos.txt", "lancamentos.txt", "a");
+    }
     return;
 }
 
