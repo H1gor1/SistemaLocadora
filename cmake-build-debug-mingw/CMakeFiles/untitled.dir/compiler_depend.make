@@ -812,6 +812,7 @@ CMakeFiles/untitled.dir/ContasAPagar.c.obj: ../ContasAPagar.c \
   C:/Program\ Files/JetBrains/CLion\ 2022.2.4/bin/mingw/x86_64-w64-mingw32/include/winsvc.h \
   C:/Program\ Files/JetBrains/CLion\ 2022.2.4/bin/mingw/x86_64-w64-mingw32/include/mcx.h \
   C:/Program\ Files/JetBrains/CLion\ 2022.2.4/bin/mingw/x86_64-w64-mingw32/include/imm.h \
+  ../Caixa.h \
   ../ContasAPagar.h
 
 CMakeFiles/untitled.dir/ControleCategorias.c.obj: ../ControleCategorias.c \

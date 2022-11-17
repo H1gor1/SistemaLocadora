@@ -21,6 +21,7 @@ typedef struct ContagemCaixa{
     float dinheiroLiquido;//valor discontado do troco
     float troco;
     float dinheiroBruto;//valor sem discontar do troco
+    float ValoresRetirados;
 }ContagemCaixa;
 
 typedef struct compras{

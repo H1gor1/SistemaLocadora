@@ -300,7 +300,7 @@ void mostraLancamentos(lancamentoCaixa *todosLancamentos, int quantidade, struct
 
 ContagemCaixa contabilizaCaixa(lancamentoCaixa *todosLancamentos, int quantidade, struct tm* data){
     
-    ContagemCaixa cont = {0,0};
+    ContagemCaixa cont = {0,0,0,0};
     
     
     for(int i = 0; i<quantidade; i++){
@@ -310,6 +310,10 @@ ContagemCaixa contabilizaCaixa(lancamentoCaixa *todosLancamentos, int quantidade
         cont.dinheiroBruto += todosLancamentos[i].valorPago;
         cont.dinheiroLiquido += todosLancamentos[i].valor;
         cont.troco += todosLancamentos[i].troco;
+
+        if(todosLancamentos[i].valor <0){
+            cont.ValoresRetirados += -1*todosLancamentos[i].valor;
+        }
         
         }
     }
@@ -337,8 +341,8 @@ void contaCaixa(int modoArm){
     valores = contabilizaCaixa(todosLancamentos, quantidadeLancamentos, &data);
     mostraLancamentos(todosLancamentos, quantidadeLancamentos, &data);
     
-    printf("\n\nContagem total:\n   valor liquido: %.2f\n   valor bruto: %.2f\n     trocos totais: %.2f\n", valores.dinheiroLiquido, valores.dinheiroBruto, valores.troco);
-    
+    printf("\n\nContagem total:\n   valor liquido: %.2f\n   valor bruto: %.2f\n     trocos totais: %.2f\nValores retirados: %.2f\n", valores.dinheiroLiquido, valores.dinheiroBruto, valores.troco, valores.ValoresRetirados);
+
     printf("digite qualquer tecla para sair.\n");
     getch();
     

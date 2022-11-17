@@ -144,6 +144,7 @@ int escolheMenu(char *mensagem, int quantidade,int espacamentoMaior, ...){
                 }else{
                     contador = 0;
                 }
+                Beep(2000,10);
                 break;
 
             case 72:
@@ -152,12 +153,14 @@ int escolheMenu(char *mensagem, int quantidade,int espacamentoMaior, ...){
                 }else{
                     contador = quantidade-1;
                 }
+                Beep(3000,10);
                 break;
 
             case 13:
                 frases = limpaMemoria(frases);
                 system("clear");
                 va_end(parametros);
+                Beep(10000,10);
                 return contador;
 
         }
