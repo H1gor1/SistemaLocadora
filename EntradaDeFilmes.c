@@ -236,16 +236,23 @@ void compraAvistaEntrada(entrada *Entradas, int modoAbertura){
 void realizaEntrada(int modoAbertura){
     filmes *filme;
     fornecedor *fornecedores;
+    lancamentoCaixa *valoresCaixa = NULL;
     time_t seg;
     int escolha;
     entrada EntradaAtual;
     
     int quantidadeFilmes;
     int quantidadeFornecedores;
+    int quantidadeLancamentosCaixa;
+    float valorCaixa;
 
+    quantidadeLancamentosCaixa = (modoAbertura)? leDadosLancamentosBin(&valoresCaixa): leDadosLancamentos(&valoresCaixa);
     quantidadeFornecedores = (modoAbertura)? leDadosFornecedoresBin(&fornecedores): leDadosFornecedores(&fornecedores);
     quantidadeFilmes = (modoAbertura)?leDadosFilmesBin(&filme):leDadosFilmes(&filme);
-    
+
+    valorCaixa = contabilizaCaixa(valoresCaixa, quantidadeLancamentosCaixa, &(struct tm){0,0,0,0,0,0,0,0,0}).dinheiroLiquido;
+    valoresCaixa = limpaMemoria(valoresCaixa);
+
      if(!verificaExisteFornecedores(fornecedores, quantidadeFornecedores)){
         printf("Nao existem fornecedores cadastrados ate o momento!\n");
         limpaMemoriaRealizaEntrada(&fornecedores, quantidadeFornecedores, &filme, quantidadeFilmes);
@@ -278,17 +285,31 @@ void realizaEntrada(int modoAbertura){
     EntradaAtual.data = *localtime(&seg);
     EntradaAtual.codigo = time(NULL);
 
-    EntradaAtual.modoPagamento = escolheMenu("Escolha o modo de pagamento", 2, 0,"A vista", "A prazo")+1;
-    switch(EntradaAtual.modoPagamento){
 
-        case 1:
-            compraAvistaEntrada(&EntradaAtual, modoAbertura);
-            break;
-        case 2:
-            realizaEntradaAprazo(&EntradaAtual, modoAbertura);
-            break;
+    if (valorCaixa-EntradaAtual.precoTotal > 0){
+        EntradaAtual.modoPagamento = escolheMenu("Escolha o modo de pagamento", 2, 0,"A vista", "A prazo")+1;
+        switch(EntradaAtual.modoPagamento){
 
+            case 1:
+                compraAvistaEntrada(&EntradaAtual, modoAbertura);
+                break;
+            case 2:
+                realizaEntradaAprazo(&EntradaAtual, modoAbertura);
+                break;
+
+        }
+    } else {
+        EntradaAtual.modoPagamento = escolheMenu("Escolha o modo de pagamento", 2, 0,"A prazo", "Sair")+1;
+        switch(EntradaAtual.modoPagamento){
+
+            case 1:
+                realizaEntradaAprazo(&EntradaAtual, modoAbertura);
+                break;
+            case 2:
+                break;
+        }
     }
+
 
     (modoAbertura)?reescreveDadosFilmeBin(filme, quantidadeFilmes):reescreveDadosFilme(filme, quantidadeFilmes);
     limpaMemoriaRealizaEntrada(&fornecedores, quantidadeFornecedores, &filme, quantidadeFilmes);
