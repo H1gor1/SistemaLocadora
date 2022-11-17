@@ -13,16 +13,11 @@
 
 
 int main(){
-    
-    
     int modoArm;
     
     VerificaExisteArquivoLocadora();
     verificaModoArmazenamento(&modoArm);
-    
-    
-   
-    
+
     menuPrincipal(&modoArm);
    
     return 0;

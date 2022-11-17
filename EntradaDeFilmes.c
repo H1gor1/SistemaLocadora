@@ -12,6 +12,7 @@
 #include "menus.h"
 #include "EntradaDeFilmes.h"
 #include "Carrinho.h"
+#include "ContasAPagar.h"
 
 #define ERROMEM "ERRO: Memoria indisponivel!\n"
 
@@ -177,7 +178,7 @@ void realizaEntrada(int modoAbertura){
             compraAvistaEntrada(&EntradaAtual, modoAbertura);
             break;
         case 2:
-            //compraAprazoEntrada(&EntradaAtual, modoAbertura);
+            realizaEntradaAprazo(&EntradaAtual, modoAbertura);
             break;
 
     }

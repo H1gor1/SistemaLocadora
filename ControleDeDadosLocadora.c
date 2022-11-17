@@ -277,7 +277,7 @@ void editaDadosLocadora(int modo){
 
         
 
-    escolha = escolheMenu("Escolhe uma opcao para editar",11, 0,"Nome fantasia", "Razao social", "Inscricao estadual", "CNPJ",
+    escolha = escolheMenu("Escolhe uma opcao para editar",11, "Nome fantasia", "Razao social", "Inscricao estadual", "CNPJ",
                               "Endereco", "Telefone", "E-mail", "Nome responsavel", "Telefone responsavel", "Multa de atraso",
                               "Voltar");
 

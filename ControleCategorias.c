@@ -250,7 +250,7 @@ void editaCategoria(int modoAbertura){
     
     int dadoEditar;
 
-    dadoEditar = escolheMenu("Qual campo deseja editar", 4, 0,"Nome", "Descricao", "Valor locacao", "Voltar");
+    dadoEditar = escolheMenu("Qual campo deseja editar", 4, "Nome", "Descricao", "Valor locacao", "Voltar");
 
 
     switch(dadoEditar){
@@ -393,7 +393,7 @@ int escolheListaCategorias(categoria *categorias, int quantidadeCategorias, char
     }
 
     while(escolha != 13){
-        menuGraphicsComSeta(quantidadeCategoriasExistentes, mensagem, contador, nomes, 0);
+        menuGraphicsComSeta(quantidadeCategoriasExistentes, mensagem, contador, nomes);
         escolha = escolheOpcao();
 
         switch(escolha){

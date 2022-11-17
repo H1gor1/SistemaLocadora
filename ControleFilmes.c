@@ -210,7 +210,7 @@ filmes *buscaFilme(filmes *buscar, int quantidade, char *mensagem){
         }
         if(!strcmp(dado, "open list")){
             dado = limpaMemoria(dado);
-            return menuEscolhaFilmes(buscar, quantidade, "lista completa de filmes da locadora:", 0);
+            return menuEscolhaFilmes(buscar, quantidade, "lista de filmes", 0);
         }
         dado = limpaMemoria(dado);
         printf("%s\n", mensagem);
@@ -243,7 +243,7 @@ void editaFilme(int modoAbertura){
 
 
 
-    dadoEditar = escolheMenu("Qual campo deseja editar:", 6, 0,"Nome do filme", "Descricao", "Exemplares", "Codigo da categoria", "Lingua", "Voltar");
+    dadoEditar = escolheMenu("Qual campo deseja editar:", 6, "Nome do filme", "Descricao", "Exemplares", "Codigo da categoria", "Lingua", "Voltar");
 
 
     switch(dadoEditar){
@@ -280,7 +280,7 @@ void editaFilme(int modoAbertura){
             
         case 4:
 
-            ptr->lingua = escolheMenu("O filme é dublado ou legendado?", 2, 0,"Dublado", "Legendado")+1;
+            ptr->lingua = escolheMenu("O filme é dublado ou legendado?", 2, "Dublado", "Legendado")+1;
 
             break;
         case 5:
@@ -335,7 +335,7 @@ void cadastraFilmes(int modoLeitura){
     filme[quantidadeFilmes-1].valorLocacao = categorias[filme[quantidadeFilmes-1].codigoCategoria].valorLocacao;
     
 
-    filme[quantidadeFilmes-1].lingua = 1+escolheMenu("O filme e dublado ou legendado?", 2, 0,"Dublado", "Legendado");
+    filme[quantidadeFilmes-1].lingua = 1+escolheMenu("O filme e dublado ou legendado?", 2, "Dublado", "Legendado");
     filme[quantidadeFilmes-1].flag = 1;
 
     (*reescreveDados[modoLeitura])(filme, quantidadeFilmes);
@@ -501,7 +501,7 @@ void listaFilme(int modoArm){
     int escolha;
 
 
-    escolha = escolheMenu("Como deseja filtrar os filmes", 3, 0,"Pelo codigo", "Pela categoria", "Voltar");
+    escolha = escolheMenu("Como deseja filtrar os filmes", 3, "Pelo codigo", "Pela categoria", "Voltar");
 
 
 
@@ -542,22 +542,22 @@ filmes* menuEscolhaFilmes(filmes *todosOsfilmes, int quantidade, char *mensagem,
 
     for(int i = 0; i<quantidade; i++){
         if(todosOsfilmes[i].flag || ignoraApagados){
-            informacoesFilmes[indiceFilme] = malloc(sizeof(char)*(strlen(todosOsfilmes[i].nome)+60));
+            informacoesFilmes[indiceFilme] = malloc(sizeof(char)*(strlen(todosOsfilmes[i].nome+60)));
             verificaOperacao(informacoesFilmes[indiceFilme], "ERRO: Memoria indisponivel!", 1);
 
             strcpy(informacoesFilmes[indiceFilme], todosOsfilmes[i].nome);
 
-            strcat(informacoesFilmes[indiceFilme], "; val:");
+            strcat(informacoesFilmes[indiceFilme], "    valor: ");
 
             nomeConcat = converteFloatemString(todosOsfilmes[i].valorLocacao, 2);
             strcat(informacoesFilmes[indiceFilme],
                    nomeConcat);
             nomeConcat = limpaMemoria(nomeConcat);
 
-            strcat(informacoesFilmes[indiceFilme], "; quant:");
+            strcat(informacoesFilmes[indiceFilme], "      quantidade: ");
 
             nomeConcat = converteIntEmString(todosOsfilmes[i].exemplares);
-
+            printf("oi");
             strcat(informacoesFilmes[indiceFilme], nomeConcat);
             nomeConcat = limpaMemoria(nomeConcat);
 
@@ -568,7 +568,7 @@ filmes* menuEscolhaFilmes(filmes *todosOsfilmes, int quantidade, char *mensagem,
 
     while(escolha != 13){
 
-        menuGraphicsComSeta(quantidadeExistente, mensagem, contador, informacoesFilmes,50);
+        menuGraphicsComSeta(quantidadeExistente, "escolha um filme", contador, informacoesFilmes);
         escolha = escolheOpcao();
 
         switch(escolha){
@@ -590,7 +590,7 @@ filmes* menuEscolhaFilmes(filmes *todosOsfilmes, int quantidade, char *mensagem,
 
         }
     }
-    filmeProcurado = encontraFilmeNome(todosOsfilmes, quantidade, strtok(informacoesFilmes[contador], ";"));
+    filmeProcurado = encontraFilmeNome(todosOsfilmes, quantidade, informacoesFilmes[contador]);
     for(int i = 0; i<quantidadeExistente; i++){
         informacoesFilmes[i] = limpaMemoria(informacoesFilmes[i]);
 

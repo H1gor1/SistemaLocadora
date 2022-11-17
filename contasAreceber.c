@@ -233,7 +233,7 @@ void realizaCompraAprazo(compras *compra, int modoArm){
         Aprazo.modoPagamento = 2;
     }
     
-    (modoArm == 1)
+    (modoArm)
             ?reescreveLancamentosAprazoBin(&Aprazo, 1, "lancamentosAprazo.bin", "lancamentosAprazo.bin", "ab")
             :reescreveLancamentosAprazo(&Aprazo, 1, "lancamentosAprazo.txt", "lancamentosAprazo.txt", "a");
     
@@ -288,14 +288,11 @@ int daBaixa(int modoArm){
     time_t tempo;
 
     quantidade = (modoArm)?leDadosLancamentosAprazoBin(&contas):leDadosLancamentosAprazo(&contas);
-    printf("digite o codigo da compra que deseja dar baixa:\n");
+    printf("Digite o codigo da compra que deseja dar baixa:\n");
     consultaContas(contas, quantidade);
     while(1){
-        
         verificaNumero(&codigo, "%ld");
-        
         darBaixa = encontraContaPeloCodigo(contas, quantidade, codigo);
-        
         if(!darBaixa){
             printf("Nao existe nenhuma compra com este codigo ou a compra selecionada ja foi paga!\n");
             continue;
@@ -304,7 +301,7 @@ int daBaixa(int modoArm){
     }
     time(&tempo);
     darBaixa->dataAluga.tm_mon = localtime(&tempo)->tm_mon;
-    printf("digite a quantidade de parcelas que deseja baixar desta compra, ainda existem %d parcelas:", darBaixa->parcelas);
+    printf("Digite a quantidade de parcelas que deseja baixar desta compra, ainda existem %d parcelas:", darBaixa->parcelas);
     
     verificaLimiteNumero(&quantidadesNotinhasPagar, darBaixa->parcelas, 1, "%d");
     
@@ -369,7 +366,7 @@ int filtraContasClientes(contaArec *contas, int quantidadeContas, contaArec **co
 int filtraContasQuantidadeParcelas(contaArec *contas, int quantidadeContas, contaArec **contasRetornar, int parcelas){
 
     int quantidadeContasComFiltro = 0;
-    parcelas = escolheMenu("Escolha a quantidade de parcelas", 3, 0,"Uma parcela", "Duas parcelas", "Tres parcelas")+1;
+    parcelas = escolheMenu("Escolha a quantidade de parcelas", 3, "Uma parcela", "Duas parcelas", "Tres parcelas")+1;
 
     for(int i = 0; i<quantidadeContas; i++){
         if(contas[i].parcelas == parcelas){
@@ -471,7 +468,7 @@ void consultaLancamentos(int modoArm){
     
 
 
-    escolha = escolheMenu("Escolha o modo de filtragem", 4, 0,"Contas atrasadas", "Contas de um cliente", "parcelas restantes","Voltar");
+    escolha = escolheMenu("Escolha o modo de filtragem", 4, "Contas atrasadas", "Contas de um cliente", "parcelas restantes","Voltar");
     switch(escolha){
         case 0:
             mostraContasFiltradas(contas, quantidadeContas, modoArm, filtraContasAtrasadas, "Contas atrasadas:\n");

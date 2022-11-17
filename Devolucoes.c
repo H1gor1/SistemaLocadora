@@ -284,10 +284,8 @@ compras *buscaCompra(compras *ptr, int quantidade, int ignoraDev){
         }
         printf("Compra inexistente, digite um codigo valido!\n");
     }
-    
-    
-    
 }
+
 void limpaDadosDevolucoesMemoria(filmes **todosFilmes, cliente ** todosClientes,Funcionarios **todosFuncionarios,
                                 compras **todasAlocacoes, quantidades quant){
 
@@ -452,7 +450,7 @@ void listaCompra(int modoArm){
             :leDadosDevolucoes(&todasAsCompras, &todosFuncionarios, &clientes, &filmes);
 
 
-    modoPagamentoEsc = escolheMenu("escolha o modo de filtro", 5, 0,"A vista", "A prazo", "A prazo com entrada", "Por vendedor","Voltar")+1;
+    modoPagamentoEsc = escolheMenu("escolha o modo de filtro", 5, "A vista", "A prazo", "A prazo com entrada", "Por vendedor","Voltar")+1;
 
     if(modoPagamentoEsc <= 3) {
         quantidadeComprasFiltradas = filtraCompras(todasAsCompras, quant.quantidadeAlugacoes,

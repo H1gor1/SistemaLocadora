@@ -422,7 +422,7 @@ void editaFuncionario(int modoAbertura){
 
 
         
-    dado = escolheMenu("Qual informacao deseja editar:", 8,0,"Nome Completo", "Cargo", "Rua", "Bairro", "Numero da casa", "Telefone", "E-mail", "Voltar");
+    dado = escolheMenu("Qual informacao deseja editar:", 8,"Nome Completo", "Cargo", "Rua", "Bairro", "Numero da casa", "Telefone", "E-mail", "Voltar");
         
     switch(dado){
             

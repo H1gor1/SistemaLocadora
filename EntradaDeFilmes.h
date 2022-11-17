@@ -1,7 +1,7 @@
-
 #ifndef ENTRADAFILMES_H
 #define ENTRADAFILMES_H
 #include "fornecedores.h"
+#include <time.h>
 
 typedef struct entrada{
     long int codigo;

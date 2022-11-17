@@ -17,6 +17,7 @@
 #include "ContasAreceber.h"
 #include "Devolucoes.h"
 #include "EntradaDeFilmes.h"
+#include "ContasAPagar.h"
 #define OPCAO "Escolha a opcao desejada:"
 #define CAD "Cadastrar"
 #define ED "Editar"
@@ -148,8 +149,8 @@ int menuPrincipal(int *modo){
     int escolha;
     printf("\n");
     
-    while(escolha != 7){
-        escolha = escolheMenu("Seja bem vindo! Escolha uma opcao", 8, "Administrativo", "Clientes", "Filmes", "Categorias", "Trocar modo arm BIN/TXT", "Caixa", "Contas", "Sair");
+    while(escolha != 8){
+        escolha = escolheMenu("Seja bem vindo! Escolha uma opcao", 9, "Administrativo", "Clientes", "Filmes", "Categorias", "Trocar modo arm BIN/TXT", "Caixa", "Contas a receber", "Contas a pagar", "Sair");
         switch(escolha){
             case 0:
 
@@ -179,9 +180,9 @@ int menuPrincipal(int *modo){
                 menuContas(*modo);
                 break;
             case 7:
+                menuContasPagar(*modo);
+            case 8:
                 break;
-
-
             default:
                 printf("Opcao invalida!\n");
         }
@@ -402,9 +403,6 @@ int menuFornecedores(int modo){
 
 }
 void menuContas(int modoArm){
-    
-
-    
     int escolha;
     while(escolha!=2){
         escolha = escolheMenu("Menu de contas", 3, "Dar baixa", "Consultar conta", "Sair");
@@ -430,6 +428,30 @@ void menuContas(int modoArm){
     }
     
 }
+
+void menuContasPagar(int modoArm){
+    int escolha;
+    while(escolha!=2){
+        escolha = escolheMenu("Menu de contas", 3, "Dar baixa", "Consultar conta", "Sair");
+
+        switch(escolha){
+
+            case 0:
+                BaixaEntradasFilmes(modoArm);
+                continue;
+
+            case 1:
+                consultaLancamentosEntrada(modoArm);
+                continue;
+
+            case 2:
+                break;
+
+        }
+        break;
+    }
+}
+
 void menuCaixa(int modoArm){
 
     int escolha;
