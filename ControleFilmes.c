@@ -10,6 +10,7 @@
 #include "menus.h"
 #include <ctype.h>
 #include <locale.h>
+#include "Devolucoes.h"
 #include "ControleCategorias.h"
 #include <windows.h>
 #include "ControleClientes.h"
@@ -400,16 +401,26 @@ void mostraInformacoesFilmes(filmes *todosFilmes, int quantidadeFilmes){
 
 
 }
-void filtraFilmPeloCodigo(filmes *ptr, int quantidade, int codigo1, int codigo2){
-    int quantidadeFilmes = 0;
+filmes *filtraFilmPeloCodigo(filmes *ptr, int quantidade, int codigo1, int codigo2, int *quantidadeFiltrados){
+    (*quantidadeFiltrados) = 0;
+    filmes *filmesFiltrados = NULL;
     for(int i = codigo1; i<quantidade && i<codigo2; i++){
+        if(ptr[i].codigo >= codigo1 && ptr[i].codigo <= codigo2 &&ptr[i].flag) {
 
-            quantidadeFilmes++;
-            mostraFilmes(ptr+i, 1, 1);
+            filmesFiltrados = (!(*quantidadeFiltrados))
+                    ?malloc(sizeof(filmes))
+                    :realloc(filmesFiltrados, sizeof(filmes)*((*quantidadeFiltrados)+1));
+
+            filmesFiltrados[(*quantidadeFiltrados)] = ptr[i];
+            mostraFilmes(ptr + i, 1, 1);
+            (*quantidadeFiltrados)++;
+        }
 
     }
-    printf("quantidade de filmes nesta faixa de codigo: %d\n", quantidadeFilmes);
+    printf("quantidade de filmes nesta faixa de codigo: %d\n", (*quantidadeFiltrados));
+    return filmesFiltrados;
 }
+/*
 filmes *buscaFilmeComFaixaDeCodigo(filmes *ptr, int quantidade, int codigo, int codigo1){
     filmes *busca = NULL;
     char *codigoEsp;
@@ -430,6 +441,7 @@ filmes *buscaFilmeComFaixaDeCodigo(filmes *ptr, int quantidade, int codigo, int 
 
     }
 }
+ */
 void listaFilmesPelaCategoria(int modoArm, filmes *ptr, int quantidadeFilmes){
 
     categoria *todasCategorias = NULL;
@@ -437,22 +449,26 @@ void listaFilmesPelaCategoria(int modoArm, filmes *ptr, int quantidadeFilmes){
     filmes *olhar = NULL;
     quantidadeCategorias = (modoArm)? leDadosCategoriaBin(&todasCategorias): leDadosCategoria(&todasCategorias);
 
-    int quantidadeDeFilmesDestaCategoria = 0;
+    int quantidadeFiltrados = 0;
     int codigoCategoria;
     int escolha;
-
+    filmes *filtrados = NULL;
     codigoCategoria = escolheListaCategorias(todasCategorias, quantidadeCategorias, "Escolha a categoria");
     limpaDadosCategoriaMemoria(todasCategorias, quantidadeCategorias);
     todasCategorias = limpaMemoria(todasCategorias);
 
     for(int i = 0; i<quantidadeFilmes; i++){
 
-        if(ptr[i].codigoCategoria == codigoCategoria){
+        if(ptr[i].codigoCategoria == codigoCategoria && ptr[i].flag){
+            filtrados = (!quantidadeFiltrados)?malloc(sizeof(filmes)):realloc(filtrados, sizeof(filmes)*(quantidadeFiltrados+1));
+            verificaOperacao(filtrados, "ERRO: Memoria indisponivel", 1);
+            filtrados[quantidadeFiltrados] = ptr[i];
+
             mostraFilmes(ptr+i, 1, 1);
-            quantidadeDeFilmesDestaCategoria++;
+            quantidadeFiltrados++;
         }
     }
-    printf("quantidade de filmes desta categoria: %d\n", quantidadeDeFilmesDestaCategoria);
+    printf("quantidade de filmes desta categoria: %d\n", quantidadeFiltrados);
 
     printf("deseja olhar algum filme especifico?\n");
     printf("F1 - sim\nF2 - nao\n");
@@ -464,13 +480,15 @@ void listaFilmesPelaCategoria(int modoArm, filmes *ptr, int quantidadeFilmes){
 
 
             case 59:
-                if(!quantidadeDeFilmesDestaCategoria){
+                if(!quantidadeFiltrados){
                     printf("nao existem filmes pra olhar, pois nao existem filmes nesta categoria!\n");
                     Sleep(2000);
                     return;
                 }
                 break;
             case 60:
+                atribuiNull(filtrados, quantidadeFiltrados, sizeof(filmes));
+                filtrados = limpaMemoria(filtrados);
                 return;
             default:
                 printf("escolha uma opcao valida!\n");
@@ -484,13 +502,15 @@ void listaFilmesPelaCategoria(int modoArm, filmes *ptr, int quantidadeFilmes){
     printf("digite o codigo do filme que deseja olhar:\n");
     while(1) {
 
-        olhar = buscaFilme(ptr, quantidadeFilmes, "nao existe nenhum filme com este codigo nesta categoria!\n");
+        olhar = buscaFilme(filtrados, quantidadeFiltrados, "nao existe nenhum filme com este codigo nesta categoria!\n");
         if(olhar->codigoCategoria == codigoCategoria){
             break;
         }
         printf("nao existe nenhum filme com este codigo nesta categoria!\n");
     }
     mostraInformacoesFilmes(olhar, 1);
+    atribuiNull(filtrados, quantidadeFiltrados, sizeof(filmes));
+    filtrados = limpaMemoria(filtrados);
 }
 void listaFilme(int modoArm){
 
@@ -513,8 +533,8 @@ void listaFilme(int modoArm){
                             quantidadeFilmes,
                             (void (*)(void *, int))mostraInformacoesFilmes,
                             "algum filme",
-                            (void (*)(void *, int, int, int))filtraFilmPeloCodigo,
-                            (void *(*)(void *, int, int, int))buscaFilmeComFaixaDeCodigo);
+                            (void *(*)(void *, int, int, int, int*))filtraFilmPeloCodigo,
+                            (void *(*)(void *, int, void *)) buscaFilme);
             break;
 
         case 1:

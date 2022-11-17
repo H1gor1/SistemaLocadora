@@ -30,13 +30,26 @@ void atribuiNull(void *endereco, int quantidade, size_t oqueLimpar){
                 ((filmes *)endereco)[i].nome = NULL;
                 ((filmes *)endereco)[i].descricao = NULL;
             }
-            return;
+            break;
+        case sizeof(cliente):
+            for(int i = 0; i<quantidade; i++){
+                ((cliente *)endereco)[i].nomeCompleto = NULL;
+                ((cliente *)endereco)[i].cpf = NULL;
+                ((cliente *)endereco)[i].email = NULL;
+                ((cliente *)endereco)[i].rua = NULL;
+                ((cliente *)endereco)[i].bairro = NULL;
+
+
+            }
+            break;
         case sizeof(compras):
             for(int i = 0; i<quantidade; i++){
                 ((compras *)endereco)[i].comprador = NULL;
                 ((compras *)endereco)[i].vendedor = NULL;
             }
-            return;
+            break;
+
+
             
     }
 }
@@ -277,6 +290,7 @@ compras *buscaCompra(compras *ptr, int quantidade, int ignoraDev){
         if(busca){
             if(busca->devolvido && ignoraDev){
                 printf("Compra inexistente, digite um codigo valido!\n");
+                continue;
                 
             }else{
                 return busca;
@@ -326,7 +340,7 @@ void devolveFilme(int modoArm){
     
     dataDev = *localtime(&codigoCompraDevolvida);
     printf("digite o codigo da alocacao que sera devolvida:\n");
-    devolvida = buscaCompra(alocacoes, quant.quantidadeAlugacoes, 0);
+    devolvida = buscaCompra(alocacoes, quant.quantidadeAlugacoes, 1);
     
     menuGraphics(2, "Confirme a devolucao:", "sim", "nao");
     printf("informacoes da compra:\n");

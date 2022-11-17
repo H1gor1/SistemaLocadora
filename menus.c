@@ -44,39 +44,39 @@ void menuGraphicsComSeta(int quantidadeArgumentos, char *frasePrincipal , int li
     SetConsoleCursorPosition(GetStdHandle( STD_OUTPUT_HANDLE ), cordenadaIn);
     printf("\n%55s ", "\0");
 
-    imprimeEspacamentoMaior(75+espacamentoMaior, '_', '\n');
+    imprimeEspacamentoMaior(75+espacamentoMaior, ' ', '\n');
 
 
-    printf("%55s|               %-50s", "\0", frasePrincipal);
-    imprimeEspacamentoMaior(10+espacamentoMaior, ' ', '|');
-    printf("%55s|", "\0", "\0", frasePrincipal, "\0");
-    imprimeEspacamentoMaior(75+espacamentoMaior, ' ', '|');
+    printf("%55s               %-50s", "\0", frasePrincipal);
+    imprimeEspacamentoMaior(10+espacamentoMaior, ' ', '\n');
+    printf("%55s ", "\0", "\0", frasePrincipal, "\0");
+    imprimeEspacamentoMaior(75+espacamentoMaior, ' ', '\n');
     for(int i = 0; i<quantidadeArgumentos; i++){
 
 
         if(!strcmp(frases[i], "Sair")|| !strcmp(frases[i], "Voltar")){
             if(i == linha) {
 
-                printf("%55s| -->   %-40s <--", "\0", frases[i]);
-                imprimeEspacamentoMaior(24+espacamentoMaior, ' ', '|');
+                printf("%55s  -->   %-40s <--", "\0", frases[i]);
+                imprimeEspacamentoMaior(24+espacamentoMaior, ' ', '\n');
             }else{
-                printf("%55s|   %-40s", "\0", frases[i]);
-                imprimeEspacamentoMaior(32+espacamentoMaior, ' ', '|');
+                printf("%55s    %-40s", "\0", frases[i]);
+                imprimeEspacamentoMaior(32+espacamentoMaior, ' ', '\n');
             }
         }else {
 
             if( i == linha){
-                printf("%55s| -->   %-40s <--", "\0", frases[i]);
-                imprimeEspacamentoMaior(24+espacamentoMaior, ' ', '|');
+                printf("%55s  -->   %-40s <--", "\0", frases[i]);
+                imprimeEspacamentoMaior(24+espacamentoMaior, ' ', '\n');
 
             }else{
-                printf("%55s|   %-40s", "\0", frases[i]);
-                imprimeEspacamentoMaior(32+espacamentoMaior, ' ', '|');
+                printf("%55s    %-40s", "\0", frases[i]);
+                imprimeEspacamentoMaior(32+espacamentoMaior, ' ', '\n');
             }
         }
     }
-    printf("%55s|", "\0");
-    imprimeEspacamentoMaior(75+espacamentoMaior, '_', '|');
+    printf("%55s ", "\0");
+    imprimeEspacamentoMaior(75+espacamentoMaior, ' ', '\n');
 
 
 }
@@ -167,9 +167,9 @@ int menuPrincipal(int *modo){
 
     int escolha;
     printf("\n");
-    
+    escolha = escolheMenu("Seja bem vindo! Escolha uma opcao", 8, 0,"Administrativo", "Clientes", "Filmes", "Categorias", "Trocar modo arm BIN/TXT", "Caixa", "Contas", "Sair");
     while(escolha != 7){
-        escolha = escolheMenu("Seja bem vindo! Escolha uma opcao", 8, 0,"Administrativo", "Clientes", "Filmes", "Categorias", "Trocar modo arm BIN/TXT", "Caixa", "Contas", "Sair");
+
         switch(escolha){
             case 0:
 
@@ -204,6 +204,9 @@ int menuPrincipal(int *modo){
 
             default:
                 printf("Opcao invalida!\n");
+        }
+        if(escolha != 7){
+            escolha = escolheMenu("Menu principal. Escolha uma opcao", 8, 0,"Administrativo", "Clientes", "Filmes", "Categorias", "Trocar modo arm BIN/TXT", "Caixa", "Contas", "Sair");
         }
     }
 }

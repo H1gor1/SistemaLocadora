@@ -33,6 +33,7 @@ typedef struct compras{
     int quantidadeFilmesComprados;
     filmes *filmesComprados;
     int devolvido;
+
     
     
 }compras;

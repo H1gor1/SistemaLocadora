@@ -335,13 +335,11 @@ int filtraContasAtrasadas(contaArec *contas, int quantidadeContas, contaArec **a
     
     int quantidadeContasAtrasadas = 0;
     time_t seg;
+    time_t tempoUmMes = 2629800;
     time(&seg);
-    struct tm dataAgora = *localtime(&seg);
+    seg = mktime(localtime(&seg));
     for(int i = 0; i<quantidadeContas; i++){
-        if((contas[i].dataAluga.tm_mon<dataAgora.tm_mon && contas[i].dataAluga.tm_mday <= dataAgora.tm_mday ||
-                (contas[i].dataAluga.tm_year < dataAgora.tm_year && contas[i].dataAluga.tm_mday <= dataAgora.tm_mday)
-                || (contas[i].dataAluga.tm_year < dataAgora.tm_year && contas[i].dataAluga.tm_mon < dataAgora.tm_mon-1))
-                && contas[i].parcelas){
+        if(difftime(seg, mktime(&contas[i].dataAluga)) >= tempoUmMes){
                 
             atrasadas[0] = (!quantidadeContasAtrasadas)?malloc(sizeof(contaArec)):realloc(atrasadas[0], sizeof(contaArec)*(quantidadeContasAtrasadas+1));
             
@@ -399,42 +397,42 @@ int filtraContasQuantidadeParcelas(contaArec *contas, int quantidadeContas, cont
 
 }
 int filtraPorData(contaArec *contas, int quantidade, contaArec **dest, int modo){
-    struct tm data;
-    struct tm dataFim;
+    struct tm data = {0,0,0,0,0,0,0,0,0};
+    struct tm dataFim = {0,0,0,0,0,0,0,0,0};
+
     int quantidadeContasFiltradas = 0;
-    printf("digite a data inicial:\n");
-    printf("mes: ");
-    verificaLimiteNumero(&data.tm_mon, 12,1, "%d");
-    printf("dia: ");
+    time_t segundos1, segundos2;
+
+    data.tm_mon = escolheMenu("escolha o mes da data inicial:", 12, 0, "Janeiro", "Fevereiro", "Marco", "Abril", "Maio" ,"Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro");
+
+    printf("digite o dia:\n");
     verificaLimiteNumero(&data.tm_mday, (data.tm_mon == 2)?28:31, 1, "%d");
+
+
     printf("ano: ");
     verificaNumero(&data.tm_year, "%d");
 
-    printf("digite a data final:\n");
-    printf("mes: ");
-    verificaLimiteNumero(&dataFim.tm_mon, 12,1,"%d");
-    printf("dia: ");
+    dataFim.tm_mon = escolheMenu("escolha o mes da data Final:", 12, 0, "Janeiro", "Fevereiro", "Marco", "Abril", "Maio" ,"Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro");
+
+    printf("digite o dia:\n");
     verificaLimiteNumero(&dataFim.tm_mday, (dataFim.tm_mon == 2)?28:31, 1, "%d");
+
+
     printf("ano: ");
     verificaNumero(&dataFim.tm_year, "%d");
 
-    data.tm_mon--;
+
     data.tm_year-=1900;
-    dataFim.tm_mday--;
+
     dataFim.tm_year-=1900;
+
+    segundos1 = mktime(&data);
+    segundos2 = mktime(&dataFim);
 
 
 
     for(int i = 0; i<quantidade; i++){
-        if(contas[i].dataAluga.tm_year >= data.tm_year && contas[i].dataAluga.tm_year <= dataFim.tm_year ||
-
-        (contas[i].dataAluga.tm_year >= data.tm_year && contas[i].dataAluga.tm_year <= dataFim.tm_year &&
-        contas[i].dataAluga.tm_mon >= data.tm_mon && contas[i].dataAluga.tm_mon <= dataFim.tm_mon) ||
-
-        (contas[i].dataAluga.tm_year >= data.tm_year && contas[i].dataAluga.tm_year <= dataFim.tm_year &&
-        contas[i].dataAluga.tm_mon >= data.tm_mon && contas[i].dataAluga.tm_mon <= dataFim.tm_mon &&
-        contas[i].dataAluga.tm_mday >= data.tm_mday && contas[i].dataAluga.tm_mday <= dataFim.tm_mday)
-        ){
+        if(difftime(mktime(&contas[i].dataAluga), segundos1)  >= 0 && difftime(mktime(&contas[i].dataAluga), segundos2) <=0){
 
 
             dest[0] = (!quantidadeContasFiltradas)?malloc(sizeof(contaArec)):realloc(dest[0], sizeof(contaArec)*(quantidadeContasFiltradas+1));

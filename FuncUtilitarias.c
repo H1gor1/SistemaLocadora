@@ -308,17 +308,18 @@ int retornaNumeroConformeF(int quantidadeOpcoes, int ignorarEsc){
     }
 }
 
-void listaPeloCodigo(void *ptr, int quantidade, void (*funcaoDeMostrar)(void *, int), char *mensagem, void (*funcaoDeFiltrar)(void *, int, int, int), void* (*funcaoDeBuscar)(void *, int, int ,int)){
+void listaPeloCodigo(void *ptr, int quantidade, void (*funcaoDeMostrar)(void *, int), char *mensagem, void *(*funcaoDeFiltrar)(void *, int, int, int, int*), void *(funcaoDeBuscar)(void *, int, void *)){
     int codigo, codigo1;
     int escolha;
     void *endOlhar = NULL;
+    void *novaListaFiltrada = NULL;
     printf("digite os numeros da faixa de codigo que deseja filtrar:\n");
     printf("digite o primeiro numero\n");
     verificaNumero(&codigo, "%d");
     printf("digite o segundo numero\n");
     verificaNumero(&codigo1, "%d");
-
-    funcaoDeFiltrar(ptr, quantidade, (codigo > codigo1)?codigo1:codigo, (codigo > codigo1)?codigo:codigo1);
+    int quantidadeFiltrada = 0;
+    novaListaFiltrada =  funcaoDeFiltrar(ptr, quantidade, (codigo > codigo1)?codigo1:codigo, (codigo > codigo1)?codigo:codigo1, &quantidadeFiltrada);
 
     printf("Deseja visualizar %s nesta faixa de codigos?\nF1-sim\nF2-nao\n", mensagem);
     while(1){
@@ -334,8 +335,8 @@ void listaPeloCodigo(void *ptr, int quantidade, void (*funcaoDeMostrar)(void *, 
         }
         break;
     }
-
-    endOlhar = funcaoDeBuscar(ptr, quantidade, (codigo > codigo1)?codigo1:codigo, (codigo > codigo1)?codigo:codigo1);
+    printf("digite o codigo ou nome de algum dos dados filtrados:\n");
+    endOlhar = funcaoDeBuscar(novaListaFiltrada, quantidadeFiltrada, "Nenhum dos dados filtrados tem esta informacao no cadastro!");
 
     funcaoDeMostrar(endOlhar, 1);
 

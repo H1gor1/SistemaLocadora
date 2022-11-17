@@ -9,6 +9,7 @@
 #include "FuncUtilitarias.h"
 #include "menus.h"
 #include <ctype.h>
+#include "Devolucoes.h"
 #include <locale.h>
 #include <windows.h>
 #define clienteNaoExiste 0
@@ -512,12 +513,15 @@ void editaCliente(int modoAbertura){
             break;
 
         case 9:
-                  
-            printf("digite o mes de nascimento\n");
-            verificaLimiteNumero(&ptr->mes, 12, 0, "%d");
-            printf("digite o dia de nascimento\n");
-            verificaLimiteNumero(&ptr->diaNascimento, (ptr->mes == 2)?28:31, 1, "%d");
-            printf("digite o ano de nascimento\n");
+
+            ptr->mes = 1+escolheMenu("Qual mes de nascimento do cliente?", 12, 0, "Janeiro", "Fevereiro", "Marco", "Abril", "Maio" ,"Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro");
+
+
+            ptr->diaNascimento = 1+escolheMenu("Qual dia do nascimento?",
+                                                                      (ptr->mes%2 >0)?30:(ptr->mes == 2)?28:31,
+                                                                      0,"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31");
+
+            printf("digite o ano de nascimento do cliente\n");
             verificaNumero(&ptr->ano, "%d");
             break;
 
@@ -594,12 +598,13 @@ void cadastraCliente(int modoLeitura){
 
     client[quantidadeCliente-1].estadoCivil = 1+escolheMenu("Qual estado civil do cliente?", 4, 0,"Solteiro", "Casado", "Viuvo", "Divorciado");
 
-    printf("digite o mes de nascimento do cliente\n");
-    verificaLimiteNumero(&client[quantidadeCliente-1].mes, 12, 0, "%d");
-    
-    printf("digite o dia do nascimento\n");
-    verificaLimiteNumero(&client[quantidadeCliente-1].diaNascimento, (client[quantidadeCliente-1].mes == 2)?28:31,0, "%d");
-    
+    client[quantidadeCliente-1].mes = 1+escolheMenu("Qual mes de nascimento do cliente?", 12, 0, "Janeiro", "Fevereiro", "Marco", "Abril", "Maio" ,"Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro");
+
+
+    client[quantidadeCliente-1].diaNascimento = 1+escolheMenu("Qual dia do nascimento?",
+                                                            (client[quantidadeCliente-1].mes%2 >0)?30:(client[quantidadeCliente-1].mes == 2)?28:31,
+                                                            0,"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31");
+
     printf("digite o ano de nascimento do cliente\n");
     verificaNumero(&client[quantidadeCliente-1].ano, "%d");
     
@@ -612,6 +617,7 @@ void cadastraCliente(int modoLeitura){
     client = limpaMemoria(client);
     
     printf("cliente cadastrado com sucesso!\n");
+    Sleep(1000);
     
     
 }
@@ -678,18 +684,26 @@ void mostraListaClientes(cliente *ptr, int quantidade){
         }
     }
 }
-void filtraCodigo(cliente *ptr, int quantidade, int codigo, int codigo1){
-    int quantidadeClientes = 0;
+cliente *filtraCodigo(cliente *ptr, int quantidade, int codigo, int codigo1, int *quantidadeClientes){
+    cliente *clientesCodigo = NULL;
+    (*quantidadeClientes) = 0;
     int i=0;
     for(i = codigo; i<quantidade && i<=codigo1; i++){
         if(ptr[i].flag == 1) {
-            quantidadeClientes++;
+            clientesCodigo = (!(*quantidadeClientes))? malloc(sizeof(cliente)):realloc(clientesCodigo, sizeof(cliente)*((*quantidadeClientes)+1));
+            verificaOperacao(clientesCodigo, "ERRO: Memoria indisponivel!", 1);
+            clientesCodigo[(*quantidadeClientes)] = ptr[i];
+            (*quantidadeClientes)++;
         }
         mostraListaClientes(ptr+i, 1);
+
+        return clientesCodigo;
         
     }
     printf("quantidade de clientes nesta faixa de codigo: %d\n", quantidadeClientes);
+    return clientesCodigo;
 }
+/*
 cliente* procuraClienteEspecificoComFaixa(cliente *ptr, int quantidade, int codigo, int codigo1){
     cliente *busca = NULL;
     while(1) {
@@ -703,14 +717,18 @@ cliente* procuraClienteEspecificoComFaixa(cliente *ptr, int quantidade, int codi
         printf("digite novamente!\n");
     }
 }
-
+*/
 void filtraSexo(cliente *ptr, int quantidade, int sexo){
     int i = 0;
     int quantidadeClientesSexo = 0;
     int escolha;
+    cliente *desteSexo = NULL;
     cliente *especifico = NULL;
     for(i = 0; i<quantidade; i++){
         if(ptr[i].sexo == sexo && ptr[i].flag){
+            desteSexo = (!quantidadeClientesSexo)?malloc(sizeof(cliente)):realloc(desteSexo, sizeof(cliente)*(quantidadeClientesSexo+1));
+            verificaOperacao(desteSexo, "ERRO: Memoria indisponivel", 1);
+            desteSexo[quantidadeClientesSexo] = ptr[i];
             mostraListaClientes(ptr+i, 1);
             quantidadeClientesSexo++;
         }
@@ -727,7 +745,7 @@ void filtraSexo(cliente *ptr, int quantidade, int sexo){
         if(escolha == 59){
             while(1) {
                 printf("digite o codigo, nome ou cpf do cliente:\n");
-                especifico = buscaCliente(ptr, quantidade, "nao existe nenhum cliente com esta informacao digitada!");
+                especifico = buscaCliente(desteSexo, quantidadeClientesSexo, "nao existe nenhum cliente com esta informacao digitada!");
                 if(especifico->sexo == sexo){
                     break;
                 }
@@ -743,6 +761,10 @@ void filtraSexo(cliente *ptr, int quantidade, int sexo){
 
 
     }while(escolha != 60 && escolha != 59);
+
+    atribuiNull(desteSexo, quantidadeClientesSexo, sizeof(cliente));
+    desteSexo = limpaMemoria(desteSexo);
+
 }
 void listaClientes(int modoArm){
     
@@ -761,8 +783,8 @@ void listaClientes(int modoArm){
                             quantidadeClientes,
                             (void (*)(void *, int))mostraInformacoesClientes,
                             "algum cliente",
-                            (void (*)(void *, int, int, int))filtraCodigo,
-                            (void *(*)(void *, int, int, int))procuraClienteEspecificoComFaixa);
+                            (void *(*)(void *, int, int, int, int*))filtraCodigo,
+                            (void *(*)(void *, int, void *)) buscaCliente);
             break;
                 
         case 1:

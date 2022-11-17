@@ -16,6 +16,7 @@ typedef struct cliente{
     int mes;
     int ano;
     int flag;
+    int a;
     
     
 }cliente;
@@ -46,7 +47,7 @@ void editaCliente(int modoAbertura);
 
 void mostraListaClientes(cliente *ptr, int quantidade);
 
-void filtraCodigo(cliente *ptr, int quantidade, int codigo, int codigo1);
+cliente *filtraCodigo(cliente *ptr, int quantidade, int codigo, int codigo1, int *quantidadeClientes);
 
 void filtraSexo(cliente *ptr, int quantidade, int sexo);
 
@@ -56,6 +57,6 @@ int verificaExisteClientes(cliente *ptr, int quantidade);
 
 void mostraInformacoesClientes(cliente *ptr, int quantidade);
 
-cliente* procuraClienteEspecificoComFaixa(cliente *ptr, int quantidade, int codigo, int codigo1);
+
 
 #endif

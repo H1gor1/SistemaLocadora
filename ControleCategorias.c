@@ -221,6 +221,7 @@ categoria *buscaCategoria(categoria *buscar, int quantidade, char *mensagem){
             dado = limpaMemoria(dado);
             return ptr;
         }
+
         dado = limpaMemoria(dado);
         printf("%s\n", mensagem);
         
@@ -247,7 +248,7 @@ void editaCategoria(int modoAbertura){
     printf("digite o nome ou codigo da categoria que deseja editar\n");
     mostraListaCategoria(categorias, quantidadeCategorias);
     ptr = buscaCategoria(categorias, quantidadeCategorias, "Nenhuma categoria possui o dado digitado, por favor digite nome ou codigo");
-    
+
     int dadoEditar;
 
     dadoEditar = escolheMenu("Qual campo deseja editar", 4, 0,"Nome", "Descricao", "Valor locacao", "Voltar");
@@ -380,7 +381,7 @@ int escolheListaCategorias(categoria *categorias, int quantidadeCategorias, char
     int contador = 0;
     int escolha = 0;
     char **nomes;
-
+    categoria *procurada = NULL;
 
     nomes  = malloc(sizeof(char *)*quantidadeCategoriasExistentes);
     verificaOperacao(nomes, "ERRO: Memoria indisponivel!", 1);
@@ -414,6 +415,7 @@ int escolheListaCategorias(categoria *categorias, int quantidadeCategorias, char
         }
 
     }
+    procurada = encontraCategoriaNome(categorias, quantidadeCategorias, nomes[contador]);
     nomes = limpaMemoria(nomes);
-    return contador;
+    return procurada->codigo;
 }

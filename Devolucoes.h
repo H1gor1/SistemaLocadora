@@ -1,8 +1,10 @@
 #include <time.h>
 #include "controleFuncionarios.h"
+#include "ControleClientes.h"
 #ifndef Devolucoes_h
 #define Devolucoes_h
 typedef struct compras compras;
+
 
 
 typedef struct quantidades{

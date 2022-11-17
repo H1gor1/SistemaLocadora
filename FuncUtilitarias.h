@@ -22,5 +22,5 @@ int retornaNumeroConformeF(int quantidadeOpcoes, int ignorarEsc);
 
 void* menuOpcoesFilmesOuClientes(void *todos, int quantidade, char *mensagem, int ignoraApagados, size_t tamanho);
 
-void listaPeloCodigo(void *ptr, int quantidade, void (*funcaoDeMostrar)(void *, int), char *mensagem, void (*funcaoDeFiltrar)(void *, int, int, int), void* (*funcaoDeBuscar)(void *, int, int ,int));
+void listaPeloCodigo(void *ptr, int quantidade, void (*funcaoDeMostrar)(void *, int), char *mensagem, void *(*funcaoDeFiltrar)(void *, int, int, int, int*), void *(*funcaoDeBuscar)(void *, int, void *));
 #endif

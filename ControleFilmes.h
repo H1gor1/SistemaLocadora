@@ -41,9 +41,8 @@ void listaFilme(int modoArm);
 
 void listaFilmesPelaCategoria(int modoArm, filmes *ptr, int quantidadeFilmes);
 
-filmes *buscaFilmeComFaixaDeCodigo(filmes *ptr, int quantidade, int codigo, int codigo1);
 
-void filtraFilmPeloCodigo(filmes *ptr, int quantidade, int codigo1, int codigo2);
+filmes *filtraFilmPeloCodigo(filmes *ptr, int quantidade, int codigo1, int codigo2, int *quantidadeFiltrados);
 
 void mostraInformacoesFilmes(filmes *todosFilmes, int quantidadeFilmes);
 
