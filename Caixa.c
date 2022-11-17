@@ -270,16 +270,30 @@ void mostraLancamentos(lancamentoCaixa *todosLancamentos, int quantidade, struct
     for(int i = 0; i<quantidade; i++){
         if((todosLancamentos[i].data.tm_mday == data->tm_mday && todosLancamentos[i].data.tm_mon == data->tm_mon && todosLancamentos[i].data.tm_year == data->tm_year)
                 || !(data->tm_mday || data->tm_mon || data->tm_year)){
-            printf("_________________________________________________________\n");
-            printf("|Codigo compra: %ld\n", todosLancamentos[i].codigoCompra);
-            printf("|Modo pagamento: %d\n", todosLancamentos[i].modoPagamento);
-            printf("|Valor: %.2f\n", todosLancamentos[i].valor);
-            printf("|Valor pago: %.2f\n", todosLancamentos[i].valorPago);
-            printf("|Troco: %.2f\n", todosLancamentos[i].troco);
-            printf("|Data: %d/%d/%d\n", todosLancamentos[i].data.tm_mday, todosLancamentos[i].data.tm_mon+1, todosLancamentos[i].data.tm_year+1900);
-            printf("|Horario: %d:%d\n", todosLancamentos[i].data.tm_hour, todosLancamentos[i].data.tm_min);
-            printf("_________________________________________________________");
-    
+            if(todosLancamentos[i].valor > 0) {
+                printf("_________________________________________________________\n");
+                printf("|Codigo compra: %ld\n", todosLancamentos[i].codigoCompra);
+                printf("|Modo pagamento: %s\n", (todosLancamentos[i].modoPagamento == 1)?"A vista":(todosLancamentos[i].modoPagamento == 2)?"A prazo":"A prazo com entrada");
+                printf("|Valor: %.2f\n", todosLancamentos[i].valor);
+                printf("|Valor pago: %.2f\n", todosLancamentos[i].valorPago);
+                printf("|Troco: %.2f\n", todosLancamentos[i].troco);
+                printf("|Data: %d/%d/%d\n", todosLancamentos[i].data.tm_mday, todosLancamentos[i].data.tm_mon + 1,
+                       todosLancamentos[i].data.tm_year + 1900);
+                printf("|Horario: %d:%d\n", todosLancamentos[i].data.tm_hour, todosLancamentos[i].data.tm_min);
+                printf("_________________________________________________________");
+            }else{
+                printf("_________________________________________________________\n");
+                printf("|Esta é uma retirada do caixa para uma entrada de filme\n");
+                printf("|Codigo compra: %ld\n", todosLancamentos[i].codigoCompra);
+                printf("|Modo pagamento: %s\n", (todosLancamentos[i].modoPagamento == 1)?"A vista":(todosLancamentos[i].modoPagamento == 2)?"A prazo":"A prazo com entrada");
+                printf("|Valor: %.2f\n", -1*todosLancamentos[i].valor);
+                printf("|Valor pago: %.2f\n", todosLancamentos[i].valorPago);
+                printf("|Troco: %.2f\n", todosLancamentos[i].troco);
+                printf("|Data: %d/%d/%d\n", todosLancamentos[i].data.tm_mday, todosLancamentos[i].data.tm_mon + 1,
+                       todosLancamentos[i].data.tm_year + 1900);
+                printf("|Horario: %d:%d\n", todosLancamentos[i].data.tm_hour, todosLancamentos[i].data.tm_min);
+                printf("_________________________________________________________");
+            }
         }
     }
 }
