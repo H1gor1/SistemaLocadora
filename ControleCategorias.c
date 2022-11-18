@@ -378,6 +378,8 @@ int escolheListaCategorias(categoria *categorias, int quantidadeCategorias, char
     system("clear");
     int quantidadeCategoriasExistentes = contaQuantidadeExistente(sizeof(categoria), categorias, quantidadeCategorias);
     int indiceNomes = 0;
+    int chamadas = 0;
+    int linhaAnterior = 0;
     int contador = 0;
     int escolha = 0;
     char **nomes;
@@ -394,9 +396,10 @@ int escolheListaCategorias(categoria *categorias, int quantidadeCategorias, char
     }
 
     while(escolha != 13){
-        menuGraphicsComSeta(quantidadeCategoriasExistentes, mensagem, contador, nomes, 0);
+        menuGraphicsComSeta(quantidadeCategoriasExistentes, mensagem, contador, linhaAnterior, chamadas, nomes, 0);
         escolha = escolheOpcao();
-
+        linhaAnterior = contador;
+        chamadas++;
         switch(escolha){
             case 80:
                 if(contador < quantidadeCategoriasExistentes-1){

@@ -331,14 +331,14 @@ void devolveFilme(int modoArm){
     compras *devolvida = NULL;
     compras *alocacoes = NULL;
     quantidades quant = {0,0,0,0};
-    time_t codigoCompraDevolvida = 0;
+    time_t segundosDevolvida = 0;
     struct tm dataDev;
     int escolha;
     quant = (modoArm)?leDadosDevolucoesBin(&alocacoes, &funcs, &todosClientes, &todosFilmes):leDadosDevolucoes(&alocacoes, &funcs, &todosClientes, &todosFilmes);
     
-    time(&codigoCompraDevolvida);
-    
-    dataDev = *localtime(&codigoCompraDevolvida);
+    time(&segundosDevolvida);
+    dataDev = *localtime(&segundosDevolvida);
+
     printf("digite o codigo da alocacao que sera devolvida:\n");
     devolvida = buscaCompra(alocacoes, quant.quantidadeAlugacoes, 1);
     
@@ -365,16 +365,17 @@ void devolveFilme(int modoArm){
         
        encontraFilmeCodigo(todosFilmes, quant.quantidadesFilmes, converteIntEmString(devolvida->filmesComprados[i].codigo), 0)->exemplares+=devolvida->filmesComprados[i].exemplares;
     }
-    if((devolvida->data.tm_mon < dataDev.tm_mon && devolvida->data.tm_mday <= dataDev.tm_mday) || 
-            (devolvida->data.tm_year < dataDev.tm_year && devolvida->data.tm_mday <=dataDev.tm_mday)){
+    segundosDevolvida = difftime(mktime(&dataDev), mktime(&devolvida->data));
+    if(segundosDevolvida >604800){
+        int quantidadeDias = difftime(segundosDevolvida, 604800)/86400;
         locadora multa;
         lancamentoCaixa pagMulta;
         (modoArm)?leDadosLocadoraBin(&multa, "locadora.bin"):leDadosLocadora(&multa, "locadora.txt");
-        pagMulta.valor = multa.multa;
+        pagMulta.valor = multa.multa*quantidadeDias;
         pagMulta.codigoCompra = devolvida->codigo;
-        pagMulta.data = dataDev;
+        pagMulta.data = *localtime(&segundosDevolvida);
         pagMulta.modoPagamento = 1;
-        printf("devolucao atrasada, sera cobrado um valor de multa no valor de %.2f!\n", multa.multa);
+        printf("devolucao atrasada, sera cobrado um valor de multa no valor de %.2f!\n", multa.multa*quantidadeDias);
         printf("digite o valor pago:\n");
         pagMulta.troco = calculaTroco(pagMulta.valor, &pagMulta.valorPago);
         if(pagMulta.troco){

@@ -8,7 +8,7 @@ int MenuFilmes(int modo);
 int MenuFuncionarios(int modo);
 int MenuCategoria(int modo);
 void menuGraphics(int quantidadeArgumentos, char *frasePrincipal, ...);
-void menuGraphicsComSeta(int quantidadeArgumentos, char *frasePrincipal , int linha, char **, int espacamentoMaior);
+void menuGraphicsComSeta(int quantidadeArgumentos, char *frasePrincipal , int linha, int linhaAnterior, int chamadas, char **frases, int espacamentoMaior);
 int menuFornecedores(int modo);
 void menuTroca(int *modo);
 void menuContas(int modoArm);

@@ -368,6 +368,8 @@ void* menuOpcoesFilmesOuClientes(void *todos, int quantidade, char *mensagem, in
     system("clear");
     int quantidadeExistente = (!ignoraApagados)?contaQuantidadeExistente(tamanho, todos, quantidade):quantidade;
     int indice = 0;
+    int linhaAnterior = 0;
+    int chamadas = 0;
     int contador = 0;
     int escolha = 0;
     char **informacoesEmText = NULL;
@@ -478,7 +480,7 @@ void* menuOpcoesFilmesOuClientes(void *todos, int quantidade, char *mensagem, in
 
     }
     while(escolha != 13){
-        menuGraphicsComSeta(quantidadeExistente, mensagem, contador, informacoesEmText, 60);
+        menuGraphicsComSeta(quantidadeExistente, mensagem, contador, linhaAnterior, chamadas, informacoesEmText, 60);
         escolha = escolheOpcao();
 
         switch (escolha) {

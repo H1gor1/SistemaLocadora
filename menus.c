@@ -37,50 +37,42 @@ void imprimeEspacamentoMaior(int espacamento, char letra, char letraFim){
     }
 
 }
+void menuGraphicsComSeta(int quantidadeArgumentos, char *frasePrincipal , int linha, int linhaAnterior, int chamadas, char **frases, int espacamentoMaior){
 
-void menuGraphicsComSeta(int quantidadeArgumentos, char *frasePrincipal , int linha, char **frases, int espacamentoMaior){
     COORD cordenadaIn;
-    cordenadaIn.X = 0;
-    cordenadaIn.Y = 0;
 
-    SetConsoleCursorPosition(GetStdHandle( STD_OUTPUT_HANDLE ), cordenadaIn);
-    printf("\n%55s ", "\0");
+    if(!chamadas){
+        cordenadaIn.X = 0;
+        cordenadaIn.Y = 0;
 
-    imprimeEspacamentoMaior(75+espacamentoMaior, ' ', '\n');
+        SetConsoleCursorPosition(GetStdHandle( STD_OUTPUT_HANDLE ), cordenadaIn);
 
+        printf("\n%55s \n", "\0");
 
-    printf("%55s               %-50s", "\0", frasePrincipal);
-    imprimeEspacamentoMaior(10+espacamentoMaior, ' ', '\n');
-    printf("%55s ", "\0", "\0", frasePrincipal, "\0");
-    imprimeEspacamentoMaior(75+espacamentoMaior, ' ', '\n');
-    for(int i = 0; i<quantidadeArgumentos; i++){
+        imprimeEspacamentoMaior(75+espacamentoMaior, ' ', '\n');
 
 
-        if(!strcmp(frases[i], "Sair")|| !strcmp(frases[i], "Voltar")){
-            if(i == linha) {
+        printf("%55s               %-50s\n", "\0", frasePrincipal);
+        imprimeEspacamentoMaior(10+espacamentoMaior, ' ', '\n');
+        printf("%55s \n", "\0", "\0", frasePrincipal, "\0");
+        imprimeEspacamentoMaior(75+espacamentoMaior, ' ', '\n');
+        printf("%55s  -->   %-40s \n", "\0", frases[0]);
+        for(int i = 1; i<quantidadeArgumentos; i++){
 
-                printf("%55s  -->   %-40s <--", "\0", frases[i]);
-                imprimeEspacamentoMaior(24+espacamentoMaior, ' ', '\n');
-            }else{
-                printf("%55s    %-40s", "\0", frases[i]);
-                imprimeEspacamentoMaior(32+espacamentoMaior, ' ', '\n');
-            }
-        }else {
+            printf("%55s        %-40s \n", "\0", frases[i]);
 
-            if( i == linha){
-                printf("%55s  -->   %-40s <--", "\0", frases[i]);
-                imprimeEspacamentoMaior(24+espacamentoMaior, ' ', '\n');
-
-            }else{
-                printf("%55s    %-40s", "\0", frases[i]);
-                imprimeEspacamentoMaior(32+espacamentoMaior, ' ', '\n');
-            }
         }
+        return;
     }
-    printf("%55s ", "\0");
-    imprimeEspacamentoMaior(75+espacamentoMaior, ' ', '\n');
-
-
+    cordenadaIn.X = 56;
+    cordenadaIn.Y = 7+linhaAnterior;
+    SetConsoleCursorPosition(GetStdHandle( STD_OUTPUT_HANDLE ), cordenadaIn);
+    printf("    ");
+    cordenadaIn.X = 56;
+    cordenadaIn.Y = 7+linha;
+    SetConsoleCursorPosition(GetStdHandle( STD_OUTPUT_HANDLE ), cordenadaIn);
+    printf(" -->");
+    return;
 }
 
 
@@ -124,27 +116,30 @@ int escolheMenu(char *mensagem, int quantidade,int espacamentoMaior, ...){
     for(int i = 0; i<quantidade; i++){
         frases[i] = va_arg(parametros, char *);
     }
-
+    int chamadas = 0;
+    int linhaAnterior = 0;
     int contador = 0;
     int escolha = 0;
     system("clear");
     while(escolha != 13){
-        menuGraphicsComSeta(quantidade, mensagem, contador, frases, espacamentoMaior);
+        menuGraphicsComSeta(quantidade, mensagem, contador, linhaAnterior, chamadas, frases, espacamentoMaior);
 
         do {
 
             escolha = escolheOpcao();
         }while(escolha != 80 && escolha != 72 && escolha != 13);
 
-
+        linhaAnterior = contador;
+        chamadas++;
         switch(escolha){
             case 80:
+
                 if(contador <quantidade-1){
                     contador++;
                 }else{
                     contador = 0;
                 }
-                Beep(2000,10);
+                Beep(3500,50);
                 break;
 
             case 72:
@@ -153,14 +148,14 @@ int escolheMenu(char *mensagem, int quantidade,int espacamentoMaior, ...){
                 }else{
                     contador = quantidade-1;
                 }
-                Beep(3000,10);
+                Beep(3500,50);
                 break;
 
             case 13:
                 frases = limpaMemoria(frases);
                 system("clear");
                 va_end(parametros);
-                Beep(10000,10);
+                Beep(2500,50);
                 return contador;
 
         }
