@@ -25,6 +25,7 @@ set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "C:/Users/vitor/CLionProjects/SistemaLocadora/fornecedores.c" "CMakeFiles/untitled.dir/fornecedores.c.obj" "gcc" "CMakeFiles/untitled.dir/fornecedores.c.obj.d"
   "C:/Users/vitor/CLionProjects/SistemaLocadora/main.c" "CMakeFiles/untitled.dir/main.c.obj" "gcc" "CMakeFiles/untitled.dir/main.c.obj.d"
   "C:/Users/vitor/CLionProjects/SistemaLocadora/menus.c" "CMakeFiles/untitled.dir/menus.c.obj" "gcc" "CMakeFiles/untitled.dir/menus.c.obj.d"
+  "C:/Users/vitor/CLionProjects/SistemaLocadora/sons.c" "CMakeFiles/untitled.dir/sons.c.obj" "gcc" "CMakeFiles/untitled.dir/sons.c.obj.d"
   )
 
 # Targets to which this target links.

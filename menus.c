@@ -1,3 +1,5 @@
+#ifndef MENUS_C
+#define MENUC_C
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>
@@ -13,6 +15,7 @@
 #include "menus.h"
 #include "Caixa.h"
 #include "fornecedores.h"
+#include "sons.h"
 #include "Carrinho.h"
 #include "ContasAreceber.h"
 #include "Devolucoes.h"
@@ -25,6 +28,11 @@
 #include "EntradaDeFilmes.h"
 #define ESC 27
 #define MENUPRINC  menuGraphics(8, "Menu principal, escolha uma opcao:", "Administrativo", "Clientes", "Filmes", "Categorias", "Trocar modo arm BIN/TXT", "Caixa", "Contas", "Sair")
+
+
+
+
+
 void imprimeEspacamentoMaior(int espacamento, char letra, char letraFim){
     for(int i = 0; i<espacamento; i++){
         printf("%c", letra);
@@ -72,6 +80,7 @@ void menuGraphicsComSeta(int quantidadeArgumentos, char *frasePrincipal , int li
     cordenadaIn.Y = 7+linha;
     SetConsoleCursorPosition(GetStdHandle( STD_OUTPUT_HANDLE ), cordenadaIn);
     printf(" -->");
+    SetConsoleCursorPosition(GetStdHandle( STD_OUTPUT_HANDLE ), (COORD){0,0});
     return;
 }
 
@@ -139,7 +148,7 @@ int escolheMenu(char *mensagem, int quantidade,int espacamentoMaior, ...){
                 }else{
                     contador = 0;
                 }
-                Beep(3500,50);
+                Beep(2000,10);
                 break;
 
             case 72:
@@ -148,14 +157,14 @@ int escolheMenu(char *mensagem, int quantidade,int espacamentoMaior, ...){
                 }else{
                     contador = quantidade-1;
                 }
-                Beep(3500,50);
+
                 break;
 
             case 13:
                 frases = limpaMemoria(frases);
                 system("clear");
                 va_end(parametros);
-                Beep(2500,50);
+
                 return contador;
 
         }
@@ -164,10 +173,10 @@ int escolheMenu(char *mensagem, int quantidade,int espacamentoMaior, ...){
 
 }
 int menuPrincipal(int *modo){
-
+    (*modo)? leDadosSonsBin(&ConfiguracoeDeSons): leDadosSons(&ConfiguracoeDeSons);
     int escolha;
     printf("\n");
-    escolha = escolheMenu("Seja bem vindo! Escolha uma opcao", 9, 0,"Administrativo", "Clientes", "Filmes", "Categorias", "Trocar modo arm BIN/TXT", "Caixa", "Contas a receber","Contas a Pagar", "Sair");
+    escolha = escolheMenu("Seja bem vindo! Escolha uma opcao", 9, 0,"Administrativo", "Clientes", "Filmes", "Categorias", "Configuracoes", "Caixa", "Contas a receber","Contas a Pagar", "Sair");
     while(escolha != 8){
 
         switch(escolha){
@@ -188,8 +197,8 @@ int menuPrincipal(int *modo){
                 MenuCategoria(*modo);
                 break;
             case 4:
-                
-                menuTroca(modo);
+
+                menuConfiguracoes(modo);
                 
                 break;
             case 5:
@@ -510,6 +519,27 @@ void menuContasPagar(int modoArm){
                 break;
 
         }
-        break;
+
     }
 }
+void menuConfiguracoes(int *modoArm){
+
+    int escolha;
+
+    while(escolha != 2) {
+        escolha = escolheMenu("Menu configuracoes:", 3, 0, "Configuracoes de sons", "Trocar modo de armazenamento", "Voltar");
+
+        switch(escolha){
+
+            case 0:
+                editaDadosSons(*modoArm);
+                break;
+            case 1:
+                menuTroca(modoArm);
+                break;
+            case 2:
+                break;
+        }
+    }
+}
+#endif

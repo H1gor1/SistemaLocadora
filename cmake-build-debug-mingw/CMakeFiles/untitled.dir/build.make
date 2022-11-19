@@ -82,10 +82,24 @@ CMakeFiles/untitled.dir/main.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/untitled.dir/main.c.s"
 	C:\PROGRA~1\JETBRA~1\CLION2~1.4\bin\mingw\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\vitor\CLionProjects\SistemaLocadora\main.c -o CMakeFiles\untitled.dir\main.c.s
 
+CMakeFiles/untitled.dir/sons.c.obj: CMakeFiles/untitled.dir/flags.make
+CMakeFiles/untitled.dir/sons.c.obj: ../sons.c
+CMakeFiles/untitled.dir/sons.c.obj: CMakeFiles/untitled.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\vitor\CLionProjects\SistemaLocadora\cmake-build-debug-mingw\CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object CMakeFiles/untitled.dir/sons.c.obj"
+	C:\PROGRA~1\JETBRA~1\CLION2~1.4\bin\mingw\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/untitled.dir/sons.c.obj -MF CMakeFiles\untitled.dir\sons.c.obj.d -o CMakeFiles\untitled.dir\sons.c.obj -c C:\Users\vitor\CLionProjects\SistemaLocadora\sons.c
+
+CMakeFiles/untitled.dir/sons.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/untitled.dir/sons.c.i"
+	C:\PROGRA~1\JETBRA~1\CLION2~1.4\bin\mingw\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\vitor\CLionProjects\SistemaLocadora\sons.c > CMakeFiles\untitled.dir\sons.c.i
+
+CMakeFiles/untitled.dir/sons.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/untitled.dir/sons.c.s"
+	C:\PROGRA~1\JETBRA~1\CLION2~1.4\bin\mingw\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\vitor\CLionProjects\SistemaLocadora\sons.c -o CMakeFiles\untitled.dir\sons.c.s
+
 CMakeFiles/untitled.dir/Caixa.c.obj: CMakeFiles/untitled.dir/flags.make
 CMakeFiles/untitled.dir/Caixa.c.obj: ../Caixa.c
 CMakeFiles/untitled.dir/Caixa.c.obj: CMakeFiles/untitled.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\vitor\CLionProjects\SistemaLocadora\cmake-build-debug-mingw\CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object CMakeFiles/untitled.dir/Caixa.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\vitor\CLionProjects\SistemaLocadora\cmake-build-debug-mingw\CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building C object CMakeFiles/untitled.dir/Caixa.c.obj"
 	C:\PROGRA~1\JETBRA~1\CLION2~1.4\bin\mingw\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/untitled.dir/Caixa.c.obj -MF CMakeFiles\untitled.dir\Caixa.c.obj.d -o CMakeFiles\untitled.dir\Caixa.c.obj -c C:\Users\vitor\CLionProjects\SistemaLocadora\Caixa.c
 
 CMakeFiles/untitled.dir/Caixa.c.i: cmake_force
@@ -99,7 +113,7 @@ CMakeFiles/untitled.dir/Caixa.c.s: cmake_force
 CMakeFiles/untitled.dir/Carrinho.c.obj: CMakeFiles/untitled.dir/flags.make
 CMakeFiles/untitled.dir/Carrinho.c.obj: ../Carrinho.c
 CMakeFiles/untitled.dir/Carrinho.c.obj: CMakeFiles/untitled.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\vitor\CLionProjects\SistemaLocadora\cmake-build-debug-mingw\CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building C object CMakeFiles/untitled.dir/Carrinho.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\vitor\CLionProjects\SistemaLocadora\cmake-build-debug-mingw\CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building C object CMakeFiles/untitled.dir/Carrinho.c.obj"
 	C:\PROGRA~1\JETBRA~1\CLION2~1.4\bin\mingw\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/untitled.dir/Carrinho.c.obj -MF CMakeFiles\untitled.dir\Carrinho.c.obj.d -o CMakeFiles\untitled.dir\Carrinho.c.obj -c C:\Users\vitor\CLionProjects\SistemaLocadora\Carrinho.c
 
 CMakeFiles/untitled.dir/Carrinho.c.i: cmake_force
@@ -113,7 +127,7 @@ CMakeFiles/untitled.dir/Carrinho.c.s: cmake_force
 CMakeFiles/untitled.dir/contasAreceber.c.obj: CMakeFiles/untitled.dir/flags.make
 CMakeFiles/untitled.dir/contasAreceber.c.obj: ../contasAreceber.c
 CMakeFiles/untitled.dir/contasAreceber.c.obj: CMakeFiles/untitled.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\vitor\CLionProjects\SistemaLocadora\cmake-build-debug-mingw\CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building C object CMakeFiles/untitled.dir/contasAreceber.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\vitor\CLionProjects\SistemaLocadora\cmake-build-debug-mingw\CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building C object CMakeFiles/untitled.dir/contasAreceber.c.obj"
 	C:\PROGRA~1\JETBRA~1\CLION2~1.4\bin\mingw\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/untitled.dir/contasAreceber.c.obj -MF CMakeFiles\untitled.dir\contasAreceber.c.obj.d -o CMakeFiles\untitled.dir\contasAreceber.c.obj -c C:\Users\vitor\CLionProjects\SistemaLocadora\contasAreceber.c
 
 CMakeFiles/untitled.dir/contasAreceber.c.i: cmake_force
@@ -127,7 +141,7 @@ CMakeFiles/untitled.dir/contasAreceber.c.s: cmake_force
 CMakeFiles/untitled.dir/ControleCategorias.c.obj: CMakeFiles/untitled.dir/flags.make
 CMakeFiles/untitled.dir/ControleCategorias.c.obj: ../ControleCategorias.c
 CMakeFiles/untitled.dir/ControleCategorias.c.obj: CMakeFiles/untitled.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\vitor\CLionProjects\SistemaLocadora\cmake-build-debug-mingw\CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building C object CMakeFiles/untitled.dir/ControleCategorias.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\vitor\CLionProjects\SistemaLocadora\cmake-build-debug-mingw\CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building C object CMakeFiles/untitled.dir/ControleCategorias.c.obj"
 	C:\PROGRA~1\JETBRA~1\CLION2~1.4\bin\mingw\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/untitled.dir/ControleCategorias.c.obj -MF CMakeFiles\untitled.dir\ControleCategorias.c.obj.d -o CMakeFiles\untitled.dir\ControleCategorias.c.obj -c C:\Users\vitor\CLionProjects\SistemaLocadora\ControleCategorias.c
 
 CMakeFiles/untitled.dir/ControleCategorias.c.i: cmake_force
@@ -141,7 +155,7 @@ CMakeFiles/untitled.dir/ControleCategorias.c.s: cmake_force
 CMakeFiles/untitled.dir/ControleClientes.c.obj: CMakeFiles/untitled.dir/flags.make
 CMakeFiles/untitled.dir/ControleClientes.c.obj: ../ControleClientes.c
 CMakeFiles/untitled.dir/ControleClientes.c.obj: CMakeFiles/untitled.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\vitor\CLionProjects\SistemaLocadora\cmake-build-debug-mingw\CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building C object CMakeFiles/untitled.dir/ControleClientes.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\vitor\CLionProjects\SistemaLocadora\cmake-build-debug-mingw\CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building C object CMakeFiles/untitled.dir/ControleClientes.c.obj"
 	C:\PROGRA~1\JETBRA~1\CLION2~1.4\bin\mingw\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/untitled.dir/ControleClientes.c.obj -MF CMakeFiles\untitled.dir\ControleClientes.c.obj.d -o CMakeFiles\untitled.dir\ControleClientes.c.obj -c C:\Users\vitor\CLionProjects\SistemaLocadora\ControleClientes.c
 
 CMakeFiles/untitled.dir/ControleClientes.c.i: cmake_force
@@ -155,7 +169,7 @@ CMakeFiles/untitled.dir/ControleClientes.c.s: cmake_force
 CMakeFiles/untitled.dir/ControleDeDadosLocadora.c.obj: CMakeFiles/untitled.dir/flags.make
 CMakeFiles/untitled.dir/ControleDeDadosLocadora.c.obj: ../ControleDeDadosLocadora.c
 CMakeFiles/untitled.dir/ControleDeDadosLocadora.c.obj: CMakeFiles/untitled.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\vitor\CLionProjects\SistemaLocadora\cmake-build-debug-mingw\CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building C object CMakeFiles/untitled.dir/ControleDeDadosLocadora.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\vitor\CLionProjects\SistemaLocadora\cmake-build-debug-mingw\CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building C object CMakeFiles/untitled.dir/ControleDeDadosLocadora.c.obj"
 	C:\PROGRA~1\JETBRA~1\CLION2~1.4\bin\mingw\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/untitled.dir/ControleDeDadosLocadora.c.obj -MF CMakeFiles\untitled.dir\ControleDeDadosLocadora.c.obj.d -o CMakeFiles\untitled.dir\ControleDeDadosLocadora.c.obj -c C:\Users\vitor\CLionProjects\SistemaLocadora\ControleDeDadosLocadora.c
 
 CMakeFiles/untitled.dir/ControleDeDadosLocadora.c.i: cmake_force
@@ -169,7 +183,7 @@ CMakeFiles/untitled.dir/ControleDeDadosLocadora.c.s: cmake_force
 CMakeFiles/untitled.dir/ControleDeNumeros.c.obj: CMakeFiles/untitled.dir/flags.make
 CMakeFiles/untitled.dir/ControleDeNumeros.c.obj: ../ControleDeNumeros.c
 CMakeFiles/untitled.dir/ControleDeNumeros.c.obj: CMakeFiles/untitled.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\vitor\CLionProjects\SistemaLocadora\cmake-build-debug-mingw\CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building C object CMakeFiles/untitled.dir/ControleDeNumeros.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\vitor\CLionProjects\SistemaLocadora\cmake-build-debug-mingw\CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building C object CMakeFiles/untitled.dir/ControleDeNumeros.c.obj"
 	C:\PROGRA~1\JETBRA~1\CLION2~1.4\bin\mingw\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/untitled.dir/ControleDeNumeros.c.obj -MF CMakeFiles\untitled.dir\ControleDeNumeros.c.obj.d -o CMakeFiles\untitled.dir\ControleDeNumeros.c.obj -c C:\Users\vitor\CLionProjects\SistemaLocadora\ControleDeNumeros.c
 
 CMakeFiles/untitled.dir/ControleDeNumeros.c.i: cmake_force
@@ -183,7 +197,7 @@ CMakeFiles/untitled.dir/ControleDeNumeros.c.s: cmake_force
 CMakeFiles/untitled.dir/ControleFilmes.c.obj: CMakeFiles/untitled.dir/flags.make
 CMakeFiles/untitled.dir/ControleFilmes.c.obj: ../ControleFilmes.c
 CMakeFiles/untitled.dir/ControleFilmes.c.obj: CMakeFiles/untitled.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\vitor\CLionProjects\SistemaLocadora\cmake-build-debug-mingw\CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building C object CMakeFiles/untitled.dir/ControleFilmes.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\vitor\CLionProjects\SistemaLocadora\cmake-build-debug-mingw\CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building C object CMakeFiles/untitled.dir/ControleFilmes.c.obj"
 	C:\PROGRA~1\JETBRA~1\CLION2~1.4\bin\mingw\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/untitled.dir/ControleFilmes.c.obj -MF CMakeFiles\untitled.dir\ControleFilmes.c.obj.d -o CMakeFiles\untitled.dir\ControleFilmes.c.obj -c C:\Users\vitor\CLionProjects\SistemaLocadora\ControleFilmes.c
 
 CMakeFiles/untitled.dir/ControleFilmes.c.i: cmake_force
@@ -197,7 +211,7 @@ CMakeFiles/untitled.dir/ControleFilmes.c.s: cmake_force
 CMakeFiles/untitled.dir/controleFuncionarios.c.obj: CMakeFiles/untitled.dir/flags.make
 CMakeFiles/untitled.dir/controleFuncionarios.c.obj: ../controleFuncionarios.c
 CMakeFiles/untitled.dir/controleFuncionarios.c.obj: CMakeFiles/untitled.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\vitor\CLionProjects\SistemaLocadora\cmake-build-debug-mingw\CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building C object CMakeFiles/untitled.dir/controleFuncionarios.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\vitor\CLionProjects\SistemaLocadora\cmake-build-debug-mingw\CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building C object CMakeFiles/untitled.dir/controleFuncionarios.c.obj"
 	C:\PROGRA~1\JETBRA~1\CLION2~1.4\bin\mingw\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/untitled.dir/controleFuncionarios.c.obj -MF CMakeFiles\untitled.dir\controleFuncionarios.c.obj.d -o CMakeFiles\untitled.dir\controleFuncionarios.c.obj -c C:\Users\vitor\CLionProjects\SistemaLocadora\controleFuncionarios.c
 
 CMakeFiles/untitled.dir/controleFuncionarios.c.i: cmake_force
@@ -211,7 +225,7 @@ CMakeFiles/untitled.dir/controleFuncionarios.c.s: cmake_force
 CMakeFiles/untitled.dir/Devolucoes.c.obj: CMakeFiles/untitled.dir/flags.make
 CMakeFiles/untitled.dir/Devolucoes.c.obj: ../Devolucoes.c
 CMakeFiles/untitled.dir/Devolucoes.c.obj: CMakeFiles/untitled.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\vitor\CLionProjects\SistemaLocadora\cmake-build-debug-mingw\CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building C object CMakeFiles/untitled.dir/Devolucoes.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\vitor\CLionProjects\SistemaLocadora\cmake-build-debug-mingw\CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building C object CMakeFiles/untitled.dir/Devolucoes.c.obj"
 	C:\PROGRA~1\JETBRA~1\CLION2~1.4\bin\mingw\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/untitled.dir/Devolucoes.c.obj -MF CMakeFiles\untitled.dir\Devolucoes.c.obj.d -o CMakeFiles\untitled.dir\Devolucoes.c.obj -c C:\Users\vitor\CLionProjects\SistemaLocadora\Devolucoes.c
 
 CMakeFiles/untitled.dir/Devolucoes.c.i: cmake_force
@@ -225,7 +239,7 @@ CMakeFiles/untitled.dir/Devolucoes.c.s: cmake_force
 CMakeFiles/untitled.dir/fornecedores.c.obj: CMakeFiles/untitled.dir/flags.make
 CMakeFiles/untitled.dir/fornecedores.c.obj: ../fornecedores.c
 CMakeFiles/untitled.dir/fornecedores.c.obj: CMakeFiles/untitled.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\vitor\CLionProjects\SistemaLocadora\cmake-build-debug-mingw\CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building C object CMakeFiles/untitled.dir/fornecedores.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\vitor\CLionProjects\SistemaLocadora\cmake-build-debug-mingw\CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building C object CMakeFiles/untitled.dir/fornecedores.c.obj"
 	C:\PROGRA~1\JETBRA~1\CLION2~1.4\bin\mingw\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/untitled.dir/fornecedores.c.obj -MF CMakeFiles\untitled.dir\fornecedores.c.obj.d -o CMakeFiles\untitled.dir\fornecedores.c.obj -c C:\Users\vitor\CLionProjects\SistemaLocadora\fornecedores.c
 
 CMakeFiles/untitled.dir/fornecedores.c.i: cmake_force
@@ -239,7 +253,7 @@ CMakeFiles/untitled.dir/fornecedores.c.s: cmake_force
 CMakeFiles/untitled.dir/FuncUtilitarias.c.obj: CMakeFiles/untitled.dir/flags.make
 CMakeFiles/untitled.dir/FuncUtilitarias.c.obj: ../FuncUtilitarias.c
 CMakeFiles/untitled.dir/FuncUtilitarias.c.obj: CMakeFiles/untitled.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\vitor\CLionProjects\SistemaLocadora\cmake-build-debug-mingw\CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building C object CMakeFiles/untitled.dir/FuncUtilitarias.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\vitor\CLionProjects\SistemaLocadora\cmake-build-debug-mingw\CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building C object CMakeFiles/untitled.dir/FuncUtilitarias.c.obj"
 	C:\PROGRA~1\JETBRA~1\CLION2~1.4\bin\mingw\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/untitled.dir/FuncUtilitarias.c.obj -MF CMakeFiles\untitled.dir\FuncUtilitarias.c.obj.d -o CMakeFiles\untitled.dir\FuncUtilitarias.c.obj -c C:\Users\vitor\CLionProjects\SistemaLocadora\FuncUtilitarias.c
 
 CMakeFiles/untitled.dir/FuncUtilitarias.c.i: cmake_force
@@ -253,7 +267,7 @@ CMakeFiles/untitled.dir/FuncUtilitarias.c.s: cmake_force
 CMakeFiles/untitled.dir/ManipulacoesDeTexto.c.obj: CMakeFiles/untitled.dir/flags.make
 CMakeFiles/untitled.dir/ManipulacoesDeTexto.c.obj: ../ManipulacoesDeTexto.c
 CMakeFiles/untitled.dir/ManipulacoesDeTexto.c.obj: CMakeFiles/untitled.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\vitor\CLionProjects\SistemaLocadora\cmake-build-debug-mingw\CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building C object CMakeFiles/untitled.dir/ManipulacoesDeTexto.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\vitor\CLionProjects\SistemaLocadora\cmake-build-debug-mingw\CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building C object CMakeFiles/untitled.dir/ManipulacoesDeTexto.c.obj"
 	C:\PROGRA~1\JETBRA~1\CLION2~1.4\bin\mingw\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/untitled.dir/ManipulacoesDeTexto.c.obj -MF CMakeFiles\untitled.dir\ManipulacoesDeTexto.c.obj.d -o CMakeFiles\untitled.dir\ManipulacoesDeTexto.c.obj -c C:\Users\vitor\CLionProjects\SistemaLocadora\ManipulacoesDeTexto.c
 
 CMakeFiles/untitled.dir/ManipulacoesDeTexto.c.i: cmake_force
@@ -267,7 +281,7 @@ CMakeFiles/untitled.dir/ManipulacoesDeTexto.c.s: cmake_force
 CMakeFiles/untitled.dir/menus.c.obj: CMakeFiles/untitled.dir/flags.make
 CMakeFiles/untitled.dir/menus.c.obj: ../menus.c
 CMakeFiles/untitled.dir/menus.c.obj: CMakeFiles/untitled.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\vitor\CLionProjects\SistemaLocadora\cmake-build-debug-mingw\CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building C object CMakeFiles/untitled.dir/menus.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\vitor\CLionProjects\SistemaLocadora\cmake-build-debug-mingw\CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Building C object CMakeFiles/untitled.dir/menus.c.obj"
 	C:\PROGRA~1\JETBRA~1\CLION2~1.4\bin\mingw\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/untitled.dir/menus.c.obj -MF CMakeFiles\untitled.dir\menus.c.obj.d -o CMakeFiles\untitled.dir\menus.c.obj -c C:\Users\vitor\CLionProjects\SistemaLocadora\menus.c
 
 CMakeFiles/untitled.dir/menus.c.i: cmake_force
@@ -281,7 +295,7 @@ CMakeFiles/untitled.dir/menus.c.s: cmake_force
 CMakeFiles/untitled.dir/ContasAPagar.c.obj: CMakeFiles/untitled.dir/flags.make
 CMakeFiles/untitled.dir/ContasAPagar.c.obj: ../ContasAPagar.c
 CMakeFiles/untitled.dir/ContasAPagar.c.obj: CMakeFiles/untitled.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\vitor\CLionProjects\SistemaLocadora\cmake-build-debug-mingw\CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Building C object CMakeFiles/untitled.dir/ContasAPagar.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\vitor\CLionProjects\SistemaLocadora\cmake-build-debug-mingw\CMakeFiles --progress-num=$(CMAKE_PROGRESS_17) "Building C object CMakeFiles/untitled.dir/ContasAPagar.c.obj"
 	C:\PROGRA~1\JETBRA~1\CLION2~1.4\bin\mingw\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/untitled.dir/ContasAPagar.c.obj -MF CMakeFiles\untitled.dir\ContasAPagar.c.obj.d -o CMakeFiles\untitled.dir\ContasAPagar.c.obj -c C:\Users\vitor\CLionProjects\SistemaLocadora\ContasAPagar.c
 
 CMakeFiles/untitled.dir/ContasAPagar.c.i: cmake_force
@@ -295,7 +309,7 @@ CMakeFiles/untitled.dir/ContasAPagar.c.s: cmake_force
 CMakeFiles/untitled.dir/EntradaDeFilmes.c.obj: CMakeFiles/untitled.dir/flags.make
 CMakeFiles/untitled.dir/EntradaDeFilmes.c.obj: ../EntradaDeFilmes.c
 CMakeFiles/untitled.dir/EntradaDeFilmes.c.obj: CMakeFiles/untitled.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\vitor\CLionProjects\SistemaLocadora\cmake-build-debug-mingw\CMakeFiles --progress-num=$(CMAKE_PROGRESS_17) "Building C object CMakeFiles/untitled.dir/EntradaDeFilmes.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\vitor\CLionProjects\SistemaLocadora\cmake-build-debug-mingw\CMakeFiles --progress-num=$(CMAKE_PROGRESS_18) "Building C object CMakeFiles/untitled.dir/EntradaDeFilmes.c.obj"
 	C:\PROGRA~1\JETBRA~1\CLION2~1.4\bin\mingw\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/untitled.dir/EntradaDeFilmes.c.obj -MF CMakeFiles\untitled.dir\EntradaDeFilmes.c.obj.d -o CMakeFiles\untitled.dir\EntradaDeFilmes.c.obj -c C:\Users\vitor\CLionProjects\SistemaLocadora\EntradaDeFilmes.c
 
 CMakeFiles/untitled.dir/EntradaDeFilmes.c.i: cmake_force
@@ -309,6 +323,7 @@ CMakeFiles/untitled.dir/EntradaDeFilmes.c.s: cmake_force
 # Object files for target untitled
 untitled_OBJECTS = \
 "CMakeFiles/untitled.dir/main.c.obj" \
+"CMakeFiles/untitled.dir/sons.c.obj" \
 "CMakeFiles/untitled.dir/Caixa.c.obj" \
 "CMakeFiles/untitled.dir/Carrinho.c.obj" \
 "CMakeFiles/untitled.dir/contasAreceber.c.obj" \
@@ -330,6 +345,7 @@ untitled_OBJECTS = \
 untitled_EXTERNAL_OBJECTS =
 
 untitled.exe: CMakeFiles/untitled.dir/main.c.obj
+untitled.exe: CMakeFiles/untitled.dir/sons.c.obj
 untitled.exe: CMakeFiles/untitled.dir/Caixa.c.obj
 untitled.exe: CMakeFiles/untitled.dir/Carrinho.c.obj
 untitled.exe: CMakeFiles/untitled.dir/contasAreceber.c.obj
@@ -350,7 +366,7 @@ untitled.exe: CMakeFiles/untitled.dir/build.make
 untitled.exe: CMakeFiles/untitled.dir/linklibs.rsp
 untitled.exe: CMakeFiles/untitled.dir/objects1.rsp
 untitled.exe: CMakeFiles/untitled.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=C:\Users\vitor\CLionProjects\SistemaLocadora\cmake-build-debug-mingw\CMakeFiles --progress-num=$(CMAKE_PROGRESS_18) "Linking C executable untitled.exe"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=C:\Users\vitor\CLionProjects\SistemaLocadora\cmake-build-debug-mingw\CMakeFiles --progress-num=$(CMAKE_PROGRESS_19) "Linking C executable untitled.exe"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles\untitled.dir\link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

@@ -536,6 +536,30 @@ menus.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\untitled.dir\build.make CMakeFiles/untitled.dir/menus.c.s
 .PHONY : menus.c.s
 
+sons.obj: sons.c.obj
+.PHONY : sons.obj
+
+# target to build an object file
+sons.c.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\untitled.dir\build.make CMakeFiles/untitled.dir/sons.c.obj
+.PHONY : sons.c.obj
+
+sons.i: sons.c.i
+.PHONY : sons.i
+
+# target to preprocess a source file
+sons.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\untitled.dir\build.make CMakeFiles/untitled.dir/sons.c.i
+.PHONY : sons.c.i
+
+sons.s: sons.c.s
+.PHONY : sons.s
+
+# target to generate assembly for a file
+sons.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\untitled.dir\build.make CMakeFiles/untitled.dir/sons.c.s
+.PHONY : sons.c.s
+
 # Help Target
 help:
 	@echo The following are some of the valid targets for this Makefile:
@@ -596,6 +620,9 @@ help:
 	@echo ... menus.obj
 	@echo ... menus.i
 	@echo ... menus.s
+	@echo ... sons.obj
+	@echo ... sons.i
+	@echo ... sons.s
 .PHONY : help
 
 

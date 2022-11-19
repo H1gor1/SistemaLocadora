@@ -1,4 +1,5 @@
-#include<stdio.h> 
+
+#include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
 #include<errno.h> 
@@ -14,6 +15,9 @@
 #include "menus.h"
 
 
+
+
+
 int main(){
     
     
@@ -21,6 +25,7 @@ int main(){
     
     VerificaExisteArquivoLocadora();
     verificaModoArmazenamento(&modoArm);
+
     
     
    

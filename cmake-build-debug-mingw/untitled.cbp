@@ -178,6 +178,12 @@
 		<Unit filename="C:/Users/vitor/CLionProjects/SistemaLocadora/menus.h">
 			<Option target="untitled"/>
 		</Unit>
+		<Unit filename="C:/Users/vitor/CLionProjects/SistemaLocadora/sons.c">
+			<Option target="untitled"/>
+		</Unit>
+		<Unit filename="C:/Users/vitor/CLionProjects/SistemaLocadora/sons.h">
+			<Option target="untitled"/>
+		</Unit>
 		<Unit filename="C:/Users/vitor/CLionProjects/SistemaLocadora/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\"/>
 		</Unit>

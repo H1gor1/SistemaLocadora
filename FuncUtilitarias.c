@@ -14,6 +14,7 @@
 #include "Caixa.h"
 #include "ContasAreceber.h"
 #include "Devolucoes.h"
+#include <windows.h>
 #include <conio.h>
 #include "menus.h"
 #include "EntradaDeFilmes.h"
@@ -482,7 +483,8 @@ void* menuOpcoesFilmesOuClientes(void *todos, int quantidade, char *mensagem, in
     while(escolha != 13){
         menuGraphicsComSeta(quantidadeExistente, mensagem, contador, linhaAnterior, chamadas, informacoesEmText, 60);
         escolha = escolheOpcao();
-
+        linhaAnterior = contador;
+        chamadas++;
         switch (escolha) {
 
             case 80:
@@ -491,16 +493,21 @@ void* menuOpcoesFilmesOuClientes(void *todos, int quantidade, char *mensagem, in
                 }else{
                     contador = 0;
                 }
+
                 break;
+
             case 72:
                 if(contador > 0){
                     contador--;
                 }else{
                     contador = quantidadeExistente-1;
                 }
+
                 break;
+
         }
     }
+    Beep(2500,50);
     switch(tamanho){
         case sizeof(cliente):
             itemProcurado = (void *)encontraClienteNome(ptrClient, quantidade, strtok(informacoesEmText[contador], ";"));
