@@ -1,7 +1,24 @@
+
+
+
 #ifndef MENUS_H
 #define MENUS_H
 
+typedef struct AlturaSons{
+    int frequencia, duracao;
+}AlturaSons;
+typedef struct sons{
+    AlturaSons sonsDeConfirmacao, sonsDeErro;
+}sons;
 
+
+void editaDadosSons(int modoArm);
+void reescreveDadosSons(sons *ptr);
+void reescreveDadosSonsBin(sons *ptr);
+void leDadosSons(sons *ptr);
+void leDadosSonsBin(sons *ptr);
+void editaDadosSons(int modoArm);
+int selecionaValorDeSom(char *stringConf, int valorAt);
 int menuPrincipal(int *modo);
 int MenuAdm(int modo);
 int MenuClientes(int modo);

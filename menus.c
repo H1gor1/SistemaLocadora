@@ -15,7 +15,6 @@
 #include "menus.h"
 #include "Caixa.h"
 #include "fornecedores.h"
-#include "sons.h"
 #include "Carrinho.h"
 #include "ContasAreceber.h"
 #include "Devolucoes.h"
@@ -30,7 +29,7 @@
 #define MENUPRINC  menuGraphics(8, "Menu principal, escolha uma opcao:", "Administrativo", "Clientes", "Filmes", "Categorias", "Trocar modo arm BIN/TXT", "Caixa", "Contas", "Sair")
 
 
-
+sons configuracoesSons;
 
 
 void imprimeEspacamentoMaior(int espacamento, char letra, char letraFim){
@@ -148,7 +147,7 @@ int escolheMenu(char *mensagem, int quantidade,int espacamentoMaior, ...){
                 }else{
                     contador = 0;
                 }
-                Beep(2000,10);
+
                 break;
 
             case 72:
@@ -164,7 +163,7 @@ int escolheMenu(char *mensagem, int quantidade,int espacamentoMaior, ...){
                 frases = limpaMemoria(frases);
                 system("clear");
                 va_end(parametros);
-
+                Beep(configuracoesSons.sonsDeConfirmacao.frequencia, configuracoesSons.sonsDeConfirmacao.duracao);
                 return contador;
 
         }
@@ -173,7 +172,11 @@ int escolheMenu(char *mensagem, int quantidade,int espacamentoMaior, ...){
 
 }
 int menuPrincipal(int *modo){
-    (*modo)? leDadosSonsBin(&ConfiguracoeDeSons): leDadosSons(&ConfiguracoeDeSons);
+    configuracoesSons.sonsDeConfirmacao.frequencia = 0;
+    configuracoesSons.sonsDeConfirmacao.duracao = 0;
+    configuracoesSons.sonsDeErro.frequencia = 0;
+    configuracoesSons.sonsDeErro.duracao = 0;
+    (*modo)? leDadosSonsBin(&configuracoesSons):leDadosSons(&configuracoesSons);
     int escolha;
     printf("\n");
     escolha = escolheMenu("Seja bem vindo! Escolha uma opcao", 9, 0,"Administrativo", "Clientes", "Filmes", "Categorias", "Configuracoes", "Caixa", "Contas a receber","Contas a Pagar", "Sair");
@@ -218,7 +221,7 @@ int menuPrincipal(int *modo){
                 printf("Opcao invalida!\n");
         }
         if(escolha != 8){
-            escolha = escolheMenu("Menu principal. Escolha uma opcao", 9, 0,"Administrativo", "Clientes", "Filmes", "Categorias", "Trocar modo arm BIN/TXT", "Caixa", "Contas a receber", "Contas a pagar" ,"Sair");
+            escolha = escolha = escolheMenu("Menu principal. Escolha uma opcao", 9, 0,"Administrativo", "Clientes", "Filmes", "Categorias", "Configuracoes", "Caixa", "Contas a receber","Contas a Pagar", "Sair");
         }
     }
 }
@@ -541,5 +544,154 @@ void menuConfiguracoes(int *modoArm){
                 break;
         }
     }
+}
+//configuracoes de sons dos menus
+
+int selecionaValorDeSom(char *stringConf, int valorAt){
+
+    int escolha = 0;
+    printf("%s: |%-4d|\n", stringConf, valorAt);
+    while(escolha != 13){
+        SetConsoleCursorPosition(GetStdHandle( STD_OUTPUT_HANDLE ), (COORD){strlen(stringConf)+2, 0});
+        printf("|%-4d|\n", valorAt);
+        do {
+
+            escolha = escolheOpcao();
+        }while(escolha != 80 && escolha != 72 && escolha != 13);
+        switch(escolha){
+            case 80:
+                if(valorAt > 0){
+                    valorAt--;
+                }
+                break;
+            case 72:
+                if(valorAt < 20000){
+                    valorAt++;
+                }
+                break;
+
+            case 13:
+                Beep(configuracoesSons.sonsDeConfirmacao.frequencia, configuracoesSons.sonsDeConfirmacao.duracao);
+                return valorAt;
+        }
+    }
+
+}
+void leDadosSons(sons *ptr){
+    FILE *f;
+
+    f = fopen("sons.txt", "r");
+
+    if(!f){
+        ptr->sonsDeErro = (AlturaSons){0,0};
+        ptr->sonsDeConfirmacao = (AlturaSons){0,0};
+        reescreveDadosSons(ptr);
+        return;
+    }
+
+    fscanf(f, "%d ", &ptr->sonsDeConfirmacao.frequencia);
+    fscanf(f, "%d ", &ptr->sonsDeConfirmacao.duracao );
+    fscanf(f, "%d ", &ptr->sonsDeErro.frequencia);
+    fscanf(f, "%d ", &ptr->sonsDeErro.duracao);
+
+    fechaArquivo(&f);
+}
+void leDadosSonsBin(sons *ptr){
+    FILE *f;
+
+    f = fopen("sons.bin", "rb");
+
+    if(!f){
+        ptr->sonsDeErro = (AlturaSons){0,0};
+        ptr->sonsDeConfirmacao = (AlturaSons){0,0};
+        reescreveDadosSonsBin(ptr);
+        return;
+    }
+
+    fread(ptr, sizeof(sons), 1, f);
+
+    fechaArquivo(&f);
+    return;
+}
+void reescreveDadosSons(sons *ptr){
+    FILE *f;
+
+    f = fopen("sons.txt", "w");
+
+    if(!f){
+        printf("Erro ao salvar novos dados de configuracoes de sons, ultimas alteracoes foram perdidas!\n");
+        printf("ERRO: %s\n", strerror(errno));
+        return;
+    }
+
+    fprintf(f, "%d\n", ptr->sonsDeConfirmacao.frequencia);
+    fprintf(f, "%d\n", ptr->sonsDeConfirmacao.duracao);
+    fprintf(f, "%d\n", ptr->sonsDeErro.frequencia);
+    fprintf(f, "%d\n", ptr->sonsDeErro.duracao);
+
+    fechaArquivo(&f);
+}
+void reescreveDadosSonsBin(sons *ptr){
+    FILE *f;
+
+    f = fopen("sons.bin", "wb");
+
+    if(!f){
+        printf("Erro ao salvar novos dados de configuracoes de sons, ultimas alteracoes foram perdidas!\n");
+        printf("ERRO: %s\n", strerror(errno));
+        return;
+    }
+
+    fwrite(ptr, sizeof(sons), 1, f);
+
+
+}
+void editaDadosSons(int modoArm){
+
+    int escolha;
+
+    escolha = escolheMenu("Qual som deseja editar:", 3, 0, "Sons de confirmacao", "Sons de erro", "Voltar");
+
+    switch(escolha){
+        case 0:
+            escolha = escolheMenu("Deseja editar a frequencia ou duracao dos sons de confirmacao?", 3, 0, "Frequencia", "Duracao", "Voltar");
+            switch (escolha) {
+                case 0:
+                    configuracoesSons.sonsDeConfirmacao.frequencia = selecionaValorDeSom("Frequencia de sons de confirmacao", configuracoesSons.sonsDeConfirmacao.frequencia);
+                    break;
+
+                case 1:
+                    configuracoesSons.sonsDeConfirmacao.duracao = selecionaValorDeSom("Duracao de sons de confirmacao", configuracoesSons.sonsDeConfirmacao.duracao);
+                    break;
+
+                case 2:
+                    return;
+
+
+            }
+            break;
+        case 1:
+            escolha = escolheMenu("Deseja editar a frequencia ou duracao dos sons de erro?", 3, 0, "Frequencia", "Duracao", "Voltar");
+            switch (escolha) {
+                case 0:
+                    configuracoesSons.sonsDeErro.frequencia = selecionaValorDeSom("Frequencia de sons de erro", configuracoesSons.sonsDeErro.frequencia);
+                    break;
+
+                case 1:
+                    configuracoesSons.sonsDeErro.duracao = selecionaValorDeSom("Duracao de sons de erro", configuracoesSons.sonsDeErro.duracao);
+                    break;
+
+                case 2:
+                    return;
+
+
+            }
+            break;
+        case 2:
+            return;
+
+    }
+
+    (modoArm)? reescreveDadosSonsBin(&configuracoesSons): reescreveDadosSons(&configuracoesSons);
 }
 #endif

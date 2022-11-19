@@ -4,7 +4,6 @@ project(untitled C)
 set(CMAKE_C_STANDARD 11)
 
 add_executable(untitled main.c
-        sons.c sons.h
         Caixa.c Caixa.h
         Carrinho.c Carrinho.h
         contasAreceber.c contasAreceber.h
