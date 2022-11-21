@@ -6,6 +6,7 @@
 #include "ControleDeDadosLocadora.h"
 #include "FuncUtilitarias.h"
 #include <math.h>
+#include "menus.h"
 #define ENTER '\n'
 
 /*funcao responsavel por validar um cpf ou cnpj, basta mudar os parametros
@@ -60,7 +61,7 @@ void verificaNumero(void *ptr, char *controle){
         }
         
         if(digCert){//se dig cert for qualquer valor maior ou igual a 1
-            printf("Por favor, digite somente numeros!\n");//entao essa mensagem e mostrada
+            disparaSom("por favor, digite somente numeros!", 1);
         }
     }while(digCert != 0);//se dig cert for qualquer valor alem de 0, entao o usuario digitou errado, e deve digitar novamente
     
@@ -126,7 +127,8 @@ int validaCnpjouCpf(char **ptr, int quantidadedigitos, char *verificacoes, char 
         //enquanto a digitacao nao ter 14 numeros e todos serem numeros, o ciclo while nao e abandonado
         while(!verificaDigitos(ptr, quantidadedigitos)){
             free(ptr[0]);
-            printf("%s\n", mensagemeERRO);
+            disparaSom(mensagemeERRO, 1);
+
             
             
         }
@@ -148,7 +150,7 @@ int validaCnpjouCpf(char **ptr, int quantidadedigitos, char *verificacoes, char 
 int validaInsEstadual(char **ptr){
     //enquanto nao forem digitados exatamentes 9 digitos, o ciclo for nao sera abandonado
     while(!verificaDigitos(ptr, 9)){
-        printf("Inscricao Estadual invalida!Por favor, digite um valor valido!\n");
+        disparaSom("Inscricao estadual invalida! por favor digite novamente!\n", 1);
     }
     return 1;
 }
@@ -181,9 +183,11 @@ int verificaLimiteNumero(void *ptr, float limiteAlto, float limiteBaixo, char *c
         }
         //se os ifs de verificaco de valor de limite nao foram executados, entao e pedido para o usuario digitar novamente
         //um valor, respeitando o limite
+
         printf("voce digitou um valor invalido! O valor maximo e ");
         printf("%.0f e o minimo e %.0f\n", floor(limiteAlto), limiteBaixo);
         printf(" digite novamente:\n");
+        disparaSom("\0", 1);
     }while(1);
 }
 

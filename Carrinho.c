@@ -138,7 +138,8 @@ void alocaFilmes(filmes **filmesAlocados, int *quantidade, filmes *lista, int qu
             case 61:
                 break;
             default:
-                printf("voce escolheu uma opcao invalida, escolha novamente!\n");
+
+                disparaSom("voce escolheu uma opcao invalida, escolha novamente!", 1);
                 Sleep(1000);
                 break;
         }

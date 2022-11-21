@@ -167,6 +167,7 @@ void trocaModoArmazenamento(int *modo){
     compras *devolucoes = NULL;
     contaApag *contasApagar = NULL;
     lancamentoEntradas *lancamentosDeEntradas = NULL;
+    sons confRescrever;
 
     
     int quantidadeFornecedores;
@@ -191,7 +192,7 @@ void trocaModoArmazenamento(int *modo){
         quantidadeLancamentosAprazo = leDadosLancamentosAprazoBin(&lancAprazo);
         quantidadeContaApag = leDadosEntradasAprazoBin(&contasApagar);
         quantidadeLancamentosEntradas = leDadosEntradasFilmesBin(&lancamentosDeEntradas);
-        
+        leDadosSonsBin(&confRescrever,1);
         
         
         
@@ -213,8 +214,9 @@ void trocaModoArmazenamento(int *modo){
         reescreveDadosDevolucoes(devolucoes, quant.quantidadeAlugacoes, "devolucoes.txt", "devolucoes.txt", "w");
         reescreveEntradaAprazo(contasApagar, quantidadeContaApag, "entradaAprazo.txt", "entradaAprazo.txt", "w");
         reescreveLancamentosEntrada(lancamentosDeEntradas, quantidadeLancamentosEntradas, "lancamentosEntrada.txt", "lancamentosEntrada.txt", "w");
+        reescreveDadosSons(&confRescrever);
         //correcao feita apos a apresentacao, problema apontado pelo manoel
-        removeArquivos(11, "lancamentosEntrada.bin","entradaAprazo.bin","locadora.bin", "clientes.bin", "Funcionarios.bin", "categorias.bin", "filmes.bin", "fornecedores.bin", "lancamentos.bin", "lancamentosAprazo.bin", "devolucoes.bin");
+        removeArquivos(12,"sons.bin", "lancamentosEntrada.bin","entradaAprazo.bin","locadora.bin", "clientes.bin", "Funcionarios.bin", "categorias.bin", "filmes.bin", "fornecedores.bin", "lancamentos.bin", "lancamentosAprazo.bin", "devolucoes.bin");
         *modo = 0;
         
         
@@ -231,6 +233,7 @@ void trocaModoArmazenamento(int *modo){
         quantidadeLancamentosAprazo = leDadosLancamentosAprazo(&lancAprazo);
         quantidadeContaApag = leDadosEntradasAprazo(&contasApagar);
         quantidadeLancamentosEntradas = leDadosLancamentoEntradasFilmes(&lancamentosDeEntradas);
+        leDadosSons(&confRescrever,1);
         /*apaga os arquivos de texto*/
        
         
@@ -254,7 +257,9 @@ void trocaModoArmazenamento(int *modo){
         reescreveDadosDevolucoesBin(devolucoes, quant.quantidadeAlugacoes, "devolucoes.bin", "devolucoes.bin", "wb");
         reescreveEntradasAprazoBin(contasApagar, quantidadeContaApag, "entradaAprazo.bin", "entradaAprazo.bin", "wb");
         reescreveLancamentosEntradaBin(lancamentosDeEntradas, quantidadeLancamentosEntradas, "lancamentosEntrada.bin", "lancamentosEntrada.bin", "wb");
-        removeArquivos(11, "lancamentosEntrada.txt","entradaAprazo.txt","locadora.txt", "clientes.txt", "Funcionarios.txt", "categorias.txt", "filmes.txt", "fornecedores.txt", "lancamentos.txt", "lancamentosAprazo.txt", "devolucoes.txt");
+        reescreveDadosSonsBin(&confRescrever);
+        removeArquivos(12, "sons.txt" ,"lancamentosEntrada.txt","entradaAprazo.txt","locadora.txt", "clientes.txt", "Funcionarios.txt", "categorias.txt", "filmes.txt", "fornecedores.txt", "lancamentos.txt", "lancamentosAprazo.txt", "devolucoes.txt");
+
         *modo = 1;//muda o modo de abertura pra 1, que significa binario
         
     }
@@ -507,7 +512,8 @@ void* menuOpcoesFilmesOuClientes(void *todos, int quantidade, char *mensagem, in
 
         }
     }
-    Beep(2500,50);
+
+    disparaSom("\0", 0);
     switch(tamanho){
         case sizeof(cliente):
             itemProcurado = (void *)encontraClienteNome(ptrClient, quantidade, strtok(informacoesEmText[contador], ";"));
@@ -526,7 +532,7 @@ void* menuOpcoesFilmesOuClientes(void *todos, int quantidade, char *mensagem, in
     }
     informacoesEmText = limpaMemoria(informacoesEmText);
 
-
+    system("clear");
     return itemProcurado;
 
 

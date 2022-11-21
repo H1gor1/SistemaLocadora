@@ -8,6 +8,7 @@
 #include "FuncUtilitarias.h"
 #include "ControleClientes.h"
 #include "ControleDeNumeros.h"
+#include "menus.h"
 #define ERROMEM "ERRO: memoria indiponivel!\n"
 
 int digText(char **text, FILE *f){
@@ -62,6 +63,7 @@ int verificaOcorrencia(char *verificacoes, char *string){
         }
         i++;//incrementa o indice
     }
+
     return 1;//caso o while foi abandonado e pra nenhum teste do if foi retornado NULL pela funcao strrchr, entao 
     //houve ocorrencia de todos os caracteres de verificacoes na string, logo retorna 1
 }
@@ -74,7 +76,7 @@ void verificaText(char *verificacoes, char **string, char *mensagem){
     //enquanto a funcao verifica ocorrencia dentro do while retornar 0, que significa que a 
     //digitacao nao tinha todos os caracteres obrigatorios, o looping continuara executando
     while(!verificaOcorrencia(verificacoes, string[0])){
-        printf("%s", mensagem);//caso o usuario digitou errado, exibe a mensagem de advertencia passada como 3 argumento
+        disparaSom(mensagem, 1);//caso o usuario digitou errado, exibe a mensagem de advertencia passada como 3 argumento
         string[0] = limpaMemoria(string[0]);//atravez do ponteiro em que **string aponta, a memoria onde o usuario digitou
         //o texto errado e limpada
         //chamada da funcao para o usuario digitar novamente
@@ -112,7 +114,7 @@ void pegaDadoTextEverificaRepeticao(cliente *ptr, int quantidade, cliente *posic
             digText(string, stdin);
         }
         if(verificaStringRepetiu(ptr, quantidade, posicao, string[0])){
-            printf("%s\n", mensagem);
+            disparaSom(mensagem, 1);
             string[0] = limpaMemoria(string[0]);
         }else{
             return;

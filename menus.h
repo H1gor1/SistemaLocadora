@@ -9,14 +9,15 @@ typedef struct AlturaSons{
 }AlturaSons;
 typedef struct sons{
     AlturaSons sonsDeConfirmacao, sonsDeErro;
+    int modoSilencioso;
 }sons;
-
-
+void disparaSom(char *frase, int erro);
+void leDadosDeSons(int manterValor);
 void editaDadosSons(int modoArm);
 void reescreveDadosSons(sons *ptr);
 void reescreveDadosSonsBin(sons *ptr);
-void leDadosSons(sons *ptr);
-void leDadosSonsBin(sons *ptr);
+void leDadosSons(sons *ptr, int manterValor);
+void leDadosSonsBin(sons *ptr, int manterValor);
 void editaDadosSons(int modoArm);
 int selecionaValorDeSom(char *stringConf, int valorAt);
 int menuPrincipal(int *modo);

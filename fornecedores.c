@@ -369,7 +369,8 @@ fornecedor *buscaFornecedor(fornecedor *ptr, int quantidade){
             dado = limpaMemoria(dado);
             return ptrEnc;
         }
-        printf("Nenhum fornecedor possui o dado %s, por favor, digite novamente:\n", dado);
+
+        disparaSom("Nenhum fornecedor possui o dado digitado, por favor, digite novamente:", 1);
         dado = limpaMemoria(dado);
     }while(1);  
 }

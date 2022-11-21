@@ -8,6 +8,7 @@
 #include "ControleDeDadosLocadora.h"
 #include "ControleDeNumeros.h"
 #include "FuncUtilitarias.h"
+#include "Devolucoes.h"
 #include "menus.h"
 #include "ControleFilmes.h"
 #include "controleFuncionarios.h"
@@ -16,6 +17,8 @@
 #include <ctype.h>
 #include <locale.h>
 #include <windows.h>
+#include "ContasAPagar.h"
+#include "EntradaDeFilmes.h"
 #include "Carrinho.h"
 #define ERROMEM "ERRO: Memoria indisponivel!\n"
 #define MAXIMOPARCELAS 3
@@ -104,7 +107,8 @@ int leDadosLancamentosBin(lancamentoCaixa **lancamentos){
         lancamentos[0] = (indice == 0)
                             ?malloc(sizeof(lancamentoCaixa))
                             :realloc(lancamentos[0], sizeof(lancamentoCaixa)*(indice+1));
-        
+
+        verificaOperacao(lancamentos[0], "ERRO: Memoria indisponivel!", 1);
         lancamentos[0][indice] = temp;
         
         indice++;
@@ -221,7 +225,8 @@ void compraAvista(compras *compras, int modoArm){
         verificaNumero(&lancar.valorPago, "%f");
         
         if(lancar.valorPago < compras->preco){
-            printf("valor pago insuficiente!\n");
+
+            disparaSom("valor pago insuficiente!", 1);
         }
     }while(lancar.valorPago< compras->preco);
     
@@ -320,6 +325,14 @@ ContagemCaixa contabilizaCaixa(lancamentoCaixa *todosLancamentos, int quantidade
     
     return cont;
 }
+lancamentoCaixa *procuraLancamentoCaixa(lancamentoCaixa *ptr, int quantidade, long int codigo){
+    for(int i = 0; i<quantidade; i++){
+        if(ptr[i].codigoCompra == codigo){
+            return ptr+i;
+        }
+    }
+    return NULL;
+}
 void contaCaixa(int modoArm){
     
     lancamentoCaixa *todosLancamentos = NULL;
@@ -347,4 +360,119 @@ void contaCaixa(int modoArm){
     getch();
     
     todosLancamentos = limpaMemoria(todosLancamentos);
+}
+
+void filtraMovimentacoesPorPeriodoData(int modoArm){
+
+    lancamentoCaixa *todosLancamentos = NULL;
+    compras *todasAsCompras = NULL;
+    Funcionarios *funcs = NULL;
+    filmes *todosFilmes = NULL;
+    cliente *clientes = NULL;
+    lancamentoEntradas *todasEntradas = NULL;
+    contaApag *todasAsEntradasAprazo = NULL;
+    lancamentoCaixa *lancamentosFiltrados = NULL;
+
+    int quantidadeLancamentosFiltrados = 0;
+    int quantidadeEntradasAprazo = 0;
+    int quantidadeEntradas = 0;
+    quantidades quant = {0,0,0,0};
+
+    int quantidadeLancamentos = 0;
+    quant = (modoArm)? leDadosDevolucoesBin(&todasAsCompras, &funcs, &clientes, &todosFilmes):leDadosDevolucoes(&todasAsCompras, &funcs, &clientes, &todosFilmes);
+
+    quantidadeEntradas = (modoArm)? leDadosEntradasFilmesBin(&todasEntradas): leDadosLancamentoEntradasFilmes(&todasEntradas);
+    quantidadeLancamentos = (modoArm)? leDadosLancamentosBin(&todosLancamentos): leDadosLancamentos(&todosLancamentos);
+
+
+    struct tm data1 = {0,0,0,0,0,0,0,0,0};
+    struct tm data2 = {0,0,0,0,0,0,0,0,0};
+    time_t tempoSegData1;
+    time_t tempoSegData2;
+    data1.tm_mon = escolheMenu("Qual mes da data inicial?", 12, 0, "Janeiro", "Fevereiro", "Marco", "Abril", "Maio" ,"Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro");
+
+    if(data1.tm_mon%2!= 0){
+        data1.tm_mday = escolheMenu("Qual o dia?",
+                                    30,0,
+                                    "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30");
+
+
+    }else
+        if(data1.tm_mon == 2){
+            data1.tm_mday = escolheMenu("Qual o dia?",
+                                        28,0,
+                                        "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28");
+
+
+        }else{
+            data1.tm_mday =  data1.tm_mday = escolheMenu("Qual o dia?",
+                                                         30,0,
+                                                         "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31");
+
+
+        };
+
+        printf("e qual o ano?\n");
+    verificaNumero(&data1.tm_year, "%d");
+    data2.tm_mon = data1.tm_mon = escolheMenu("qual mes da data final?", 12, 0, "Janeiro", "Fevereiro", "Marco", "Abril", "Maio" ,"Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro");
+
+    if(data2.tm_mon %2!= 0){
+        data2.tm_mday = data1.tm_mday = escolheMenu("Qual o dia?",
+                                                    30,0,
+                                                    "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30");
+
+    }else
+        if(data2.tm_mon == 2){
+            data2.tm_mday = escolheMenu("Qual o dia?",
+                                        28,0,
+                                        "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28");
+
+        }else{
+            data2.tm_mday = escolheMenu("Qual o dia?",
+                                        31,0,
+                                        "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31");
+
+        }
+
+        printf("e qual o ano?\n");
+    verificaNumero(&data2.tm_year, "%d");
+
+    tempoSegData1 = mktime(&data1);
+    tempoSegData2 = mktime(&data2);
+
+    for(int i = 0; i<quantidadeLancamentos; i++){
+
+        if(mktime(&todosLancamentos[i].data) >= tempoSegData1 && mktime(&todosLancamentos[i].data) <= tempoSegData2){
+
+            lancamentosFiltrados = (!quantidadeLancamentosFiltrados)
+                    ?malloc(sizeof(lancamentoCaixa))
+                    :realloc(lancamentosFiltrados, sizeof(lancamentoCaixa)*(quantidadeLancamentosFiltrados+1));
+
+
+            lancamentosFiltrados[quantidadeLancamentosFiltrados] = todosLancamentos[i];
+            mostraLancamentos(lancamentosFiltrados+quantidadeLancamentosFiltrados, 1, &(struct tm){0,0,0,0,0,0,0,0,0});
+            quantidadeLancamentosFiltrados++;
+        }
+    }
+    printf("quantidade de lancamentos neste periodo: %d\n", quantidadeLancamentosFiltrados);
+
+    printf("Para consultar algumas destes lancamentos, digite o codigo da compra, caso nao queira, digite um codigo invalido:\n");
+    long int codigo;
+    lancamentoCaixa  *lancametoProcurado = NULL;
+    verificaNumero(&codigo, "%ld");
+    lancametoProcurado = procuraLancamentoCaixa(lancamentosFiltrados, quantidadeLancamentosFiltrados, codigo);
+
+    if(lancametoProcurado->valor > 0){
+
+        compras compraProcurada = *encontraCompraCodigo(todasAsCompras, quant.quantidadeAlugacoes, lancametoProcurado->codigoCompra);
+        mostraCompra(&compraProcurada, 1);
+    }else
+        if(lancametoProcurado->codigoCompra == 1){
+
+
+        }
+
+
+
+
 }

@@ -215,7 +215,8 @@ filmes *buscaFilme(filmes *buscar, int quantidade, char *mensagem){
             return menuOpcoesFilmesOuClientes(buscar, quantidade, "lista completa de filmes da locadora:", 0, sizeof(filmes));
         }
         dado = limpaMemoria(dado);
-        printf("%s\n", mensagem);
+        disparaSom(mensagem, 1);
+
         
     }while(1);
 }
@@ -233,7 +234,8 @@ void editaFilme(int modoAbertura){
     
     quantidadeFilmes = (*leDados[modoAbertura])(&fil);
     if(!contaQuantidadeExistente( sizeof(filmes), fil, quantidadeFilmes)){
-        printf("nao existe nenhum filme cadastrado no momento\n");
+
+        disparaSom("nao existe nenhum filme cadastrado no momento", 1);
         Sleep(2000);
         return;
     }

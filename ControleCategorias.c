@@ -223,7 +223,8 @@ categoria *buscaCategoria(categoria *buscar, int quantidade, char *mensagem){
         }
 
         dado = limpaMemoria(dado);
-        printf("%s\n", mensagem);
+        disparaSom(mensagem, 1);
+
         
     }while(1);
 }
@@ -241,7 +242,8 @@ void editaCategoria(int modoAbertura){
     
     quantidadeCategorias = (*leDados[modoAbertura])(&categorias);
     if(!verificaExisteCategoria(categorias, quantidadeCategorias)){
-        printf("nao existe nenhuma categoria cadastrado no momento\n");
+
+        disparaSom("nao existe nenhuma categoria cadastrada no momento", 1);
         Sleep(2000);
         return;
     }

@@ -31,6 +31,18 @@
 
 sons configuracoesSons;
 
+void disparaSom(char *frase, int erro){
+    if(configuracoesSons.modoSilencioso){
+        printf("%s\n", frase);
+        return;
+    }
+    if(erro) {
+        printf("%s\n", frase);
+        Beep(configuracoesSons.sonsDeErro.frequencia, configuracoesSons.sonsDeErro.duracao);
+    }else{
+        Beep(configuracoesSons.sonsDeConfirmacao.frequencia, configuracoesSons.sonsDeConfirmacao.duracao);
+    }
+}
 
 void imprimeEspacamentoMaior(int espacamento, char letra, char letraFim){
     for(int i = 0; i<espacamento; i++){
@@ -63,7 +75,7 @@ void menuGraphicsComSeta(int quantidadeArgumentos, char *frasePrincipal , int li
         imprimeEspacamentoMaior(10+espacamentoMaior, ' ', '\n');
         printf("%55s \n", "\0", "\0", frasePrincipal, "\0");
         imprimeEspacamentoMaior(75+espacamentoMaior, ' ', '\n');
-        printf("%55s  -->   %-40s \n", "\0", frases[0]);
+        printf("%55s  -->    %-40s \n", "\0", frases[0]);
         for(int i = 1; i<quantidadeArgumentos; i++){
 
             printf("%55s        %-40s \n", "\0", frases[i]);
@@ -74,11 +86,11 @@ void menuGraphicsComSeta(int quantidadeArgumentos, char *frasePrincipal , int li
     cordenadaIn.X = 56;
     cordenadaIn.Y = 7+linhaAnterior;
     SetConsoleCursorPosition(GetStdHandle( STD_OUTPUT_HANDLE ), cordenadaIn);
-    printf("    ");
+    printf("       %s   ", frases[linhaAnterior]);
     cordenadaIn.X = 56;
     cordenadaIn.Y = 7+linha;
     SetConsoleCursorPosition(GetStdHandle( STD_OUTPUT_HANDLE ), cordenadaIn);
-    printf(" -->");
+    printf(" -->    %s", frases[linha]);
     SetConsoleCursorPosition(GetStdHandle( STD_OUTPUT_HANDLE ), (COORD){0,0});
     return;
 }
@@ -163,7 +175,7 @@ int escolheMenu(char *mensagem, int quantidade,int espacamentoMaior, ...){
                 frases = limpaMemoria(frases);
                 system("clear");
                 va_end(parametros);
-                Beep(configuracoesSons.sonsDeConfirmacao.frequencia, configuracoesSons.sonsDeConfirmacao.duracao);
+                disparaSom("\0", 0);
                 return contador;
 
         }
@@ -172,11 +184,7 @@ int escolheMenu(char *mensagem, int quantidade,int espacamentoMaior, ...){
 
 }
 int menuPrincipal(int *modo){
-    configuracoesSons.sonsDeConfirmacao.frequencia = 0;
-    configuracoesSons.sonsDeConfirmacao.duracao = 0;
-    configuracoesSons.sonsDeErro.frequencia = 0;
-    configuracoesSons.sonsDeErro.duracao = 0;
-    (*modo)? leDadosSonsBin(&configuracoesSons):leDadosSons(&configuracoesSons);
+
     int escolha;
     printf("\n");
     escolha = escolheMenu("Seja bem vindo! Escolha uma opcao", 9, 0,"Administrativo", "Clientes", "Filmes", "Categorias", "Configuracoes", "Caixa", "Contas a receber","Contas a Pagar", "Sair");
@@ -230,9 +238,9 @@ void menuTroca(int *modo){
     int escolha;
     if(*modo){
 
-        escolha = escolheMenu("Atualmente estamos trabalhando com binario.\n", 2,0,"Trocar para texto", VLT);
+        escolha = escolheMenu("Atualmente estamos trabalhando com binario.", 2,0,"Trocar para texto", VLT);
     }else{
-        escolha = escolheMenu("Atualmente estamos trabalhando com texto.\n", 2,0,"Trocar para binario", VLT);
+        escolha = escolheMenu("Atualmente estamos trabalhando com texto.", 2,0,"Trocar para binario", VLT);
     }
 
     
@@ -472,9 +480,9 @@ void menuCaixa(int modoArm){
 
     int escolha;
     
-    while(escolha !=4){
+    while(escolha !=5){
         
-        escolha = escolheMenu("Menu do caixa", 5, 0,"Realizar venda", "Devolver filme", "Contar caixa", "Filtra compras" , "Voltar");
+        escolha = escolheMenu("Menu do caixa", 6, 0,"Realizar venda", "Devolver filme", "Contar caixa", "Filtrar movimentacoes por periodo", "Filtra compras" , "Voltar");
         
         switch(escolha){
             
@@ -489,11 +497,12 @@ void menuCaixa(int modoArm){
             case 2:
                 contaCaixa(modoArm);
                 break;
-                
             case 3:
-                listaCompra(modoArm);
                 break;
             case 4:
+                listaCompra(modoArm);
+                break;
+            case 5:
                 break;
             default:
                 printf("escolha uma opcao valida!\n");
@@ -551,13 +560,14 @@ int selecionaValorDeSom(char *stringConf, int valorAt){
 
     int escolha = 0;
     printf("%s: |%-4d|\n", stringConf, valorAt);
+    printf("para testar a configuracao atual, pressione F1:\n");
     while(escolha != 13){
         SetConsoleCursorPosition(GetStdHandle( STD_OUTPUT_HANDLE ), (COORD){strlen(stringConf)+2, 0});
         printf("|%-4d|\n", valorAt);
         do {
 
             escolha = escolheOpcao();
-        }while(escolha != 80 && escolha != 72 && escolha != 13);
+        }while(escolha != 80 && escolha != 72 && escolha != 13 && escolha != 59);
         switch(escolha){
             case 80:
                 if(valorAt > 0){
@@ -569,6 +579,14 @@ int selecionaValorDeSom(char *stringConf, int valorAt){
                     valorAt++;
                 }
                 break;
+            case 59:
+                if(strstr(stringConf, "Frequencia")){
+                    Beep(valorAt, (strstr(stringConf, "confirmacao")?configuracoesSons.sonsDeConfirmacao.duracao:configuracoesSons.sonsDeErro.duracao));
+                }else{
+                    Beep((strstr(stringConf, "confirmacao"))?configuracoesSons.sonsDeConfirmacao.frequencia:configuracoesSons.sonsDeErro.frequencia, valorAt);
+                }
+                break;
+
 
             case 13:
                 Beep(configuracoesSons.sonsDeConfirmacao.frequencia, configuracoesSons.sonsDeConfirmacao.duracao);
@@ -577,7 +595,7 @@ int selecionaValorDeSom(char *stringConf, int valorAt){
     }
 
 }
-void leDadosSons(sons *ptr){
+void leDadosSons(sons *ptr, int manterValor){
     FILE *f;
 
     f = fopen("sons.txt", "r");
@@ -593,23 +611,25 @@ void leDadosSons(sons *ptr){
     fscanf(f, "%d ", &ptr->sonsDeConfirmacao.duracao );
     fscanf(f, "%d ", &ptr->sonsDeErro.frequencia);
     fscanf(f, "%d ", &ptr->sonsDeErro.duracao);
+    fscanf(f, "%d ", &ptr->modoSilencioso);
+
+
 
     fechaArquivo(&f);
 }
-void leDadosSonsBin(sons *ptr){
+void leDadosSonsBin(sons *ptr, int manterValor){
     FILE *f;
 
     f = fopen("sons.bin", "rb");
 
     if(!f){
-        ptr->sonsDeErro = (AlturaSons){0,0};
         ptr->sonsDeConfirmacao = (AlturaSons){0,0};
+        ptr->sonsDeErro = (AlturaSons){0,0};
         reescreveDadosSonsBin(ptr);
         return;
     }
 
     fread(ptr, sizeof(sons), 1, f);
-
     fechaArquivo(&f);
     return;
 }
@@ -628,6 +648,7 @@ void reescreveDadosSons(sons *ptr){
     fprintf(f, "%d\n", ptr->sonsDeConfirmacao.duracao);
     fprintf(f, "%d\n", ptr->sonsDeErro.frequencia);
     fprintf(f, "%d\n", ptr->sonsDeErro.duracao);
+    fprintf(f, "%d\n", ptr->modoSilencioso);
 
     fechaArquivo(&f);
 }
@@ -644,16 +665,22 @@ void reescreveDadosSonsBin(sons *ptr){
 
     fwrite(ptr, sizeof(sons), 1, f);
 
-
+    fechaArquivo(&f);
 }
 void editaDadosSons(int modoArm){
 
     int escolha;
 
-    escolha = escolheMenu("Qual som deseja editar:", 3, 0, "Sons de confirmacao", "Sons de erro", "Voltar");
+
+    escolha = escolheMenu("Qual som deseja editar:", 4, 0, "Sons de confirmacao", "Sons de erro", (configuracoesSons.modoSilencioso)?"Desativar modo silencioso":"Ativar modo silencioso","Voltar");
 
     switch(escolha){
         case 0:
+            if(configuracoesSons.modoSilencioso){
+                printf("primeiro desative o modo silencioso!\n");
+                Sleep(2000);
+                return;
+            }
             escolha = escolheMenu("Deseja editar a frequencia ou duracao dos sons de confirmacao?", 3, 0, "Frequencia", "Duracao", "Voltar");
             switch (escolha) {
                 case 0:
@@ -671,6 +698,11 @@ void editaDadosSons(int modoArm){
             }
             break;
         case 1:
+            if(configuracoesSons.modoSilencioso){
+                printf("primeiro desative o modo silencioso!\n");
+                Sleep(2000);
+                return;
+            }
             escolha = escolheMenu("Deseja editar a frequencia ou duracao dos sons de erro?", 3, 0, "Frequencia", "Duracao", "Voltar");
             switch (escolha) {
                 case 0:
@@ -688,10 +720,46 @@ void editaDadosSons(int modoArm){
             }
             break;
         case 2:
-            return;
+            configuracoesSons.modoSilencioso = !configuracoesSons.modoSilencioso;
+            if(configuracoesSons.modoSilencioso) {
+
+
+                printf("alterado para modo silencioso!\n");
+                Sleep(1000);
+                break;
+            }else {
+
+                printf("modo silencioso desativado!\n");
+                disparaSom("0",0);
+                Sleep(1000);
+            }
+
+            break;
 
     }
 
     (modoArm)? reescreveDadosSonsBin(&configuracoesSons): reescreveDadosSons(&configuracoesSons);
+}
+void leDadosDeSons(int manterValor){
+    FILE *f;
+
+    f = fopen("sons.txt", "r");
+
+    if(f){
+        fechaArquivo(&f);
+        leDadosSons(&configuracoesSons, manterValor);
+        return;
+    }
+    f = fopen("sons.bin", "rb");
+
+    if(f){
+        fechaArquivo(&f);
+        leDadosSonsBin(&configuracoesSons, manterValor);
+
+        return;
+    }
+    configuracoesSons.sonsDeConfirmacao = (AlturaSons){0,0};
+    configuracoesSons.sonsDeErro = (AlturaSons){0,0};
+    reescreveDadosSons(&configuracoesSons);
 }
 #endif

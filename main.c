@@ -22,8 +22,10 @@ int main(){
     
     
     int modoArm;
-    
+    leDadosDeSons(0);
     VerificaExisteArquivoLocadora();
+
+
     verificaModoArmazenamento(&modoArm);
 
     

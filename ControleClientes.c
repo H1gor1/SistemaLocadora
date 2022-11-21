@@ -396,7 +396,7 @@ cliente *buscaCliente(cliente *buscar, int quantidade, char *mensagem){
         }
         dado = limpaMemoria(dado);
         /*mosta a mensagem de erro, e o loop reinicia pro usuario digitar novamente*/
-        printf("%s\n", mensagem);
+        disparaSom(mensagem, 1);
         
     }while(1);
 }

@@ -92,11 +92,14 @@ quantidades leDadosDevolucoes(compras ** dev, Funcionarios **func, cliente **cli
         dev[0][quants.quantidadeAlugacoes].codigo = codigo;
         
         fscanf(f, "%d ", &dev[0][quants.quantidadeAlugacoes].modoPagamento);
-        
+
+        dev[0][quants.quantidadeAlugacoes].data = (struct tm){0,0,0,0,0,0,0,0,0};
+
         fscanf(f, "%d %d %d ", &dev[0][quants.quantidadeAlugacoes].data.tm_mday, &dev[0][quants.quantidadeAlugacoes].data.tm_mon, &dev[0][quants.quantidadeAlugacoes].data.tm_year);
         
         fscanf(f, "%d %d ", &dev[0][quants.quantidadeAlugacoes].data.tm_hour, &dev[0][quants.quantidadeAlugacoes].data.tm_min);
-        
+
+
         fscanf(f, "%ld ", &codigo);
         
         dev[0][quants.quantidadeAlugacoes].vendedor = encontraFuncionarioCodigo(func[0], codigo, quants.quantidadesFuncionarios, NULL);
@@ -164,7 +167,9 @@ quantidades leDadosDevolucoesBin(compras **dev, Funcionarios **func, cliente **c
         dev[0][quants.quantidadeAlugacoes].codigo = codigo;
         
         fread(&dev[0][quants.quantidadeAlugacoes].modoPagamento, sizeof(int), 1, f);
-        
+
+        dev[0][quants.quantidadeAlugacoes].data = (struct tm){0,0,0,0,0,0,0,0,0};
+
         fread(&dev[0][quants.quantidadeAlugacoes].data, sizeof(struct tm), 1, f);
         
         fread(&codigo, sizeof(long int), 1, f);
@@ -296,7 +301,8 @@ compras *buscaCompra(compras *ptr, int quantidade, int ignoraDev){
                 return busca;
             }
         }
-        printf("Compra inexistente, digite um codigo valido!\n");
+
+        disparaSom("Compra inexistente, digite um codigo valido!", 1);
     }
     
     
@@ -353,8 +359,10 @@ void devolveFilme(int modoArm){
     
             return;
         }else if(escolha != 59){
-            printf("escolha uma opcao valida!\n");
+            disparaSom("digite uma opcao valida!", 1);
+            continue;
         }
+
         break;
     }
     
@@ -468,7 +476,9 @@ void listaCompra(int modoArm){
 
 
     modoPagamentoEsc = escolheMenu("escolha o modo de filtro", 5, 0,"A vista", "A prazo", "A prazo com entrada", "Por vendedor","Voltar")+1;
-
+    if(modoPagamentoEsc == 5){
+        goto fim;
+    }
     if(modoPagamentoEsc <= 3) {
         quantidadeComprasFiltradas = filtraCompras(todasAsCompras, quant.quantidadeAlugacoes,
                                                    &comprasFiltradas,modoPagamentoEsc);

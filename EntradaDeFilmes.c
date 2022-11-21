@@ -186,7 +186,8 @@ entrada *buscaEntradaAvista(entrada *ptr, int quantidade, int ignoraDev){
             return busca;
 
         }
-        printf("Compra inexistente, digite um codigo valido!\n");
+        disparaSom("Compra inexistente, digite um codigo valido!", 1);
+
     }
 }
 

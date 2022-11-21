@@ -375,7 +375,7 @@ Funcionarios *buscaFuncionarios(Funcionarios *ptr, int quantidade, Funcionarios 
         }
 
 
-        printf("nenhum funcionario com esse dado foi encontrado, por favor, verifique se digitou certo!\n");
+        disparaSom("nenhum funcionario com esse dado foi encontrado, por favor, verifique se digitou certo!", 1);
         itemBusca = limpaMemoria(itemBusca);
     }while(1);
     

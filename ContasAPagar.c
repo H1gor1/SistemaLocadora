@@ -102,6 +102,7 @@ int leDadosEntradasAprazo(contaApag **contas){
         fscanf(f, "%d ", &contas[0][indice].parcelas);
         fscanf(f, "%f ", &contas[0][indice].valorParc);
         fscanf(f, "%f ", &contas[0][indice].entrada);
+        contas[0][indice].dataAluga = (struct tm){0,0,0,0,0,0,0,0,0};
         fscanf(f, "%d ", &contas[0][indice].dataAluga.tm_mday);
         fscanf(f, "%d ", &contas[0][indice].dataAluga.tm_mon);
         fscanf(f, "%d ", &contas[0][indice].dataAluga.tm_year);
@@ -137,6 +138,7 @@ int leDadosEntradasAprazoBin(contaApag **contas){
         }
         contas[0] = (indice == 0)?malloc(sizeof(contaApag)):realloc(contas[0], sizeof(contaApag)*(indice+1));
         verificaOperacao(contas[0], ERROMEM, 1);
+        contas[0][indice].dataAluga = (struct tm){0,0,0,0,0,0,0,0,0};
         contas[0][indice] = temp;
         indice++;
     }
@@ -415,7 +417,8 @@ void mostraEntradasFiltradas(contaApag *contas, int quantidadeContas, int modoAr
             case 60:
                 break;
             default:
-                printf("escolha uma opcao valida!\n");
+
+                disparaSom("escolha uma opcao valida!", 1);
                 continue;
         }
         break;

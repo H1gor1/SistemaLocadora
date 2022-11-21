@@ -120,7 +120,9 @@ int leDadosLancamentosAprazo(contaArec **contas){
         fscanf(f, "%f ", &contas[0][indice].valorParc);
         
         fscanf(f, "%f ", &contas[0][indice].entrada);
-        
+
+        contas[0][indice].dataAluga = (struct tm){0,0,0,0,0,0,0,0,0};
+
         fscanf(f, "%d ", &contas[0][indice].dataAluga.tm_mday);
         
         fscanf(f, "%d ", &contas[0][indice].dataAluga.tm_mon);
@@ -164,9 +166,11 @@ int leDadosLancamentosAprazoBin(contaArec **contas){
             break;
         }
         contas[0] = (indice == 0)?malloc(sizeof(contaArec)):realloc(contas[0], sizeof(contaArec)*(indice+1));
-        
+
+
         verificaOperacao(contas[0], ERROMEM, 1);
-        
+
+        contas[0][indice].dataAluga = (struct tm){0,0,0,0,0,0,0,0,0};
         contas[0][indice] = temp;
         
         indice++;
@@ -297,13 +301,16 @@ int daBaixa(int modoArm){
         darBaixa = encontraContaPeloCodigo(contas, quantidade, codigo);
         
         if(!darBaixa){
-            printf("Nao existe nenhuma compra com este codigo ou a compra selecionada ja foi paga!\n");
+            disparaSom("Nao existe nenhuma compra com este codigo ou a compra selecionada ja foi paga!", 1);
+
+
             continue;
         }
         break;
     }
-    time(&tempo);
-    darBaixa->dataAluga.tm_mon = localtime(&tempo)->tm_mon;
+
+    tempo = mktime(&darBaixa->dataAluga)+86400*30;
+    darBaixa->dataAluga = *localtime(&tempo);
     printf("digite a quantidade de parcelas que deseja baixar desta compra, ainda existem %d parcelas:", darBaixa->parcelas);
     
     verificaLimiteNumero(&quantidadesNotinhasPagar, darBaixa->parcelas, 1, "%d");
@@ -316,16 +323,32 @@ int daBaixa(int modoArm){
     return quantidadesNotinhasPagar;
 }
 int filtraContasVencimentoMes(contaArec *contas, int quantidadeContas, contaArec **atrasadas, int mesVenc){
-
-    mesVenc = escolheMenu("Qual mes deseja filtrar?", 12, 0, "Janeiro", "Fevereiro", "Marco", "Abril", "Maio" ,"Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro");
+    struct tm data = {0,0,0,0,0,0,0,0,0};
+    time_t tempAt;
+    time(&tempAt);
+    time_t segundosMesEsc;
+    data.tm_mon = escolheMenu("Qual mes deseja filtrar?", 12, 0, "Janeiro", "Fevereiro", "Marco", "Abril", "Maio" ,"Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro");
+    data.tm_mday = 1;
+    data.tm_year = localtime(&tempAt)->tm_year;
+    if(data.tm_mon<= localtime(&tempAt)->tm_mon){
+        data.tm_year++;
+    }
+    segundosMesEsc = mktime(&data);
     int quantidadeContasVencem = 0;
     for(int i = 0; i<quantidadeContas; i++){
-        if((contas[i].dataAluga.tm_mon + contas[i].parcelas) >=mesVenc && (mesVenc - contas[i].dataAluga.tm_mon) <= 3 && contas[i].parcelas){
-            atrasadas[0] = (!quantidadeContasVencem)?malloc(sizeof(contaArec)): realloc(atrasadas[0], sizeof(contaArec)*(quantidadeContasVencem+1));
-            verificaOperacao(atrasadas[0], "ERRO: Memoria indisponivel!", 1);
+        if(contas[i].parcelas){
+            tempAt = 2678400*contas[i].parcelas;
+            tempAt += mktime(&contas[i].dataAluga);
+            if(tempAt>=segundosMesEsc) {
+                atrasadas[0] = (!quantidadeContasVencem)
+                        ? malloc(sizeof(contaArec))
+                        : realloc(atrasadas[0],sizeof(contaArec) *(quantidadeContasVencem +1));
 
-            atrasadas[0][quantidadeContasVencem] = contas[i];
-            quantidadeContasVencem++;
+                verificaOperacao(atrasadas[0], "ERRO: Memoria indisponivel!", 1);
+
+                atrasadas[0][quantidadeContasVencem] = contas[i];
+                quantidadeContasVencem++;
+            }
         }
     }
     return quantidadeContasVencem;
@@ -335,11 +358,11 @@ int filtraContasAtrasadas(contaArec *contas, int quantidadeContas, contaArec **a
     
     int quantidadeContasAtrasadas = 0;
     time_t seg;
-    time_t tempoUmMes = 2629800;
+
     time(&seg);
     seg = mktime(localtime(&seg));
     for(int i = 0; i<quantidadeContas; i++){
-        if(difftime(seg, mktime(&contas[i].dataAluga)) >= tempoUmMes){
+        if(difftime(seg, mktime(&contas[i].dataAluga)) >= 2629800){
                 
             atrasadas[0] = (!quantidadeContasAtrasadas)?malloc(sizeof(contaArec)):realloc(atrasadas[0], sizeof(contaArec)*(quantidadeContasAtrasadas+1));
             
@@ -405,8 +428,9 @@ int filtraPorData(contaArec *contas, int quantidade, contaArec **dest, int modo)
 
     data.tm_mon = escolheMenu("escolha o mes da data inicial:", 12, 0, "Janeiro", "Fevereiro", "Marco", "Abril", "Maio" ,"Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro");
 
-    printf("digite o dia:\n");
-    verificaLimiteNumero(&data.tm_mday, (data.tm_mon == 2)?28:31, 1, "%d");
+    data.tm_mday = escolheMenu("escolha o dia:", (data.tm_mon%2!=0)?30:(data.tm_mon == 2)?28:31, 0,
+                               "1","2","3", "4", "5", "6", "7","8","9","10","11","12","13","14","15","16","17","18","19","20",
+                               "21","22","23","24","25","26","27","28","29","30","31");
 
 
     printf("ano: ");
@@ -414,8 +438,9 @@ int filtraPorData(contaArec *contas, int quantidade, contaArec **dest, int modo)
 
     dataFim.tm_mon = escolheMenu("escolha o mes da data Final:", 12, 0, "Janeiro", "Fevereiro", "Marco", "Abril", "Maio" ,"Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro");
 
-    printf("digite o dia:\n");
-    verificaLimiteNumero(&dataFim.tm_mday, (dataFim.tm_mon == 2)?28:31, 1, "%d");
+    dataFim.tm_mday = escolheMenu("escolha o dia:", (dataFim.tm_mon%2!=0)?30:(data.tm_mon == 2)?28:31, 0,
+                               "1","2","3", "4", "5", "6", "7","8","9","10","11","12","13","14","15","16","17","18","19","20",
+                               "21","22","23","24","25","26","27","28","29","30","31");
 
 
     printf("ano: ");
@@ -489,7 +514,7 @@ void mostraContasFiltradas(contaArec *contas, int quantidadeContas, int modoArm,
             case 60:
                 break;
             default:
-                printf("escolha uma opcao valida!\n");
+                disparaSom("escolha uma opcao valida!", 1);
                 continue;
                 
         }
