@@ -339,7 +339,7 @@ int filtraContasVencimentoMes(contaArec *contas, int quantidadeContas, contaArec
         if(contas[i].parcelas){
             tempAt = 2678400*contas[i].parcelas;
             tempAt += mktime(&contas[i].dataAluga);
-            if(tempAt>=segundosMesEsc) {
+            if(tempAt>=segundosMesEsc && mktime(&contas[i].dataAluga)<segundosMesEsc) {
                 atrasadas[0] = (!quantidadeContasVencem)
                         ? malloc(sizeof(contaArec))
                         : realloc(atrasadas[0],sizeof(contaArec) *(quantidadeContasVencem +1));

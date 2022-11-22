@@ -12,12 +12,12 @@ typedef struct sons{
     int modoSilencioso;
 }sons;
 void disparaSom(char *frase, int erro);
-void leDadosDeSons(int manterValor);
+void leDadosDeSons();
 void editaDadosSons(int modoArm);
 void reescreveDadosSons(sons *ptr);
 void reescreveDadosSonsBin(sons *ptr);
-void leDadosSons(sons *ptr, int manterValor);
-void leDadosSonsBin(sons *ptr, int manterValor);
+void leDadosSons(sons *ptr);
+void leDadosSonsBin(sons *ptr);
 void editaDadosSons(int modoArm);
 int selecionaValorDeSom(char *stringConf, int valorAt);
 int menuPrincipal(int *modo);

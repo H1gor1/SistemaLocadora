@@ -192,7 +192,7 @@ void trocaModoArmazenamento(int *modo){
         quantidadeLancamentosAprazo = leDadosLancamentosAprazoBin(&lancAprazo);
         quantidadeContaApag = leDadosEntradasAprazoBin(&contasApagar);
         quantidadeLancamentosEntradas = leDadosEntradasFilmesBin(&lancamentosDeEntradas);
-        leDadosSonsBin(&confRescrever,1);
+        leDadosSonsBin(&confRescrever);
         
         
         
@@ -233,7 +233,7 @@ void trocaModoArmazenamento(int *modo){
         quantidadeLancamentosAprazo = leDadosLancamentosAprazo(&lancAprazo);
         quantidadeContaApag = leDadosEntradasAprazo(&contasApagar);
         quantidadeLancamentosEntradas = leDadosLancamentoEntradasFilmes(&lancamentosDeEntradas);
-        leDadosSons(&confRescrever,1);
+        leDadosSons(&confRescrever);
         /*apaga os arquivos de texto*/
        
         

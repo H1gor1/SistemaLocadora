@@ -13,6 +13,7 @@
 #include "ContasAPagar.h"
 #include "ControleFilmes.h"
 #include "menus.h"
+#include "ImportacoesXML.H"
 
 
 
@@ -33,7 +34,7 @@ int main(){
    
     
     menuPrincipal(&modoArm);
-   
+    importaDadosClientes(modoArm);
     return 0;
  
 } 

@@ -595,7 +595,7 @@ int selecionaValorDeSom(char *stringConf, int valorAt){
     }
 
 }
-void leDadosSons(sons *ptr, int manterValor){
+void leDadosSons(sons *ptr){
     FILE *f;
 
     f = fopen("sons.txt", "r");
@@ -617,7 +617,7 @@ void leDadosSons(sons *ptr, int manterValor){
 
     fechaArquivo(&f);
 }
-void leDadosSonsBin(sons *ptr, int manterValor){
+void leDadosSonsBin(sons *ptr){
     FILE *f;
 
     f = fopen("sons.bin", "rb");
@@ -740,21 +740,21 @@ void editaDadosSons(int modoArm){
 
     (modoArm)? reescreveDadosSonsBin(&configuracoesSons): reescreveDadosSons(&configuracoesSons);
 }
-void leDadosDeSons(int manterValor){
+void leDadosDeSons(){
     FILE *f;
 
     f = fopen("sons.txt", "r");
 
     if(f){
         fechaArquivo(&f);
-        leDadosSons(&configuracoesSons, manterValor);
+        leDadosSons(&configuracoesSons);
         return;
     }
     f = fopen("sons.bin", "rb");
 
     if(f){
         fechaArquivo(&f);
-        leDadosSonsBin(&configuracoesSons, manterValor);
+        leDadosSonsBin(&configuracoesSons);
 
         return;
     }

@@ -19,4 +19,4 @@ add_executable(untitled main.c
         ManipulacoesDeTexto.c ManipulacoesDeTexto.h
         menus.c menus.h
         contasAPagar.h contasApagar.c
-        EntradaDeFilmes.c EntradaDeFilmes.h)
+        EntradaDeFilmes.c EntradaDeFilmes.h ImportacoesXML.h ImportacoesXML.c)
