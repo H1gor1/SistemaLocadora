@@ -697,10 +697,10 @@ cliente *filtraCodigo(cliente *ptr, int quantidade, int codigo, int codigo1, int
         }
         mostraListaClientes(ptr+i, 1);
 
-        return clientesCodigo;
+
         
     }
-    printf("quantidade de clientes nesta faixa de codigo: %d\n", quantidadeClientes);
+    printf("quantidade de clientes nesta faixa de codigo: %d\n", *quantidadeClientes);
     return clientesCodigo;
 }
 /*

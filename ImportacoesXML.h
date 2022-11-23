@@ -8,4 +8,5 @@ int leArquivoOriginal(char *nomeArq, int (*f)(void **), void *ptr);
 void importaDadosSons(int modoArm);
 void pegaCaminho(char *discricaoCaminho, char **ptrGuardarCaminho);
 void importaDadosClientes(int modoArm);
+void importaDadosFuncs(int modoArm);
 #endif //UNTITLED_IMPORTACOESXML_H

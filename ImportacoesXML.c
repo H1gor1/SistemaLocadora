@@ -126,7 +126,7 @@ void importaDadosClientes(int modoArm){
     cliente *todosClientes;
     int quantidadeClientes = 0;
 
-    quantidadeClientes = leArquivoOriginal("clientes.txt", (modoArm)?leDadosClientesBin:leDadosClientes, &todosClientes);
+    quantidadeClientes = leArquivoOriginal("clientes.txt", (modoArm)?(int (*)(void **))leDadosClientesBin:(int (*)(void **))leDadosClientes, &todosClientes);
 
     if(!quantidadeClientes){
         printf("Nao existem clientes cadastrados no momento!\n");
@@ -172,5 +172,58 @@ void importaDadosClientes(int modoArm){
     fechaArquivo(&f);
 
 
+    limpaDadosClienteMemoria(todosClientes, quantidadeClientes);
+    todosClientes = limpaMemoria(todosClientes);
 
+}
+void importaDadosFuncs(int modoArm){
+
+    Funcionarios *todosFuncs = NULL;
+    int quantidadeFuncionarios;
+
+    quantidadeFuncionarios = leArquivoOriginal(
+            (modoArm)?"Funcionarios.bin":"Funcionarios.txt",
+            (modoArm)?(int (*)(void **))leDadosFuncionariosBin:(int (*)(void **))leDadosFuncionarios, &todosFuncs);
+
+    if(!quantidadeFuncionarios){
+        printf("Nao existe funcionarios cadastros no momento!\n");
+        Sleep(2000);
+        return;
+    }
+
+    FILE *f;
+    char *diretorio;
+
+    pegaCaminho("de funcionarios", &diretorio);
+
+    f = fopen(diretorio, "w");
+
+    if(!f){
+        printf("Nao foi possivel criar o arquivo de importacoes no local indicado!\n");
+        printf("ERRO: %s\n", strerror(errno));
+        Sleep(2000);
+        return;
+    }
+
+    fprintf(f, "<dados>\n");
+
+    for(int i = 0; i<quantidadeFuncionarios; i++){
+
+        fprintf(f, "    <Funcionario>\n");
+        fprintf(f, "        <codigo>%ld</codigo>\n", todosFuncs[i].codigo);
+        fprintf(f, "        <nome>%s</nome>\n", todosFuncs[i].nome);
+        fprintf(f, "        <rua>%s</rua>\n", todosFuncs[i].rua);
+        fprintf(f, "        <bairro>%s</bairro>\n", todosFuncs[i].bairro);
+        fprintf(f, "        <numero>%d</numero>\n", todosFuncs[i].numero);
+        fprintf(f, "        <telefone>%d</telefone>\n", todosFuncs[i].telefone);
+        fprintf(f, "        <email>%s</email>\n", todosFuncs[i].email);
+        fprintf(f, "        <tagExclusao>%d</tagExclusao>\n", todosFuncs[i].flag);
+        fprintf(f, "    </Funcionario>\n");
+    }
+    fprintf(f, "</dados>");
+
+
+    apagaDadosStructFuncionarios(todosFuncs, quantidadeFuncionarios);
+    todosFuncs = limpaMemoria(todosFuncs);
+    fechaArquivo(&f);
 }
