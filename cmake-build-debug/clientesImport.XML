@@ -1,0 +1,34 @@
+<dados>
+    <cliente>
+        <codigo>0</codigo>
+        <nome>ega</nome>
+        <rua>aeg</rua>
+        <bairro>aeg</bairro>
+        <numero>4</numero>
+        <cpf>13741559695</cpf>
+        <telefone>5</telefone>
+        <email>@.</email>
+        <sexo>1</sexo>
+        <estadoCivil>1</estadoCivil>
+        <diaNascimento>4</diaNascimento>
+        <mes>8</mes>
+        <ano>2003</ano>
+        <flagExclusao>1</flagExclusao>
+    </cliente>
+    <cliente>
+        <codigo>1</codigo>
+        <nome>aeg</nome>
+        <rua>aeg</rua>
+        <bairro>aeg</bairro>
+        <numero>2</numero>
+        <cpf>93825587649</cpf>
+        <telefone>4</telefone>
+        <email>@.</email>
+        <sexo>1</sexo>
+        <estadoCivil>1</estadoCivil>
+        <diaNascimento>10</diaNascimento>
+        <mes>1</mes>
+        <ano>5</ano>
+        <flagExclusao>1</flagExclusao>
+    </cliente>
+</dados>

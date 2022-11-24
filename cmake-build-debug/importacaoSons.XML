@@ -1,0 +1,11 @@
+<configuracoes>
+    <sonsDeErro>
+        <Frequencia>581</Frequencia>
+        <Duracao>500</Duracao>
+    </sonsDeErro>
+    <sonsDeConfirmacao>
+        <Frequencia>1500</Frequencia>
+        <Duracao>60</Duracao>
+    </sonsDeConfirmacao>
+    <modoSilencioso>1</modoSilencioso>
+</configuracaos>
