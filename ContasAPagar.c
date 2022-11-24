@@ -216,7 +216,7 @@ void realizaEntradaAprazo(entrada *entradas, int modoArm, float valorCaixa){
         caixa.modoPagamento = entradas->modoPagamento;
         caixa.codigoCompra = entradas->codigo;
         caixa.data = entradas->data;
-        caixa.valor -= entradas->precoTotal;
+        caixa.valor -= Aprazo.entrada;
 
         (modoArm)
         ? reescreveLancamentosCaixaBin(&caixa, 1, "lancamentos.bin", "lancamentos.bin", "ab")
@@ -255,12 +255,15 @@ void consultaEntradas(contaApag *contas, int quantidade){
 int BaixaEntradasFilmes(int modoArm){
     contaApag *contas = NULL;
     contaApag *darBaixa = NULL;
+    lancamentoCaixa *todosLancamentosCaixa = NULL;
+    int quantidadeLancamentosCaixa = 0;
     int quantidade = 0;
     int quantidadesNotinhasPagar = 0;
     long int codigo;
     time_t tempo;
-
+    quantidadeLancamentosCaixa = (modoArm)? leDadosLancamentosBin(&todosLancamentosCaixa): leDadosLancamentos(&todosLancamentosCaixa);
     quantidade = (modoArm)?leDadosEntradasAprazoBin(&contas):leDadosEntradasAprazo(&contas);
+    float valorCaixa = contabilizaCaixa(todosLancamentosCaixa, quantidadeLancamentosCaixa, &(struct tm){0,0,0,0,0,0,0,0,0}).dinheiroLiquido;
     printf("Digite o codigo da compra que deseja dar baixa:\n");
     consultaEntradas(contas, quantidade);
     while(1){
@@ -270,20 +273,26 @@ int BaixaEntradasFilmes(int modoArm){
             printf("Nao existe nenhuma compra com este codigo ou a compra selecionada ja foi paga!\n");
             continue;
         }
+        if(valorCaixa < darBaixa->valorParc){
+            printf("Nao é possivel pagar essa conta com o valor atual do caixa!\n");
+            Sleep(2000);
+            continue;
+        }
         break;
     }
-    time(&tempo);
-    darBaixa->dataAluga.tm_mon = localtime(&tempo)->tm_mon;
+
+
     printf("Digite a quantidade de parcelas que deseja baixar desta compra, ainda existem %d parcelas:", darBaixa->parcelas);
 
-    verificaLimiteNumero(&quantidadesNotinhasPagar, darBaixa->parcelas, 1, "%d");
-
+    verificaLimiteNumero(&quantidadesNotinhasPagar, valorCaixa/darBaixa->valorParc, 1, "%d");
+    tempo = mktime(&darBaixa->dataAluga)+86400*30*quantidadesNotinhasPagar;
+    darBaixa->dataAluga = *localtime(&tempo);
     LancaEntradaOuParcela_EntradaFilmes(darBaixa, modoArm, darBaixa->valorParc*quantidadesNotinhasPagar);
     darBaixa->parcelas -= quantidadesNotinhasPagar;
 
     (modoArm)
-        ?reescreveEntradasAprazoBin(contas, quantidade, "lancamentosAprazoRes.bin", "lancamentosAprazo.bin", "wb")
-        :reescreveEntradaAprazo(contas, quantidade, "lancamentosAprazoRes.txt", "lancamentosAprazo.txt", "w");
+        ?reescreveEntradasAprazoBin(contas, quantidade, "entradaAprazoRes.bin", "entradaAprazo.bin", "wb")
+        :reescreveEntradaAprazo(contas, quantidade, "entradaAprazoRes.txt", "entradaAprazo.txt", "w");
     return quantidadesNotinhasPagar;
 }
 

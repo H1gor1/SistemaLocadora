@@ -498,6 +498,7 @@ void menuCaixa(int modoArm){
                 contaCaixa(modoArm);
                 break;
             case 3:
+                filtraMovimentacoesPorPeriodoData(modoArm);
                 break;
             case 4:
                 listaCompra(modoArm);

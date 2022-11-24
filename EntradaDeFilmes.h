@@ -28,12 +28,13 @@ typedef struct lancamentoEntradas{
 
 int leDadosEntradasFilmesBin(lancamentoEntradas **contas);
 int leDadosLancamentoEntradasFilmes(lancamentoEntradas **contas);
-entrada *buscaEntradaAvista(entrada *ptr, int quantidade, int ignoraDev);
-entrada *encontraEntradaAvistaCodigo(entrada *ptr, int quantidade, long int codigo);
+lancamentoEntradas *buscaEntradaAvista(lancamentoEntradas *ptr, int quantidade);
+lancamentoEntradas *encontraEntradaAvistaCodigo(lancamentoEntradas *ptr, int quantidade, long int codigo);
 void realizaEntrada(int modoAbertura);
 void limpaMemoriaRealizaEntrada(fornecedor ** forn, int quantidadeFornecedores, filmes ** todosFilmes, int quantidadeFilmes);
 float CalcPrecoEntrada(filmes *filmesEntrada, int quantidade, float frete, float imposto);
 void compraAvistaEntrada(entrada *Entradas, int modoAbertura);
 void reescreveLancamentosEntrada(lancamentoEntradas *lancamentos, int quantidade, char *nomeArq, char *nomeArqOr, char *modo);
 void reescreveLancamentosEntradaBin(lancamentoEntradas *lancamentos, int quantidade, char *nomeArq, char *nomeArqOr, char *modo);
-#endif 
+void mostraEntradaAvista(lancamentoEntradas *ptr, int quantidade);
+#endif

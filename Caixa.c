@@ -109,6 +109,7 @@ int leDadosLancamentosBin(lancamentoCaixa **lancamentos){
                             :realloc(lancamentos[0], sizeof(lancamentoCaixa)*(indice+1));
 
         verificaOperacao(lancamentos[0], "ERRO: Memoria indisponivel!", 1);
+        lancamentos[0][indice].data = (struct tm){0,0,0,0,0,0,0,0,0};
         lancamentos[0][indice] = temp;
         
         indice++;
@@ -124,7 +125,7 @@ int leDadosLancamentos(lancamentoCaixa **lancamentos){
     FILE *f;
     f = fopen("lancamentos.txt", "r");
     int indice = 0;
-    time_t seg;
+    long int seg;
     if(!f){
         f = fopen("lancamentos.txt", "w");
         if(!f){
@@ -155,7 +156,8 @@ int leDadosLancamentos(lancamentoCaixa **lancamentos){
         fscanf(f, "%f ", &lancamentos[0][indice].valorPago);
         
         fscanf(f, "%f ", &lancamentos[0][indice].troco);
-        
+
+        lancamentos[0][indice].data = (struct tm){0,0,0,0,0,0,0,0,0};
         fscanf(f, "%d ", &lancamentos[0][indice].data.tm_mday);
         
         fscanf(f, "%d ", &lancamentos[0][indice].data.tm_mon);
@@ -405,7 +407,7 @@ void filtraMovimentacoesPorPeriodoData(int modoArm){
 
 
         }else{
-            data1.tm_mday =  data1.tm_mday = escolheMenu("Qual o dia?",
+            data1.tm_mday  = escolheMenu("Qual o dia?",
                                                          30,0,
                                                          "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31");
 
@@ -414,10 +416,10 @@ void filtraMovimentacoesPorPeriodoData(int modoArm){
 
         printf("e qual o ano?\n");
     verificaNumero(&data1.tm_year, "%d");
-    data2.tm_mon = data1.tm_mon = escolheMenu("qual mes da data final?", 12, 0, "Janeiro", "Fevereiro", "Marco", "Abril", "Maio" ,"Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro");
+    data2.tm_mon =  escolheMenu("qual mes da data final?", 12, 0, "Janeiro", "Fevereiro", "Marco", "Abril", "Maio" ,"Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro");
 
     if(data2.tm_mon %2!= 0){
-        data2.tm_mday = data1.tm_mday = escolheMenu("Qual o dia?",
+        data2.tm_mday = escolheMenu("Qual o dia?",
                                                     30,0,
                                                     "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30");
 
@@ -436,6 +438,8 @@ void filtraMovimentacoesPorPeriodoData(int modoArm){
 
         printf("e qual o ano?\n");
     verificaNumero(&data2.tm_year, "%d");
+    data1.tm_year -=1900;
+    data2.tm_year -=1900;
 
     tempoSegData1 = mktime(&data1);
     tempoSegData2 = mktime(&data2);
@@ -454,7 +458,7 @@ void filtraMovimentacoesPorPeriodoData(int modoArm){
             quantidadeLancamentosFiltrados++;
         }
     }
-    printf("quantidade de lancamentos neste periodo: %d\n", quantidadeLancamentosFiltrados);
+    printf("\nquantidade de lancamentos neste periodo: %d\n", quantidadeLancamentosFiltrados);
 
     printf("Para consultar algumas destes lancamentos, digite o codigo da compra, caso nao queira, digite um codigo invalido:\n");
     long int codigo;
@@ -469,7 +473,12 @@ void filtraMovimentacoesPorPeriodoData(int modoArm){
     }else
         if(lancametoProcurado->codigoCompra == 1){
 
+            lancamentoEntradas entradaProc = *encontraEntradaAvistaCodigo(todasEntradas, quantidadeEntradas, lancametoProcurado->codigoCompra);
+            mostraEntradaAvista(&entradaProc, 1);
+        }else{
 
+            contaApag entAprazo = *encontraEntradaCodigo(todasAsEntradasAprazo, quantidadeEntradasAprazo, lancametoProcurado->codigoCompra);
+            mostraEntradaAtrasada(&entAprazo, 1);
         }
 
 

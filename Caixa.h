@@ -7,7 +7,7 @@ typedef struct filmes filmes;
 
 typedef struct lancamentoCaixa{
     
-    time_t codigoCompra;
+    long int codigoCompra;
     int modoPagamento;
     float valor;
     float valorPago;
@@ -52,6 +52,7 @@ void compraAvista(compras *compras, int modoArm);
 void mostraLancamentos(lancamentoCaixa *todosLancamentos, int quantidade, struct tm *data);
 ContagemCaixa contabilizaCaixa(lancamentoCaixa *todosLancamentos, int quantidade, struct tm *data);
 void contaCaixa(int modoArm);
+void filtraMovimentacoesPorPeriodoData(int modoArm);
 
 #endif
 

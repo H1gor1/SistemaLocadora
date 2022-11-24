@@ -13,7 +13,7 @@
 #include "EntradaDeFilmes.h"
 #include "Carrinho.h"
 #include "ContasAPagar.h"
-
+#include <conio.h>
 #define ERROMEM "ERRO: Memoria indisponivel!\n"
 
 
@@ -163,18 +163,18 @@ void reescreveLancamentosEntradaBin(lancamentoEntradas *lancamentos, int quantid
     }
     return;
 }
-entrada *encontraEntradaAvistaCodigo(entrada *ptr, int quantidade, long int codigo){
-    entrada *busca = NULL;
+lancamentoEntradas *encontraEntradaAvistaCodigo(lancamentoEntradas *ptr, int quantidade, long int codigo){
+    lancamentoEntradas *busca = NULL;
 
     for(int i = 0; i<quantidade; i++){
-        if(ptr[i].codigo == codigo){
+        if(ptr[i].codigoCompra == codigo){
             return ptr+i;
         }
     }
     return NULL;
 }
-entrada *buscaEntradaAvista(entrada *ptr, int quantidade, int ignoraDev){
-    entrada *busca = NULL;
+lancamentoEntradas *buscaEntradaAvista(lancamentoEntradas *ptr, int quantidade){
+    lancamentoEntradas *busca = NULL;
     long int codigo;
 
     while(1){
@@ -314,4 +314,20 @@ void realizaEntrada(int modoAbertura){
     (modoAbertura)?reescreveDadosFilmeBin(filme, quantidadeFilmes):reescreveDadosFilme(filme, quantidadeFilmes);
     limpaMemoriaRealizaEntrada(&fornecedores, quantidadeFornecedores, &filme, quantidadeFilmes);
     return;
+}
+void mostraEntradaAvista(lancamentoEntradas *ptr, int quantidade){
+    for(int i = 0; i<quantidade;i++){
+
+        printf("Codigo compra: %d\n", ptr[i].codigoCompra);
+        printf("Modo de pagamento: %s\n", (ptr[i].modoPagamento == 1)?"a vista":(ptr[i].modoPagamento == 2)?"a prazo":"a prazo com entrada");
+        printf("Valor: %.2f\n", ptr[i].valor);
+        printf("Valor pago: %.2f\n", ptr[i].valorPago);
+        printf("Troco: %.2f\n", ptr[i].troco);
+        printf("Data: %d/%d/%d\n", ptr[i].data.tm_mday, ptr[i].data.tm_mon, ptr[i].data.tm_year);
+        printf("Horario: %d:%d\n\n\n", ptr[i].data.tm_hour, ptr[i].data.tm_min);
+
+    }
+    printf("aperte qualquer tecla para sair:\n");
+    getch();
+
 }
