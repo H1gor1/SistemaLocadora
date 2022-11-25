@@ -280,7 +280,7 @@ void mostraLancamentos(lancamentoCaixa *todosLancamentos, int quantidade, struct
             if(todosLancamentos[i].valor > 0) {
                 printf("_________________________________________________________\n");
                 printf("|Codigo compra: %ld\n", todosLancamentos[i].codigoCompra);
-                printf("|Modo pagamento: %s\n", (todosLancamentos[i].modoPagamento == 1)?"A vista":(todosLancamentos[i].modoPagamento == 2)?"A prazo":"A prazo com entrada");
+                printf("|Modo pagamento: %s\n", (todosLancamentos[i].modoPagamento == 1)?"A vista":(todosLancamentos[i].modoPagamento == 2)?"A prazo":(todosLancamentos[i].modoPagamento == 3)?"A prazo com entrada":"valor lancado por administrador");
                 printf("|Valor: %.2f\n", todosLancamentos[i].valor);
                 printf("|Valor pago: %.2f\n", todosLancamentos[i].valorPago);
                 printf("|Troco: %.2f\n", todosLancamentos[i].troco);
@@ -330,7 +330,11 @@ ContagemCaixa contabilizaCaixa(lancamentoCaixa *todosLancamentos, int quantidade
 lancamentoCaixa *procuraLancamentoCaixa(lancamentoCaixa *ptr, int quantidade, long int codigo){
     for(int i = 0; i<quantidade; i++){
         if(ptr[i].codigoCompra == codigo){
-            return ptr+i;
+            if(ptr[i].modoPagamento) {
+                return ptr + i;
+            }else{
+                printf("este lancamento e somente")
+            }
         }
     }
     return NULL;
@@ -385,7 +389,7 @@ void filtraMovimentacoesPorPeriodoData(int modoArm){
 
     quantidadeEntradas = (modoArm)? leDadosEntradasFilmesBin(&todasEntradas): leDadosLancamentoEntradasFilmes(&todasEntradas);
     quantidadeLancamentos = (modoArm)? leDadosLancamentosBin(&todosLancamentos): leDadosLancamentos(&todosLancamentos);
-
+    quantidadeEntradasAprazo = (modoArm)?leDadosEntradasAprazoBin(&todasAsEntradasAprazo): leDadosEntradasAprazo(&todasAsEntradasAprazo);
 
     struct tm data1 = {0,0,0,0,0,0,0,0,0};
     struct tm data2 = {0,0,0,0,0,0,0,0,0};
@@ -471,7 +475,7 @@ void filtraMovimentacoesPorPeriodoData(int modoArm){
         compras compraProcurada = *encontraCompraCodigo(todasAsCompras, quant.quantidadeAlugacoes, lancametoProcurado->codigoCompra);
         mostraCompra(&compraProcurada, 1);
     }else
-        if(lancametoProcurado->codigoCompra == 1){
+        if(lancametoProcurado->modoPagamento == 1){
 
             lancamentoEntradas entradaProc = *encontraEntradaAvistaCodigo(todasEntradas, quantidadeEntradas, lancametoProcurado->codigoCompra);
             mostraEntradaAvista(&entradaProc, 1);
@@ -481,6 +485,35 @@ void filtraMovimentacoesPorPeriodoData(int modoArm){
             mostraEntradaAtrasada(&entAprazo, 1);
         }
 
+
+
+        limpaDadosDevolucoesMemoria(&todosFilmes, &clientes, &funcs, &todasAsCompras, quant);
+        todosLancamentos = limpaMemoria(todosLancamentos);
+        todasAsEntradasAprazo = limpaMemoria(todasAsEntradasAprazo);
+        todasEntradas = limpaMemoria(todasEntradas);
+        lancamentosFiltrados = limpaMemoria(lancamentosFiltrados);
+        lancametoProcurado = NULL;
+
+
+}
+void lancaValorCaixa(int modoArm){
+
+    printf("ATENCAO: o valor informado será adicionado no caixa, certfique-se que digitou o valor correto!\n");
+    disparaSom("\0", 1);
+    Sleep(1000);
+
+    lancamentoCaixa adicionar = (lancamentoCaixa){0,0,0,0,0,(struct tm){0,0,0,0,0,0,0,0,0}};
+    time_t seg;
+    time(&seg);
+    adicionar.data = *localtime(&seg);
+
+    printf("digite o valor que deseja adicionar ao caixa:\n");
+    verificaNumero(&adicionar.valor, "%f");
+
+    adicionar.modoPagamento = 0;
+    adicionar.codigoCompra = time(NULL);
+
+    (modoArm)? reescreveLancamentosCaixaBin(&adicionar, 1, "lancamentos.bin", "lancamentos.bin", "ab"): reescreveLancamentosCaixa(&adicionar, 1, "lancamentos.txt", "lancamentos.txt", "a");
 
 
 

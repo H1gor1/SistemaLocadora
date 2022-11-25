@@ -53,6 +53,7 @@ void mostraLancamentos(lancamentoCaixa *todosLancamentos, int quantidade, struct
 ContagemCaixa contabilizaCaixa(lancamentoCaixa *todosLancamentos, int quantidade, struct tm *data);
 void contaCaixa(int modoArm);
 void filtraMovimentacoesPorPeriodoData(int modoArm);
+void lancaValorCaixa(int modoArm);
 
 #endif
 

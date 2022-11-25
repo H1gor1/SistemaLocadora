@@ -482,7 +482,7 @@ void menuCaixa(int modoArm){
     
     while(escolha !=5){
         
-        escolha = escolheMenu("Menu do caixa", 6, 0,"Realizar venda", "Devolver filme", "Contar caixa", "Filtrar movimentacoes por periodo", "Filtra compras" , "Voltar");
+        escolha = escolheMenu("Menu do caixa", 7, 0,"Realizar venda", "Devolver filme", "Contar caixa", "Filtrar movimentacoes por periodo", "Filtra compras", "Adicionar valor ao caixa", "Voltar");
         
         switch(escolha){
             
@@ -504,6 +504,7 @@ void menuCaixa(int modoArm){
                 listaCompra(modoArm);
                 break;
             case 5:
+                lancaValorCaixa(modoArm);
                 break;
             default:
                 printf("escolha uma opcao valida!\n");
