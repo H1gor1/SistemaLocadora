@@ -157,19 +157,19 @@ int leDadosClientes(cliente **ptr){
         /*cada informacao e pega e guardada dentro do campo certo do cliente atual*/
         fscanf(f, "%d ", &ptr[0][i].codigo);
         
-        digText(&ptr[0][i].nomeCompleto, f);
+        digText(&ptr[0][i].nomeCompleto, f, '\n');
         
-        digText(&ptr[0][i].rua, f);
+        digText(&ptr[0][i].rua, f, '\n');
         
-        digText(&ptr[0][i].bairro, f);
+        digText(&ptr[0][i].bairro, f, '\n');
         
         fscanf(f, "%d ", &ptr[0][i].numeroDaCasa);
         
-        digText(&ptr[0][i].cpf, f);
+        digText(&ptr[0][i].cpf, f, '\n');
         
         fscanf(f,"%d ", &ptr[0][i].telefone);
         
-        digText(&ptr[0][i].email, f);
+        digText(&ptr[0][i].email, f, '\n');
         
         fscanf(f, "%d ", &ptr[0][i].sexo);
         
@@ -362,7 +362,7 @@ cliente *buscaCliente(cliente *buscar, int quantidade, char *mensagem){
     char *dado;//string que recebera o texto
     cliente *ptr;//ponteiro que recebera o endereco do cliente buscado
     do{
-        digText(&dado, stdin);//pega a digitacao do dado que deve buscar
+        digText(&dado, stdin, '\n');//pega a digitacao do dado que deve buscar
         /*com o dado digitado tenta buscar pelo cpf*/
         ptr = encontraClienteCpf(buscar, quantidade, dado);
         //se o ponteiro for um endereco nao null, e o nome for diferente de *
@@ -460,14 +460,14 @@ void editaCliente(int modoAbertura){
         case 1:
             printf("digite o nome da rua do cliente\n");
             ptr->rua = limpaMemoria(ptr->rua);
-            digText(&ptr->rua, stdin);
+            digText(&ptr->rua, stdin, '\n');
             break;
 
             
         case 2:
             printf("digite o nome do bairro do cliente\n");
             ptr->bairro = limpaMemoria(ptr->bairro);
-            digText(&ptr->bairro, stdin);
+            digText(&ptr->bairro, stdin, '\n');
             break;
                 
         case 3:
@@ -495,7 +495,7 @@ void editaCliente(int modoAbertura){
                 
             printf("digite o email do cliente\n");
             ptr->email = limpaMemoria(ptr->email);
-            digText(&ptr->email, stdin);
+            digText(&ptr->email, stdin, '\n');
             break;
                
         case 7:
@@ -574,10 +574,10 @@ void cadastraCliente(int modoLeitura){
     
     /*pega a rua do cliente*/
     printf("digite a rua do cliente\n");
-    digText(&client[quantidadeCliente-1].rua, stdin);
+    digText(&client[quantidadeCliente-1].rua, stdin, '\n');
     /*pega o bairro do cliente*/
     printf("digite o bairro\n");
-    digText(&client[quantidadeCliente-1].bairro, stdin);
+    digText(&client[quantidadeCliente-1].bairro, stdin, '\n');
     /*pega o numero do cliente, e verifica se ele digitou somente numeros*/
     printf("digite o numero da casa do cliente\n");
     verificaNumero(&client[quantidadeCliente-1].numeroDaCasa, "%d");

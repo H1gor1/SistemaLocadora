@@ -488,6 +488,30 @@ controleFuncionarios.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\untitled.dir\build.make CMakeFiles/untitled.dir/controleFuncionarios.c.s
 .PHONY : controleFuncionarios.c.s
 
+exportacoesXML.obj: exportacoesXML.c.obj
+.PHONY : exportacoesXML.obj
+
+# target to build an object file
+exportacoesXML.c.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\untitled.dir\build.make CMakeFiles/untitled.dir/exportacoesXML.c.obj
+.PHONY : exportacoesXML.c.obj
+
+exportacoesXML.i: exportacoesXML.c.i
+.PHONY : exportacoesXML.i
+
+# target to preprocess a source file
+exportacoesXML.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\untitled.dir\build.make CMakeFiles/untitled.dir/exportacoesXML.c.i
+.PHONY : exportacoesXML.c.i
+
+exportacoesXML.s: exportacoesXML.c.s
+.PHONY : exportacoesXML.s
+
+# target to generate assembly for a file
+exportacoesXML.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\untitled.dir\build.make CMakeFiles/untitled.dir/exportacoesXML.c.s
+.PHONY : exportacoesXML.c.s
+
 fornecedores.obj: fornecedores.c.obj
 .PHONY : fornecedores.obj
 
@@ -614,6 +638,9 @@ help:
 	@echo ... controleFuncionarios.obj
 	@echo ... controleFuncionarios.i
 	@echo ... controleFuncionarios.s
+	@echo ... exportacoesXML.obj
+	@echo ... exportacoesXML.i
+	@echo ... exportacoesXML.s
 	@echo ... fornecedores.obj
 	@echo ... fornecedores.i
 	@echo ... fornecedores.s

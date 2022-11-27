@@ -93,8 +93,8 @@ int leDadosFilmes(filmes **ptr){
     
     for(int i = 0; i<quantidade; i++){
         fscanf(f, "%d ", &ptr[0][i].codigo);
-        digText(&ptr[0][i].nome, f);
-        digText(&ptr[0][i].descricao, f);
+        digText(&ptr[0][i].nome, f, '\n');
+        digText(&ptr[0][i].descricao, f, '\n');
         fscanf(f, "%d ", &ptr[0][i].exemplares);
         fscanf(f,"%d ", &ptr[0][i].codigoCategoria);
         fscanf(f,"%f ", &ptr[0][i].valorLocacao);
@@ -197,7 +197,7 @@ filmes *buscaFilme(filmes *buscar, int quantidade, char *mensagem){
     char *dado;
     filmes *ptr;
     do{
-        digText(&dado, stdin);
+        digText(&dado, stdin, '\n');
         
         ptr = encontraFilmeCodigo(buscar, quantidade, dado,1);
         if(ptr){
@@ -255,12 +255,12 @@ void editaFilme(int modoAbertura){
         case 0:
             printf("digite o nome do filme\n");
             ptr->nome = limpaMemoria(ptr->nome);
-            digText(&ptr->nome, stdin);
+            digText(&ptr->nome, stdin, '\n');
             break;
         case 1:
             printf("digite a descricao do filme\n");
             ptr->descricao = limpaMemoria(ptr->descricao);
-            digText(&ptr->descricao, stdin);
+            digText(&ptr->descricao, stdin, '\n');
             break;
 
         case 2:
@@ -325,13 +325,13 @@ void cadastraFilmes(int modoLeitura){
     filme[quantidadeFilmes-1].codigo = quantidadeFilmes-1;
     
     printf("Digite o nome do filme\n");
-    digText(&filme[quantidadeFilmes-1].nome, stdin);
+    digText(&filme[quantidadeFilmes-1].nome, stdin, '\n');
 
     printf("Digite a descricao do filme\n");
-    digText(&filme[quantidadeFilmes-1].descricao, stdin);
+    digText(&filme[quantidadeFilmes-1].descricao, stdin, '\n');
 
-    printf("digite a quantidade de exemplares para alugar do filme:\n");
-    verificaNumero(&filme[quantidadeFilmes-1].exemplares, "%d");
+
+    filme[quantidadeFilmes-1].exemplares = 0;
     
 
     filme[quantidadeFilmes-1].codigoCategoria = escolheListaCategorias(categorias, quantidadeCategorias, "Escolha a categoria");

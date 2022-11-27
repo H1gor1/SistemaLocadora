@@ -29,6 +29,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/untitled.dir/contasAreceber.c.obj.d"
   "CMakeFiles/untitled.dir/controleFuncionarios.c.obj"
   "CMakeFiles/untitled.dir/controleFuncionarios.c.obj.d"
+  "CMakeFiles/untitled.dir/exportacoesXML.c.obj"
+  "CMakeFiles/untitled.dir/exportacoesXML.c.obj.d"
   "CMakeFiles/untitled.dir/fornecedores.c.obj"
   "CMakeFiles/untitled.dir/fornecedores.c.obj.d"
   "CMakeFiles/untitled.dir/main.c.obj"

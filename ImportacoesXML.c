@@ -19,13 +19,18 @@
 #include <windows.h>
 #include "ContasAPagar.h"
 #include "EntradaDeFilmes.h"
+#include "ContasAreceber.h"
 #include "Carrinho.h"
-#define PEDIRCAMINHO(CAMINHO) printf("Digite o diretorio/nomeDoArquivo que deseja guardar a importacao dos dados %s: \n", CAMINHO)
+#define PEDIRCAMINHO(CAMINHO) printf("Digite o diretorio/nomeDoArquivo que deseja %s: \n", CAMINHO)
+#define IMPORTASTRING(STRING, STRING2, f) fprintf(f, "          <%s>%s</%s>\n", STRING, STRING2, STRING)
+#define IMPORTANUMBER(STRING, NUMBER, f) fprintf(f, "          <%s>%d</%s>\n", STRING, NUMBER, STRING)
+#define IMPORTAFLOAT(STRING, FLOAT, f) fprintf(f, "          <%s>%.2f</%s>\n", STRING, FLOAT, STRING)
+#define IMPORTALD(STRING, LD, f) fprintf(f, "          <%s>%ld</%s>\n", STRING, LD, STRING)
 
 void pegaCaminho(char *discricaoCaminho, char **ptrGuardarCaminho){
     PEDIRCAMINHO(discricaoCaminho);
 
-    digText(ptrGuardarCaminho, stdin);
+    digText(ptrGuardarCaminho, stdin, '\n');
 
     ptrGuardarCaminho[0] = realloc(ptrGuardarCaminho[0], sizeof(char)*(strlen(ptrGuardarCaminho[0])+5));
     strcat(ptrGuardarCaminho[0], ".XML");
@@ -65,23 +70,28 @@ void importaDadosLocadora(int modoArm){
 
     char *diretorio;
 
-    pegaCaminho("da locadora", &diretorio);
+    pegaCaminho("importar os dados da locadora", &diretorio);
     f = fopen(diretorio, "w");
 
     verificaOperacao(f, "Erro ao criar arquivo de importacao XML", 0);
 
-    fprintf(f,"<dados>\n");
-    fprintf(f, "   <NomeFantasia>%s</NomeFantasia>\n", importar.nomeFantasia);
-    fprintf(f, "    <RazaoSocial>%s</RazaoSocial>\n", importar.razaoSocial);
-    fprintf(f, "    <InscricaoEstadual>%s</InscricaoEstadual>\n", importar.inscricaoEstadual);
-    fprintf(f, "    <CNPJ>%s</CNPJ>\n", importar.cnpj);
-    fprintf(f, "    <Endereco>%s</Endereco>\n", importar.endereco);
-    fprintf(f, "    <Telefone>%d</Telefone>\n", importar.telefone);
-    fprintf(f, "    <Email>%s</Email>\n", importar.email);
-    fprintf(f, "    <NomeResponsavel>%s</NomeResponsavel>\n", importar.nomeResponsavel);
-    fprintf(f, "    <TelefoneResp>%d</TelefoneResp>\n", importar.telefoneResp);
-    fprintf(f, "    <Multa>%.2f</Multa>\n", importar.multa);
+
+
+    fprintf(f, "<dados>\n");
+    fprintf(f, "    <locadora>\n");
+    IMPORTASTRING("nomeFantasia", importar.nomeFantasia, f);
+    IMPORTASTRING("razaoSocial", importar.razaoSocial, f);
+    IMPORTASTRING("inscricaoEst", importar.inscricaoEstadual, f);
+    IMPORTASTRING("CNPJ", importar.cnpj, f);
+    IMPORTASTRING("endereco", importar.endereco, f);
+    IMPORTANUMBER("telefone", importar.telefone, f);
+    IMPORTASTRING("Email", importar.email, f);
+    IMPORTASTRING("NomeResponsavel", importar.nomeResponsavel, f);
+    IMPORTANUMBER("telefoneResp", importar.telefoneResp, f);
+    IMPORTAFLOAT("Multa", importar.multa, f);
+    fprintf(f, "    </locadora>\n");
     fprintf(f, "</dados>");
+
 
     fechaArquivo(&f);
 
@@ -98,26 +108,27 @@ void importaDadosSons(int modoArm){
         return;
     }
 
-    pegaCaminho("do arquivo de sons", &diretorio);
+    pegaCaminho("importar os dados do arquivo de sons", &diretorio);
 
 
     (modoArm)? leDadosSonsBin(&importacoesSons): leDadosSons(&importacoesSons);
 
 
     f = fopen(diretorio, "w");
-
-
+    
     fprintf(f,"<configuracoes>\n");
     fprintf(f, "    <sonsDeErro>\n" );
-    fprintf(f, "        <Frequencia>%d</Frequencia>\n", importacoesSons.sonsDeErro.frequencia);
-    fprintf(f, "        <Duracao>%d</Duracao>\n", importacoesSons.sonsDeErro.duracao);
+    IMPORTANUMBER("Frequencia", importacoesSons.sonsDeErro.frequencia, f);
+    IMPORTANUMBER("Duracao", importacoesSons.sonsDeErro.duracao, f);
     fprintf(f, "    </sonsDeErro>\n");
     fprintf(f, "    <sonsDeConfirmacao>\n");
-    fprintf(f, "        <Frequencia>%d</Frequencia>\n", importacoesSons.sonsDeConfirmacao.frequencia);
-    fprintf(f, "        <Duracao>%d</Duracao>\n", importacoesSons.sonsDeConfirmacao.duracao);
+    IMPORTANUMBER("Frequencia", importacoesSons.sonsDeConfirmacao.frequencia, f);
+    IMPORTANUMBER("Duracao", importacoesSons.sonsDeConfirmacao.duracao, f);
     fprintf(f, "    </sonsDeConfirmacao>\n");
-    fprintf(f, "    <modoSilencioso>%d</modoSilencioso>\n", importacoesSons.modoSilencioso);
-    fprintf(f, "</configuracaos>\n");
+    IMPORTANUMBER("ModoSilencioso", importacoesSons.modoSilencioso, f);
+    fprintf(f, "</configuracoes>\n");
+
+    fechaArquivo(&f);
 
 
 }
@@ -129,15 +140,13 @@ void importaDadosClientes(int modoArm){
     quantidadeClientes = leArquivoOriginal("clientes.txt", (modoArm)?(int (*)(void **))leDadosClientesBin:(int (*)(void **))leDadosClientes, &todosClientes);
 
     if(!quantidadeClientes){
-        printf("Nao existem clientes cadastrados no momento!\n");
-        Sleep(2000);
         return;
     }
 
     FILE *f;
     char *diretorio;
 
-    pegaCaminho("arquivo clientes", &diretorio);
+    pegaCaminho("importar os dados do arquivo clientes", &diretorio);
     f = fopen(diretorio, "w");
 
     if(!f){
@@ -150,20 +159,20 @@ void importaDadosClientes(int modoArm){
     for(int i = 0; i<quantidadeClientes; i++){
 
         fprintf(f, "    <cliente>\n");
-        fprintf(f, "        <codigo>%d</codigo>\n", todosClientes[i].codigo);
-        fprintf(f, "        <nome>%s</nome>\n", todosClientes[i].nomeCompleto);
-        fprintf(f, "        <rua>%s</rua>\n", todosClientes[i].rua);
-        fprintf(f, "        <bairro>%s</bairro>\n", todosClientes[i].bairro);
-        fprintf(f, "        <numero>%d</numero>\n", todosClientes[i].numeroDaCasa);
-        fprintf(f, "        <cpf>%s</cpf>\n", todosClientes[i].cpf);
-        fprintf(f, "        <telefone>%d</telefone>\n", todosClientes[i].telefone);
-        fprintf(f, "        <email>%s</email>\n", todosClientes[i].email);
-        fprintf(f, "        <sexo>%d</sexo>\n", todosClientes[i].sexo);
-        fprintf(f, "        <estadoCivil>%d</estadoCivil>\n", todosClientes[i].estadoCivil);
-        fprintf(f, "        <diaNascimento>%d</diaNascimento>\n", todosClientes[i].diaNascimento);
-        fprintf(f, "        <mes>%d</mes>\n", todosClientes[i].mes);
-        fprintf(f, "        <ano>%d</ano>\n", todosClientes[i].ano);
-        fprintf(f, "        <flagExclusao>%d</flagExclusao>\n", todosClientes[i].flag);
+        IMPORTANUMBER("codigo", todosClientes[i].codigo, f);
+        IMPORTASTRING("nome", todosClientes[i].nomeCompleto,f);
+        IMPORTASTRING("rua", todosClientes[i].rua, f);
+        IMPORTASTRING("bairro", todosClientes[i].bairro, f);
+        IMPORTANUMBER("numero", todosClientes[i].numeroDaCasa, f);
+        IMPORTASTRING("CPF", todosClientes[i].cpf, f);
+        IMPORTANUMBER("telefone", todosClientes[i].telefone, f);
+        IMPORTASTRING("email", todosClientes[i].email, f);
+        IMPORTANUMBER("sexo", todosClientes[i].sexo, f);
+        IMPORTANUMBER("EstadoCivil", todosClientes[i].estadoCivil, f);
+        IMPORTANUMBER("DiaNasc", todosClientes[i].diaNascimento, f);
+        IMPORTANUMBER("mes", todosClientes[i].mes, f);
+        IMPORTANUMBER("ano", todosClientes[i].ano, f);
+        IMPORTANUMBER("flagExclusao", todosClientes[i].flag, f);
         fprintf(f, "    </cliente>\n");
 
     }
@@ -194,7 +203,7 @@ void importaDadosFuncs(int modoArm){
     FILE *f;
     char *diretorio;
 
-    pegaCaminho("de funcionarios", &diretorio);
+    pegaCaminho("importar os dados do arquivo de funcionarios", &diretorio);
 
     f = fopen(diretorio, "w");
 
@@ -205,19 +214,21 @@ void importaDadosFuncs(int modoArm){
         return;
     }
 
-    fprintf(f, "<dados>\n");
 
+    fprintf(f, "<dados>\n");
     for(int i = 0; i<quantidadeFuncionarios; i++){
 
         fprintf(f, "    <Funcionario>\n");
-        fprintf(f, "        <codigo>%ld</codigo>\n", todosFuncs[i].codigo);
-        fprintf(f, "        <nome>%s</nome>\n", todosFuncs[i].nome);
-        fprintf(f, "        <rua>%s</rua>\n", todosFuncs[i].rua);
-        fprintf(f, "        <bairro>%s</bairro>\n", todosFuncs[i].bairro);
-        fprintf(f, "        <numero>%d</numero>\n", todosFuncs[i].numero);
-        fprintf(f, "        <telefone>%d</telefone>\n", todosFuncs[i].telefone);
-        fprintf(f, "        <email>%s</email>\n", todosFuncs[i].email);
-        fprintf(f, "        <tagExclusao>%d</tagExclusao>\n", todosFuncs[i].flag);
+        IMPORTALD("codigo", todosFuncs[i].codigo, f);
+        IMPORTASTRING("nome", todosFuncs[i].nome, f);
+        IMPORTASTRING("cargo", todosFuncs[i].cargo, f);
+        IMPORTASTRING("rua", todosFuncs[i].rua, f);
+        IMPORTASTRING("bairro", todosFuncs[i].bairro, f);
+        IMPORTANUMBER("numero", todosFuncs[i].numero, f);
+        IMPORTANUMBER("telefone", todosFuncs[i].telefone, f);
+        IMPORTASTRING("email", todosFuncs[i].email, f);
+        IMPORTANUMBER("flagExlusao", todosFuncs[i].flag, f);
+
         fprintf(f, "    </Funcionario>\n");
     }
     fprintf(f, "</dados>");
@@ -226,4 +237,360 @@ void importaDadosFuncs(int modoArm){
     apagaDadosStructFuncionarios(todosFuncs, quantidadeFuncionarios);
     todosFuncs = limpaMemoria(todosFuncs);
     fechaArquivo(&f);
+}
+
+void importaDadosFornecedores(int modoArm){
+    fornecedor *forn = NULL;
+    int quantidadeForn = 0;
+
+    quantidadeForn = leArquivoOriginal((modoArm)?"fornecedores.bin":"fornecedores.txt", (modoArm)?(int (*)(void **))leDadosFornecedoresBin:(int (*)(void **)) leDadosFornecedores, &forn);
+
+    if(!quantidadeForn){
+        return;
+    }
+    char *diretorio;
+
+    pegaCaminho("importar os dados do arquivo fornecedores", &diretorio);
+
+    FILE *f;
+
+    f = fopen(diretorio, "w");
+
+    if(!f){
+        printf("nao foi possivel criar o arquivo %s\n", diretorio);
+        printf("ERRO: %s\n", strerror(errno));
+        Sleep(2000);
+    }
+    fprintf(f, "<dado>\n");
+    for(int i = 0; i<quantidadeForn; i++){
+        fprintf(f,"    <Fornecedor>\n");
+        IMPORTANUMBER("codigo", forn[i].codigo, f);
+        IMPORTASTRING("nomeFantasia", forn[i].nomeFantasia, f);
+        IMPORTASTRING("razaoSocial", forn[i].razaoSocial, f);
+        IMPORTASTRING("inscEstadual", forn[i].inscricaoEstadual, f);
+        IMPORTASTRING("CNPJ", forn[i].CNPJ, f);
+        IMPORTASTRING("bairro", forn[i].bairro, f);
+        IMPORTASTRING("rua", forn[i].rua, f);
+        IMPORTANUMBER("numero", forn[i].numero, f);
+        IMPORTANUMBER("telefone", forn[i].telefone, f);
+        IMPORTASTRING("email", forn[i].email, f);
+        IMPORTANUMBER("flag", forn[i].flag, f);
+        fprintf(f,"    </Fornecedor>\n");
+    }
+    fprintf(f, "</dado>");
+
+    fechaArquivo(&f);
+    limpaMemoriaStringsFornecedor(forn, quantidadeForn);
+    forn = limpaMemoria(forn);
+}
+void importaCategoria(int modoArm){
+    categoria *todasCat = NULL;
+    int quantidadeCat = 0;
+
+    quantidadeCat = leArquivoOriginal((modoArm)?"categorias.bin":"categorias.txt", (modoArm)?(int(*)(void **))leDadosCategoriaBin:(int (*)(void **))leDadosCategoria, &todasCat);
+
+    if(!quantidadeCat){
+        return;
+    }
+    char *diretorio;
+    FILE *f;
+
+    pegaCaminho("importar os dados do arquivo categoria", &diretorio);
+
+    f = fopen(diretorio, "w");
+    fprintf(f, "<dado>\n");
+    for(int i = 0; i<quantidadeCat; i++){
+
+        fprintf(f, "   <categoria>\n");
+        IMPORTANUMBER("codigo", todasCat[i].codigo, f);
+        IMPORTASTRING("nome", todasCat[i].nome, f);
+        IMPORTASTRING("descricao", todasCat[i].descricao, f);
+        IMPORTAFLOAT("valorLoc", todasCat[i].valorLocacao, f);
+        IMPORTANUMBER("flag", todasCat[i].flag, f);
+        fprintf(f, "   </categoria>\n");
+
+    }
+    fprintf(f , "</dado>");
+
+    fechaArquivo(&f);
+    limpaDadosCategoriaMemoria(todasCat, quantidadeCat);
+    todasCat = limpaMemoria(todasCat);
+
+
+
+}
+void importaDadosFilmes(int modoArm){
+
+    filmes *todosFilmes = NULL;
+    int quantidadeFilmes = 0;
+
+    quantidadeFilmes = leArquivoOriginal((modoArm)?"filmes.bin":"filmes.txt", (modoArm)?(int (*)(void **))leDadosFilmesBin:(int (*)(void **))leDadosFilmes, &todosFilmes);
+
+    if(!quantidadeFilmes){
+        return;
+    }
+    FILE *f;
+    char *diretorio;
+
+    pegaCaminho("importar os dados do arquivo filmes", &diretorio);
+
+    f = fopen(diretorio, "w");
+    fprintf(f, "<dados>\n");
+
+    for(int i = 0; i<quantidadeFilmes; i++){
+
+
+        fprintf(f, "    <Filme>\n");
+        IMPORTANUMBER("codigo", todosFilmes[i].codigo, f);
+        IMPORTASTRING("nome", todosFilmes[i].nome, f);
+        IMPORTASTRING("descricao", todosFilmes[i].descricao,f);
+        IMPORTANUMBER("CodigoCat", todosFilmes[i].codigoCategoria, f);
+        IMPORTAFLOAT("ValorLoc", todosFilmes[i].valorLocacao, f);
+        IMPORTANUMBER("exemplares", todosFilmes[i].exemplares, f);
+        IMPORTANUMBER("lingua", todosFilmes[i].lingua, f);
+        IMPORTANUMBER("flag", todosFilmes[i].flag, f);
+        fprintf(f, "    </Filme>\n");
+
+    }
+    fprintf(f, "</dados>");
+
+    fechaArquivo(&f);
+    limpaDadosFilmeMemoria(todosFilmes, quantidadeFilmes);
+    todosFilmes = limpaMemoria(todosFilmes);
+
+}
+void importaDadosCompras(int modoArm){
+
+    compras *todasAsCompras = NULL;
+    filmes *todosFilmes = NULL;
+    Funcionarios  *todosFuncs = NULL;
+    cliente *todosClientes = NULL;
+    quantidades quant = {0,0,0,0};
+
+    quant = (modoArm)?leDadosDevolucoesBin(&todasAsCompras, &todosFuncs, &todosClientes, &todosFilmes): leDadosDevolucoes(&todasAsCompras, &todosFuncs, &todosClientes, &todosFilmes);
+
+    if(!quant.quantidadeAlugacoes){
+        printf("nao existem compras feitas ate o momento!\n");
+        limpaDadosDevolucoesMemoria(&todosFilmes, &todosClientes, &todosFuncs, &todasAsCompras, quant);
+        return;
+    }
+
+    FILE *f;
+    char *diretorio;
+
+    pegaCaminho("importar os dados do arquivo de compras", &diretorio);
+
+    f = fopen(diretorio, "w");
+
+    fprintf(f, "<dado>\n");
+
+    for(int i = 0; i<quant.quantidadeAlugacoes; i++){
+
+        fprintf(f, "    <compra>\n");
+        IMPORTALD("codigoCompra", todasAsCompras[i].codigo, f);
+        IMPORTANUMBER("modoPagamento", todasAsCompras[i].modoPagamento, f);
+        IMPORTALD("data", mktime(&todasAsCompras[i].data), f);
+        IMPORTALD("vendedor", todasAsCompras[i].vendedor->codigo, f);
+        IMPORTANUMBER("comprador", todasAsCompras[i].comprador->codigo, f);
+        IMPORTAFLOAT("preco", todasAsCompras[i].preco, f);
+        IMPORTANUMBER("quantidadeFilmesComprados", todasAsCompras[i].quantidadeFilmesComprados, f);
+        for(int j = 0; j<todasAsCompras[i].quantidadeFilmesComprados; j++){
+            fprintf(f, "          <filme%d>\n", j+1);
+            fprintf(f, "            <codigoFilme>%d</codigoFilme>\n", todasAsCompras[i].filmesComprados[j].codigo);
+            fprintf(f, "            <exemplares>%d</exemplares>\n", todasAsCompras[i].filmesComprados[j].exemplares);
+            fprintf(f, "          </filme%d>\n", j+1);
+        }
+        IMPORTANUMBER("devolvido", todasAsCompras[i].devolvido, f);
+        fprintf(f, "    </compra>\n");
+    }
+    fprintf(f, "</dado>\n");
+
+    fechaArquivo(&f);
+    limpaDadosDevolucoesMemoria(&todosFilmes, &todosClientes, &todosFuncs, &todasAsCompras, quant);
+}
+void importaDadosLancamentos(int modoArm){
+    lancamentoCaixa *todosLancamentos = NULL;
+    int quantidadeLancamentos = 0;
+
+    quantidadeLancamentos = leArquivoOriginal((modoArm)?"lancamentos.bin":"lancamentos.txt",
+                                              (modoArm)? (int (*)(void **))leDadosLancamentosBin: (int (*)(void **))leDadosLancamentos,
+                                              &todosLancamentos);
+
+    if(!quantidadeLancamentos){
+        return;
+    }
+
+    FILE *f;
+    char *diretorio;
+
+    pegaCaminho("importar os dados do arquivo lancamento caixa", &diretorio);
+
+    f = fopen(diretorio, "w");
+
+    if(!f){
+        printf("Nao foi possivel criar o arquivo XML no diretorio digitado!\n");
+        printf("ERRO: %s\n", strerror(errno));
+        todosLancamentos = limpaMemoria(todosLancamentos);
+        Sleep(2000);
+        return;
+    }
+
+    fprintf(f, "<dados>\n");
+    for(int i = 0; i<quantidadeLancamentos; i++){
+        fprintf(f, "    <lancamento>\n");
+        IMPORTALD("codigoCompra", todosLancamentos[i].codigoCompra, f);
+        IMPORTANUMBER("modoPagamento", todosLancamentos[i].modoPagamento, f);
+        IMPORTAFLOAT("valor", todosLancamentos[i].valor, f);
+        IMPORTAFLOAT("valorPago", todosLancamentos[i].valorPago,f);
+        IMPORTAFLOAT("troco", todosLancamentos[i].troco, f);
+        IMPORTALD("data", mktime(&todosLancamentos[i].data), f);
+        fprintf(f, "    </lancamento>\n");
+
+
+    }
+    fprintf(f, "</dados>\n");
+
+    fechaArquivo(&f);
+    todosLancamentos = limpaMemoria(todosLancamentos);
+
+
+}
+void importaLancamentosAprazo(int modoArm){
+
+    contaArec *todasContas = NULL;
+    int quantidadeContas = 0;
+
+    quantidadeContas = leArquivoOriginal((modoArm)?"lancamentosAprazo.bin":"lancamentosAprazo.txt",
+                                         (modoArm)?(int (*)(void **))leDadosLancamentosAprazoBin: (int (*)(void **))leDadosLancamentosAprazo,
+                                         &todasContas);
+
+    if(!quantidadeContas){
+        return;
+    }
+
+    char *diretorio;
+    FILE *f;
+
+    pegaCaminho("importar os dados do arquivo de contas a receber", &diretorio);
+
+    f = fopen(diretorio, "w");
+
+    if(!f){
+        printf("Nao foi possivel criar o arquivo XML no caminho indicado!\n");
+        printf("ERRO: %s\n", strerror(errno));
+        todasContas = limpaMemoria(todasContas);
+        Sleep(2000);
+        return;
+    }
+
+    fprintf(f, "<dados>\n");
+
+    for(int i = 0; i<quantidadeContas; i++){
+        fprintf(f, "    <conta>\n");
+        IMPORTANUMBER("codigoCliente", todasContas[i].codigoCliente, f);
+        IMPORTALD("codigoCompra", todasContas[i].codigoCompra, f);
+        IMPORTANUMBER("modoPagamento", todasContas[i].modoPagamento, f);
+        IMPORTANUMBER("parcelas", todasContas[i].parcelas, f);
+        IMPORTAFLOAT("valorParcela", todasContas[i].valorParc, f);
+        IMPORTAFLOAT("ValorEntrada", todasContas[i].entrada, f);
+        IMPORTALD("data", mktime(&todasContas[i].dataAluga), f);
+        fprintf(f, "    </conta>\n");
+    }
+    fprintf(f, "</dados>");
+
+    fechaArquivo(&f);
+    todasContas = limpaMemoria(todasContas);
+
+}
+
+void importaLancamentosEntrada(int modoArm){
+
+    lancamentoEntradas *todasEntradas;
+    int quantidadeEntrada;
+
+    quantidadeEntrada = leArquivoOriginal((modoArm)?"lancamentosEntrada.bin": "lancamentosEntrada.txt",
+                                          (modoArm)?(int (*)(void **))leDadosEntradasFilmesBin:(int (*)(void **))leDadosLancamentoEntradasFilmes, &todasEntradas);
+
+    if(!quantidadeEntrada){
+        return;
+    }
+
+    FILE *f;
+    char *diretorio;
+
+    pegaCaminho("importar os dados de entradas a vista", &diretorio);
+
+    f = fopen(diretorio, "w");
+
+    if(!f){
+        printf("Nao foi possivel criar o arquivo no diretorio indicado!\n");
+        printf("ERRO: %s\n", strerror(errno));
+        todasEntradas = limpaMemoria(todasEntradas);
+        Sleep(2000);
+        return;
+    }
+
+    fprintf(f, "<dados>\n");
+
+    for(int i = 0; i<quantidadeEntrada; i++){
+        fprintf(f, "    <lancamento>\n");
+        IMPORTALD("codigoCompra", todasEntradas[i].codigoCompra, f);
+        IMPORTANUMBER("modoPagamento", todasEntradas[i].modoPagamento, f);
+        IMPORTAFLOAT("valor", todasEntradas[i].valor, f);
+        IMPORTAFLOAT("valorPago", todasEntradas[i].valorPago, f);
+        IMPORTAFLOAT("troco", todasEntradas[i].troco, f);
+        IMPORTALD("data", mktime(&todasEntradas[i].data), f);
+        fprintf(f, "    </lancamento>\n");
+    }
+    fprintf(f, "</dados>\n");
+    fechaArquivo(&f);
+    todasEntradas = limpaMemoria(todasEntradas);
+
+
+}
+void importaEntradaAprazo(int modoArm){
+
+    contaApag *todasContasApag;
+    int quantidadeContasApagar = 0;
+
+    quantidadeContasApagar = leArquivoOriginal((modoArm)?"entradaAprazo.bin": "entradaAprazo.txt",
+                                               (modoArm)?(int (*)(void **))leDadosEntradasAprazoBin:(int (*)(void **))leDadosEntradasAprazo,
+                                               &todasContasApag);
+
+    if(!quantidadeContasApagar){
+        return;
+    }
+
+    FILE *f;
+    char *diretorio;
+
+    pegaCaminho("importar os dados de entradas a prazo", &diretorio);
+
+    f = fopen(diretorio, "w");
+
+    if(!f){
+        printf("nao foi possivel criar o arquivo no diretorio digitado!\n");
+        printf("ERRO: %s\n", strerror(errno));
+        todasContasApag = limpaMemoria(todasContasApag);
+        Sleep(2000);
+        return;
+    }
+
+    fprintf(f, "<dados>\n");
+
+    for(int i =0; i<quantidadeContasApagar; i++){
+        fprintf(f, "    <lancamento>\n");
+        IMPORTALD("codigoCompra", todasContasApag[i].codigoCompra, f);
+        IMPORTANUMBER("modoPagamento", todasContasApag[i].modoPagamento, f);
+        IMPORTANUMBER("parcelas", todasContasApag[i].parcelas, f);
+        IMPORTAFLOAT("valorParc", todasContasApag[i].valorParc, f);
+        IMPORTAFLOAT("valorEntrada", todasContasApag[i].entrada, f);
+        IMPORTALD("data", mktime(&todasContasApag[i].dataAluga), f);
+        fprintf(f, "    </lancamento>\n");
+    }
+    fprintf(f, "</dados>\n");
+
+    fechaArquivo(&f);
+    todasContasApag = limpaMemoria(todasContasApag);
+
 }

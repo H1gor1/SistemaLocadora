@@ -25,6 +25,8 @@
 #define VLT "Voltar"
 #include "ContasAPagar.h"
 #include "EntradaDeFilmes.h"
+#include"ImportacoesXML.h"
+#include "exportacoesXML.h"
 #define ESC 27
 #define MENUPRINC  menuGraphics(8, "Menu principal, escolha uma opcao:", "Administrativo", "Clientes", "Filmes", "Categorias", "Trocar modo arm BIN/TXT", "Caixa", "Contas", "Sair")
 
@@ -187,8 +189,8 @@ int menuPrincipal(int *modo){
 
     int escolha;
     printf("\n");
-    escolha = escolheMenu("Seja bem vindo! Escolha uma opcao", 9, 0,"Administrativo", "Clientes", "Filmes", "Categorias", "Configuracoes", "Caixa", "Contas a receber","Contas a Pagar", "Sair");
-    while(escolha != 8){
+    escolha = escolheMenu("Seja bem vindo! Escolha uma opcao", 11, 0,"Administrativo", "Clientes", "Filmes", "Categorias", "Configuracoes", "Caixa", "Contas a receber","Contas a Pagar","importar dados em um XML" , "exportar dados de um XML", "Sair");
+    while(escolha != 10){
 
         switch(escolha){
             case 0:
@@ -222,14 +224,18 @@ int menuPrincipal(int *modo){
                 menuContasPagar(*modo);
                 break;
             case 8:
+                menuImportacoes(*modo);
+                break;
+            case 9:
+                menuExportacoes(*modo);
                 break;
 
 
             default:
                 printf("Opcao invalida!\n");
         }
-        if(escolha != 8){
-            escolha = escolha = escolheMenu("Menu principal. Escolha uma opcao", 9, 0,"Administrativo", "Clientes", "Filmes", "Categorias", "Configuracoes", "Caixa", "Contas a receber","Contas a Pagar", "Sair");
+        if(escolha != 10){
+            escolha = escolha = escolheMenu("Menu principal. Escolha uma opcao", 11, 0,"Administrativo", "Clientes", "Filmes", "Categorias", "Configuracoes", "Caixa", "Contas a receber","Contas a Pagar","importar dados em um XML" , "exportar dados de um XML", "Sair");
         }
     }
 }
@@ -480,7 +486,7 @@ void menuCaixa(int modoArm){
 
     int escolha;
     
-    while(escolha !=5){
+    while(escolha !=6){
         
         escolha = escolheMenu("Menu do caixa", 7, 0,"Realizar venda", "Devolver filme", "Contar caixa", "Filtrar movimentacoes por periodo", "Filtra compras", "Adicionar valor ao caixa", "Voltar");
         
@@ -506,9 +512,7 @@ void menuCaixa(int modoArm){
             case 5:
                 lancaValorCaixa(modoArm);
                 break;
-            default:
-                printf("escolha uma opcao valida!\n");
-                break;
+
                 
         }
 
@@ -555,6 +559,64 @@ void menuConfiguracoes(int *modoArm){
                 break;
         }
     }
+}
+void menuImportacoes(int modoArm){
+    int escolha;
+    void (*f[12])(int) = {importaDadosLocadora, importaDadosFuncs, importaDadosFornecedores, importaCategoria,
+                          importaDadosClientes, importaDadosFilmes, importaDadosCompras, importaDadosLancamentos,
+                          importaLancamentosAprazo, importaDadosSons, importaLancamentosEntrada, importaEntradaAprazo};
+
+    while(escolha != 10) {
+        escolha = escolheMenu("Escolha um arquivo para importar os dados:", 13, 0,
+                              "locadora",
+                              "funcionarios",
+                              "fornecedores",
+                              "categorias",
+                              "clientes",
+                              "filmes",
+                              "devolucoes",
+                              "lancamentos",
+                              "lancamentosAprazo",
+                              "sons",
+                              "lancamentosEntrada",
+                              "entradaAprazo",
+                              "voltar");
+
+        if(escolha == 12){
+            return;
+        }
+        f[escolha](modoArm);
+
+    }
+
+
+}
+void menuExportacoes(int modoArm){
+    int escolha;
+    void (*f[12])(int) = {exportaLocadora, exportaFuncionarios};
+
+    while(escolha != 12){
+        escolha = escolheMenu("Escolha o destino que deseja exportar dados de outra aplicacao:", 13, 0,
+                              "locadora",
+                              "funcionarios",
+                              "fornecedores",
+                              "categorias",
+                              "clientes",
+                              "filmes",
+                              "devolucoes",
+                              "lancamentos",
+                              "lancamentosAprazo",
+                              "sons",
+                              "lancamentosEntrada",
+                              "entradaAprazo",
+                              "voltar");
+
+        if(escolha == 12){
+            return;
+        }
+        f[escolha](modoArm);
+    }
+
 }
 //configuracoes de sons dos menus
 

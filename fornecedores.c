@@ -63,23 +63,23 @@ int leDadosFornecedores(fornecedor **ptr){
         
         fscanf(f, "%d ", &ptr[0][i].codigo);
         
-        digText(&ptr[0][i].nomeFantasia, f);
+        digText(&ptr[0][i].nomeFantasia, f, '\n');
         
-        digText(&ptr[0][i].razaoSocial, f);
+        digText(&ptr[0][i].razaoSocial, f, '\n');
         
-        digText(&ptr[0][i].inscricaoEstadual, f);
+        digText(&ptr[0][i].inscricaoEstadual, f, '\n');
         
-        digText(&ptr[0][i].CNPJ, f);
+        digText(&ptr[0][i].CNPJ, f, '\n');
         
-        digText(&ptr[0][i].bairro, f);
+        digText(&ptr[0][i].bairro, f, '\n');
         
-        digText(&ptr[0][i].rua, f);
+        digText(&ptr[0][i].rua, f, '\n');
         
         fscanf(f, "%d ", &ptr[0][i].numero);
         
         fscanf(f, "%d ", &ptr[0][i].telefone);
         
-        digText(&ptr[0][i].email, f);
+        digText(&ptr[0][i].email, f, '\n');
 
         fscanf(f, "%d  ", &ptr[0][i].flag);
         
@@ -287,10 +287,10 @@ void cadastraFornecedor(int modoAbertura){
     fornecedores[quantidadeFornecedores-1].codigo = quantidadeFornecedores-1;
     
     printf("Digite o nome fantasia do novo fornecedor:\n");
-    digText(&fornecedores[quantidadeFornecedores-1].nomeFantasia, stdin);
+    digText(&fornecedores[quantidadeFornecedores-1].nomeFantasia, stdin, '\n');
     
     printf("Digite a razao social:\n");
-    digText(&fornecedores[quantidadeFornecedores-1].razaoSocial, stdin);
+    digText(&fornecedores[quantidadeFornecedores-1].razaoSocial, stdin, '\n');
     
     printf("Digite a inscricao estadual:\n");
     validaInsEstadual(&fornecedores[quantidadeFornecedores-1].inscricaoEstadual);
@@ -299,10 +299,10 @@ void cadastraFornecedor(int modoAbertura){
     validaCnpjouCpf(&fornecedores[quantidadeFornecedores-1].CNPJ, 14, "543298765432", "6543298765432", 12, 12, "CNPJ digitado invalido!", 0, 0);
 
     printf("Digite o bairro:\n");
-    digText(&fornecedores[quantidadeFornecedores-1].bairro, stdin);
+    digText(&fornecedores[quantidadeFornecedores-1].bairro, stdin, '\n');
     
     printf("Digite a rua:\n");
-    digText(&fornecedores[quantidadeFornecedores-1].rua, stdin);
+    digText(&fornecedores[quantidadeFornecedores-1].rua, stdin, '\n');
     
     printf("Digite o numero:\n");
     verificaNumero(&fornecedores[quantidadeFornecedores-1].numero, "%d");
@@ -356,7 +356,7 @@ fornecedor *buscaFornecedor(fornecedor *ptr, int quantidade){
     
     do{
         
-        digText(&dado, stdin);
+        digText(&dado, stdin, '\n');
         
         ptrEnc = encontraFornecedorNomeFantasia(ptr, quantidade, dado);
         
@@ -409,13 +409,13 @@ void editaFornecedor(int modoAbertura){
         case 0:
             printf("digite o novo nome fantasia:\n");
             editar->nomeFantasia = limpaMemoria(editar->nomeFantasia);
-            digText(&editar->nomeFantasia, stdin);
+            digText(&editar->nomeFantasia, stdin, '\n');
             break;
 
         case 1:
             printf("digite a razao social:\n");
             editar->razaoSocial = limpaMemoria(editar->razaoSocial);
-            digText(&editar->razaoSocial, stdin);
+            digText(&editar->razaoSocial, stdin, '\n');
             break;
 
         case 2:
@@ -434,9 +434,9 @@ void editaFornecedor(int modoAbertura){
             editar->bairro = limpaMemoria(editar->bairro);
             editar->rua = limpaMemoria(editar->rua);
             printf("digite o bairro:\n");
-            digText(&editar->bairro, stdin);
+            digText(&editar->bairro, stdin, '\n');
             printf("digite a rua:\n");
-            digText(&editar->rua, stdin);
+            digText(&editar->rua, stdin, '\n');
             printf("digite o numero:\n");
             verificaNumero(&editar->numero, "%d");
             break;

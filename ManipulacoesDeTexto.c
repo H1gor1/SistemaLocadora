@@ -11,7 +11,7 @@
 #include "menus.h"
 #define ERROMEM "ERRO: memoria indiponivel!\n"
 
-int digText(char **text, FILE *f){
+int digText(char **text, FILE *f, char parar){
     /*recebe um ponteiro para o ponteiro que guarda a primeira posicao da string, pois se necessario, precisa realocar a memoria da string, 
      e devolver o endereco para o ponteiro original, logo nao necessarios dois niveis de desreferenciacao
      Tambem recebe um ponteiro para o fluxo de dados onde deve pegar o texto, se for do teclado sera stdin, se nao sera um ponteiro para um arquivo qualquer*/
@@ -40,7 +40,7 @@ int digText(char **text, FILE *f){
             
         }
         
-    }while(text[0][indice-1] != '\n' && text[0][indice-1]!= '\0');//se texto no indice anterior for igual a enter, entao abandona o loop
+    }while(text[0][indice-1] != parar);//se texto no indice anterior for igual a enter, entao abandona o loop
     
     text[0][indice-1] = '\0';//text na posicao anterior recebe o caracter de finzalicao
     return indice-1;//retorna a quantidade de letras pega do buffer
@@ -71,7 +71,7 @@ int verificaOcorrencia(char *verificacoes, char *string){
 // recebe um ponteiro para um ponteiro no 2 argumento pois ela precisa passar para digText tb um ponteiro de ponteiros
 void verificaText(char *verificacoes, char **string, char *mensagem){
     //chamada da funcao para receber do buffer a digitacao de uma string
-    digText(string, stdin);
+    digText(string, stdin, '\n');
     
     //enquanto a funcao verifica ocorrencia dentro do while retornar 0, que significa que a 
     //digitacao nao tinha todos os caracteres obrigatorios, o looping continuara executando
@@ -80,7 +80,7 @@ void verificaText(char *verificacoes, char **string, char *mensagem){
         string[0] = limpaMemoria(string[0]);//atravez do ponteiro em que **string aponta, a memoria onde o usuario digitou
         //o texto errado e limpada
         //chamada da funcao para o usuario digitar novamente
-        digText(string, stdin);
+        digText(string, stdin, '\n');
     }
 
 }
@@ -111,7 +111,7 @@ void pegaDadoTextEverificaRepeticao(cliente *ptr, int quantidade, cliente *posic
         if(strstr(mensagem, "cpf")){
             validaCnpjouCpf(string, 11, "987654321", "0123456789", 9, 9, "CPF invalido!", 1, 2);
         }else{
-            digText(string, stdin);
+            digText(string, stdin, '\n');
         }
         if(verificaStringRepetiu(ptr, quantidade, posicao, string[0])){
             disparaSom(mensagem, 1);

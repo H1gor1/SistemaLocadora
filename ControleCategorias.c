@@ -119,8 +119,8 @@ int leDadosCategoria(categoria **ptr){
     for(int i = 0; i<quantidade; i++){
         
         fscanf(f, "%d ", &ptr[0][i].codigo);
-        digText(&ptr[0][i].nome, f);
-        digText(&ptr[0][i].descricao, f);
+        digText(&ptr[0][i].nome, f, '\n');
+        digText(&ptr[0][i].descricao, f, '\n');
         fscanf(f, "%f", &ptr[0][i].valorLocacao);
         fscanf(f, "%d ", &ptr[0][i].flag);
     }
@@ -210,7 +210,7 @@ categoria *buscaCategoria(categoria *buscar, int quantidade, char *mensagem){
     char *dado;
     categoria *ptr;
     do{
-        digText(&dado, stdin);
+        digText(&dado, stdin, '\n');
         ptr = encontraCategoriaNome(buscar, quantidade, dado);
         if(ptr && strcmp(ptr->nome, "*")){
             dado = limpaMemoria(dado);
@@ -260,12 +260,12 @@ void editaCategoria(int modoAbertura){
         case 0:
             printf("Digite o nome:\n");
             ptr->nome = limpaMemoria(ptr->nome);
-            digText(&ptr->nome, stdin);
+            digText(&ptr->nome, stdin, '\n');
             break;
         case 1:
             printf("Digite a nova descricao de categoria: \n");
             ptr->descricao = limpaMemoria(ptr->descricao);
-            digText(&ptr->descricao, stdin);
+            digText(&ptr->descricao, stdin, '\n');
             break;
         case 2:
             printf("Digite o valor da locacao:\n");
@@ -295,10 +295,10 @@ void cadastraCategoria(int modoLeitura){
     categorias[quantidadeCategorias-1].codigo = quantidadeCategorias-1;
     
     printf("digite o nome da categoria:\n");
-    digText(&categorias[quantidadeCategorias-1].nome, stdin);
+    digText(&categorias[quantidadeCategorias-1].nome, stdin, '\n');
     
     printf("digite a descricao da categoria\n");
-    digText(&categorias[quantidadeCategorias-1].descricao, stdin);
+    digText(&categorias[quantidadeCategorias-1].descricao, stdin, '\n');
     
     printf("Digite o valor da locacao\n");
     verificaNumero(&categorias[quantidadeCategorias-1].valorLocacao, "%f");

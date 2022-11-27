@@ -333,7 +333,9 @@ lancamentoCaixa *procuraLancamentoCaixa(lancamentoCaixa *ptr, int quantidade, lo
             if(ptr[i].modoPagamento) {
                 return ptr + i;
             }else{
-                printf("este lancamento e somente")
+                printf("este lancamento e somente uma retirada feita pelo administrador do caixa!");
+                Sleep(2000);
+                return NULL;
             }
         }
     }
@@ -469,8 +471,9 @@ void filtraMovimentacoesPorPeriodoData(int modoArm){
     lancamentoCaixa  *lancametoProcurado = NULL;
     verificaNumero(&codigo, "%ld");
     lancametoProcurado = procuraLancamentoCaixa(lancamentosFiltrados, quantidadeLancamentosFiltrados, codigo);
+    if(lancametoProcurado == NULL){
 
-    if(lancametoProcurado->valor > 0){
+    }else if(lancametoProcurado->valor > 0){
 
         compras compraProcurada = *encontraCompraCodigo(todasAsCompras, quant.quantidadeAlugacoes, lancametoProcurado->codigoCompra);
         mostraCompra(&compraProcurada, 1);
@@ -498,7 +501,7 @@ void filtraMovimentacoesPorPeriodoData(int modoArm){
 }
 void lancaValorCaixa(int modoArm){
 
-    printf("ATENCAO: o valor informado será adicionado no caixa, certfique-se que digitou o valor correto!\n");
+    printf("ATENCAO: o valor informado sera adicionado no caixa, certfique-se que digitou o valor correto!\n");
     disparaSom("\0", 1);
     Sleep(1000);
 
@@ -508,7 +511,14 @@ void lancaValorCaixa(int modoArm){
     adicionar.data = *localtime(&seg);
 
     printf("digite o valor que deseja adicionar ao caixa:\n");
-    verificaNumero(&adicionar.valor, "%f");
+
+    while(!adicionar.valor) {
+        verificaNumero(&adicionar.valor, "%f");
+
+        if(!adicionar.valor){
+            printf("digite um valor valido!\n");
+        }
+    }
 
     adicionar.modoPagamento = 0;
     adicionar.codigoCompra = time(NULL);

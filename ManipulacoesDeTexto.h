@@ -6,7 +6,7 @@ typedef struct filmes filmes;
 /*Recebe um endereço de um ponteiro que aponta pra uma string, e conforme necessario aloca mais memoria para 
  o texto que o usuario estiver digitando, pega os caracteres de um arquivo passado como ponteiro ou do ponteiro da
  entrada strdin(entrada do buffer) retorna a quantidade de caracteres foram pegos*/
-int digText(char **text, FILE *f);
+int digText(char **text, FILE *f, char parar);
 
 /*funcao responsavel por verificar se a string passada como 2 parametro tem todos os argumentos da primeira string,
  caso nao ter, exibe a mensagem passada como 3 parametro*/

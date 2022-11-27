@@ -28,11 +28,11 @@ void cadastraLocadora(locadora *ptr){
     
     printf("digite o nome fantasia da locadora\n");
     /*chamada da funcao para o usuario digitar nome fantasia da locadora*/
-    digText(&(ptr->nomeFantasia), stdin);
+    digText(&(ptr->nomeFantasia), stdin, '\n');
    
     printf("digite a razao social da locadora\n");
     /*chamada da funcao para o usuario digitar a razao social da locadora*/
-    digText(&(ptr->razaoSocial), stdin);
+    digText(&(ptr->razaoSocial), stdin, '\n');
     
     printf("digite a inscricao estadual da locadora\n");
     /*chamada da funcao para o usuario digitar a inscricao estadual da locadora */
@@ -44,7 +44,7 @@ void cadastraLocadora(locadora *ptr){
     
     printf("digite o endereco completo da locadora\n");
     /*chamada da funcao para o usuario digitar o endereco da locadora*/
-    digText(&(ptr->endereco), stdin);
+    digText(&(ptr->endereco), stdin, '\n');
     
     printf("digite o telefone da locadora\n"); 
     /*chamada da funcao para o usuario digitar o numero de telefone da locadora*/
@@ -56,7 +56,7 @@ void cadastraLocadora(locadora *ptr){
     
     printf("digite o nome do responsavel da locadora\n");
     /*chamada da funcao para o usuario digitar o nome do responsavel da locadora*/
-    digText(&(ptr->nomeResponsavel), stdin);
+    digText(&(ptr->nomeResponsavel), stdin, '\n');
     
     printf("digite o telefone do responsavel\n");
     /*chamada da funcao para o usuario digitar o numero do telefone do responsavel da locadora*/
@@ -188,21 +188,21 @@ void leDadosLocadora(locadora *ptr, char *nomeArq){
     FILE *f;
     f = fopen(nomeArq, "r");
     //chama a funcao para ler o primeiro campo do arquivo e guardar no campo nome fantasia da struct
-    digText(&(ptr->nomeFantasia), f);
+    digText(&(ptr->nomeFantasia), f, '\n');
     //chama a funcao para ler o proximo campo do arquivo e guardar no campo razao social da struct
-    digText(&(ptr->razaoSocial), f);
+    digText(&(ptr->razaoSocial), f, '\n');
     //chama a funcao para ler o proximo campo do arquivo e guardar no campo inscricao estadual da struct
-    digText(&(ptr->inscricaoEstadual), f);
+    digText(&(ptr->inscricaoEstadual), f, '\n');
     //chama a funcao para ler o proximo campo do arquivo e guardar no campo cnpj da struct
-    digText(&(ptr->cnpj), f);
+    digText(&(ptr->cnpj), f, '\n');
     //chama a funcao para ler o proximo campo do arquivo e guardar no campo endereco da struct
-    digText(&(ptr->endereco), f);
+    digText(&(ptr->endereco), f, '\n');
     //chama a funcao para ler o proximo campo do arquivo e guardar no campo telefone da struct
     fscanf(f, "%d ", &(ptr->telefone));
     /*chama a funcao para ler o proximo campo do arquivo e guardar no campo email da struct*/
-    digText(&(ptr->email), f);
+    digText(&(ptr->email), f, '\n');
     /*chama a funcao para ler o proximo campo do arquivo e guardar no campo nome responsavel*/
-    digText(&(ptr->nomeResponsavel), f);
+    digText(&(ptr->nomeResponsavel), f, '\n');
     /*chama a funcao para ler o proximi campo do aruqivo e guardar no campo telefone respp da struct*/
     fscanf(f, "%d ", &(ptr->telefoneResp));
     
@@ -288,7 +288,7 @@ void editaDadosLocadora(int modo){
             printf("Digite o novo nome fantasia da locadora:\n");
             editar.nomeFantasia = limpaMemoria(editar.nomeFantasia);
             //pede a digitacao do novo nome para o campo
-            digText(&editar.nomeFantasia, stdin);
+            digText(&editar.nomeFantasia, stdin, '\n');
             break;
             
         case 1:
@@ -297,7 +297,7 @@ void editaDadosLocadora(int modo){
             printf("Digite o nome nome para razao social:\n");
             editar.razaoSocial = limpaMemoria(editar.razaoSocial);
             //pede a digitacao do novo nome para o campo
-            digText(&editar.razaoSocial, stdin);
+            digText(&editar.razaoSocial, stdin, '\n');
             break;
                 
         case 2:
@@ -320,7 +320,7 @@ void editaDadosLocadora(int modo){
             //caso verdadeiro, entao
             printf("Digite o novo endereco:\n");
             //pede a digitacao do novo endereco para o usuario
-            digText(&editar.endereco, stdin);
+            digText(&editar.endereco, stdin, '\n');
             break;
         case 5:
                 
@@ -341,7 +341,7 @@ void editaDadosLocadora(int modo){
             //caso verdadeiro, entao
             printf("Digite o novo Nome do Responsavel:\n");
             //pede a digitacao do novo nome do responsavel
-            digText(&editar.nomeResponsavel, stdin);
+            digText(&editar.nomeResponsavel, stdin, '\n');
             break;
                         
         case 8:

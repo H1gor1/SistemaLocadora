@@ -17,7 +17,7 @@ typedef struct entrada{
 
 typedef struct lancamentoEntradas{
 
-    time_t codigoCompra;
+    long int codigoCompra;
     int modoPagamento;
     float valor;
     float valorPago;

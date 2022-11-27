@@ -34,7 +34,7 @@ int main(){
    
     
     menuPrincipal(&modoArm);
-    importaDadosFuncs(modoArm);
+
     return 0;
  
 } 

@@ -169,6 +169,12 @@
 		<Unit filename="C:/Users/vitor/CLionProjects/SistemaLocadora/controleFuncionarios.h">
 			<Option target="untitled"/>
 		</Unit>
+		<Unit filename="C:/Users/vitor/CLionProjects/SistemaLocadora/exportacoesXML.c">
+			<Option target="untitled"/>
+		</Unit>
+		<Unit filename="C:/Users/vitor/CLionProjects/SistemaLocadora/exportacoesXML.h">
+			<Option target="untitled"/>
+		</Unit>
 		<Unit filename="C:/Users/vitor/CLionProjects/SistemaLocadora/fornecedores.c">
 			<Option target="untitled"/>
 		</Unit>

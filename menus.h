@@ -17,9 +17,12 @@ void editaDadosSons(int modoArm);
 void reescreveDadosSons(sons *ptr);
 void reescreveDadosSonsBin(sons *ptr);
 void leDadosSons(sons *ptr);
+void leDadosDeSons();
 void leDadosSonsBin(sons *ptr);
 void editaDadosSons(int modoArm);
 int selecionaValorDeSom(char *stringConf, int valorAt);
+void menuImportacoes(int modoArm);
+void menuExportacoes(int modoArm);
 int menuPrincipal(int *modo);
 int MenuAdm(int modo);
 int MenuClientes(int modo);
@@ -35,6 +38,7 @@ void menuCaixa(int modoArm);
 int escolheMenu(char *mensagem, int quantidade,int espacamento, ...);
 void menuContasPagar(int modoArm);
 void menuConfiguracoes(int *modoArm);
+
 
 
 #endif

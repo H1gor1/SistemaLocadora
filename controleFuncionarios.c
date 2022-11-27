@@ -73,13 +73,13 @@ int leDadosFuncionarios(Funcionarios **ptr){
         /*se nao foi o fim do arquivo, entao sera alocada mais uma posicao, e essa posicao com certeza sera usada, e nao sera disperdicada*/
         /*codigo temporario e alocado em codigo*/
         ptr[0][i].codigo = codigo;
-        digText(&ptr[0][i].nome, f);
-        digText(&ptr[0][i].cargo, f);
-        digText(&ptr[0][i].rua, f);
-        digText(&ptr[0][i].bairro, f);
+        digText(&ptr[0][i].nome, f, '\n');
+        digText(&ptr[0][i].cargo, f, '\n');
+        digText(&ptr[0][i].rua, f, '\n');
+        digText(&ptr[0][i].bairro, f, '\n');
         fscanf(f, "%d ", &ptr[0][i].numero);
         fscanf(f, "%d ", &ptr[0][i].telefone);
-        digText(&ptr[0][i].email, f);
+        digText(&ptr[0][i].email, f, '\n');
         fscanf(f, "%d  ", &ptr[0][i].flag);
         
         
@@ -300,16 +300,16 @@ void cadastraFuncionario(int modoAbertura){
     novo.codigo = time(NULL);
     
     printf("digite o nome do funcionario:\n");
-    digText(&novo.nome, stdin);
+    digText(&novo.nome, stdin, '\n');
     
     printf("digite o cargo do funcionario:\n");
-    digText(&novo.cargo, stdin);
+    digText(&novo.cargo, stdin, '\n');
     
     printf("digite a rua do funcionario:\n");
-    digText(&novo.rua, stdin);
+    digText(&novo.rua, stdin, '\n');
     
     printf("digite o bairro do funcionario:\n");
-    digText(&novo.bairro, stdin);
+    digText(&novo.bairro, stdin, '\n');
     
     printf("digite o numero da casa do funcionario:\n");
     verificaNumero(&novo.numero, "%d");
@@ -357,7 +357,7 @@ Funcionarios *buscaFuncionarios(Funcionarios *ptr, int quantidade, Funcionarios 
     Funcionarios *busca;
     char *itemBusca;
     do{
-        digText(&itemBusca, stdin);
+        digText(&itemBusca, stdin, '\n');
         busca = encontraFuncionarioNome(ptr, itemBusca, quantidade, posicao);
         if(busca){
             itemBusca = limpaMemoria(itemBusca);
@@ -435,28 +435,28 @@ void editaFuncionario(int modoAbertura){
         case 0:
             editar->nome = limpaMemoria(editar->nome);
             printf("digite o nome do funcionario:\n");
-            digText(&editar->nome, stdin);
+            digText(&editar->nome, stdin, '\n');
             break;
 
         case 1:
          
             editar->cargo = limpaMemoria(editar->cargo);
             printf("digite o cargo do funcionario:\n");
-            digText(&editar->cargo, stdin);
+            digText(&editar->cargo, stdin, '\n');
             break;
                 
         case 2:
                 
             editar->rua = limpaMemoria(editar->rua);
             printf("digite a rua do funcionario:\n");
-            digText(&editar->rua, stdin);
+            digText(&editar->rua, stdin, '\n');
             break;
                 
         case 3:
                 
             editar->bairro = limpaMemoria(editar->bairro);
             printf("digite o bairro do funcionario:\n");
-            digText(&editar->bairro, stdin);
+            digText(&editar->bairro, stdin, '\n');
             break;
 
         case 4:
