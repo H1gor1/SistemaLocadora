@@ -11,4 +11,7 @@ void exportaLocadora(int modoArm);
 FILE *digitaCaminhoExport(char *discricaoCaminhoo, char **diretorio);
 void exportaFuncionarios(int modoArm);
 void exportaConfiguracoesSons(int modoArm);
+void exportaFornecedores(int modoArm);
+void exportaClientes(int modoArm);
+void exportaCategoria(int modoArm);
 #endif //UNTITLED_EXPORTACOESXML_H

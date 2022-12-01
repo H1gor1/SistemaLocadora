@@ -53,9 +53,9 @@ FILE *digitaCaminhoExport(char *discricaoCaminhoo, char **diretorio){
         if(f){
             break;
         }
-        printf("nao foi encontrado o arquivo em: %s\nDigite novamente: ", diretorio);
+        printf("nao foi encontrado o arquivo em: %s\n ", diretorio[0]);
         diretorio[0] = limpaMemoria(diretorio[0]);
-        digText(diretorio, stdin, '\n');
+        pegaCaminho("\0", diretorio);
     }
     diretorio[0] = limpaMemoria(diretorio[0]);
     return f;
@@ -201,4 +201,170 @@ void exportaFuncionarios(int modoArm){
         : reescreveDadosFuncionarios(todosFuncs, quantidadeFuncs, "w", "FuncionariosRes.txt", "Funcionarios.txt");
     apagaDadosStructFuncionarios(todosFuncs, quantidadeFuncs);
     todosFuncs = limpaMemoria(todosFuncs);
+}
+void exportaFornecedores(int modoArm){
+
+    fornecedor *todosFornecedores = NULL;
+    int quantidadeFornecedores = 0;
+
+    char *diretorio;
+    FILE *f;
+
+    f = digitaCaminhoExport("exportar dados para o arquivo de fornecedores", &diretorio);
+    avancaAtePalavra("<codigo>", f);
+    while(!feof(f)){
+        todosFornecedores = (!quantidadeFornecedores)?malloc(sizeof(fornecedor)): realloc(todosFornecedores, sizeof(fornecedor)*(quantidadeFornecedores+1));
+        verificaOperacao(todosFornecedores, "ERRO: Memoria indisponivel!\n", 1);
+
+
+        fscanf(f, "%d", &todosFornecedores[quantidadeFornecedores].codigo);
+
+        avancaAtePalavra("<nomeFantasia>", f);
+        digText(&todosFornecedores[quantidadeFornecedores].nomeFantasia, f, '<');
+
+        avancaAtePalavra("<razaoSocial>", f);
+        digText(&todosFornecedores[quantidadeFornecedores].razaoSocial, f, '<');
+
+        avancaAtePalavra("<inscEstadual>", f);
+        digText(&todosFornecedores[quantidadeFornecedores].inscricaoEstadual, f, '<');
+
+        avancaAtePalavra("<CNPJ>", f);
+        digText(&todosFornecedores[quantidadeFornecedores].CNPJ, f, '<');
+
+        avancaAtePalavra("<bairro>", f);
+        digText(&todosFornecedores[quantidadeFornecedores].bairro, f, '<');
+
+        avancaAtePalavra("<rua>", f);
+        digText(&todosFornecedores[quantidadeFornecedores].rua, f, '<');
+
+        avancaAtePalavra("<numero>", f);
+        fscanf(f, "%d", &todosFornecedores[quantidadeFornecedores].numero);
+
+        avancaAtePalavra("<telefone>", f);
+        fscanf(f, "%d", &todosFornecedores[quantidadeFornecedores].telefone);
+
+        avancaAtePalavra("<email>", f);
+        digText(&todosFornecedores[quantidadeFornecedores].email, f, '<');
+
+        avancaAtePalavra("<flag>", f);
+        fscanf(f, "%d", &todosFornecedores[quantidadeFornecedores].flag);
+
+
+        avancaAtePalavra("<codigo>", f);
+        quantidadeFornecedores++;
+    }
+    fechaArquivo(&f);
+    (modoArm)
+        ? reescreveDadosFornecedoresBin(todosFornecedores, quantidadeFornecedores)
+        : reescreveDadosFornecedores(todosFornecedores, quantidadeFornecedores);
+    limpaMemoriaStringsFornecedor(todosFornecedores, quantidadeFornecedores);
+    todosFornecedores = limpaMemoria(todosFornecedores);
+
+}
+void exportaCategoria(int modoArm){
+
+    categoria *todasCats = NULL;
+    int quantidadeCategoria = 0;
+
+    char *diretorio;
+    FILE *f;
+
+    f = digitaCaminhoExport("exportar dados para o arquivo de categorias", &diretorio);
+    avancaAtePalavra("<codigo>", f);
+    while(!feof(f)){
+        todasCats = (!quantidadeCategoria)?malloc(sizeof(categoria)):realloc(todasCats, sizeof(categoria)*(quantidadeCategoria+1));
+        verificaOperacao(todasCats, "ERRO: Memoria indisponivel!", 1);
+
+
+        fscanf(f, "%d", &todasCats[quantidadeCategoria].codigo);
+
+        avancaAtePalavra("<nome>", f);
+        digText(&todasCats[quantidadeCategoria].nome, f, '<');
+
+        avancaAtePalavra("<descricao>", f);
+        digText(&todasCats[quantidadeCategoria].descricao, f, '<');
+
+        avancaAtePalavra("<valorLoc>", f);
+        fscanf(f, "%f", &todasCats[quantidadeCategoria].valorLocacao);
+
+        avancaAtePalavra("<flag>", f);
+        fscanf(f, "%d", &todasCats[quantidadeCategoria].flag);
+
+        avancaAtePalavra("<codigo>", f);
+        quantidadeCategoria++;
+    }
+    fechaArquivo(&f);
+    (modoArm)
+        ? reescreveDadosCategoriaBin(todasCats, quantidadeCategoria)
+        : reescreveDadosCategoria(todasCats, quantidadeCategoria);
+    limpaDadosCategoriaMemoria(todasCats, quantidadeCategoria);
+    todasCats = limpaMemoria(todasCats);
+}
+void exportaClientes(int modoArm){
+    cliente *todosClientes = NULL;
+    int quantidadeClientes = 0;
+
+    char *discricao;
+    FILE *f;
+
+    f = digitaCaminhoExport("exportar dados para o arquivo de clientes", &discricao);
+    avancaAtePalavra("<codigo>", f);
+    while(!feof(f)){
+
+        todosClientes = (!quantidadeClientes)
+                            ? malloc(sizeof(cliente))
+                            : realloc(todosClientes, sizeof(cliente)*(quantidadeClientes+1));
+
+        verificaOperacao(todosClientes, "ERRO: Memoria indisponivel!", 1);
+
+        fscanf(f, "%d", &todosClientes[quantidadeClientes].codigo);
+
+        avancaAtePalavra("<nome>", f);
+        digText(&todosClientes[quantidadeClientes].nomeCompleto, f,'<');
+
+        avancaAtePalavra("<rua>", f);
+        digText(&todosClientes[quantidadeClientes].rua, f, '<');
+
+        avancaAtePalavra("<bairro>", f);
+        digText(&todosClientes[quantidadeClientes].bairro, f, '<');
+
+        avancaAtePalavra("<numero>", f);
+        fscanf(f, "%d", &todosClientes[quantidadeClientes].numeroDaCasa);
+
+        avancaAtePalavra("<CPF>", f);
+        digText(&todosClientes[quantidadeClientes].cpf, f, '<');
+
+        avancaAtePalavra("<telefone>", f);
+        fscanf(f, "%d", &todosClientes[quantidadeClientes].telefone);
+
+        avancaAtePalavra("<email>", f);
+        digText(&todosClientes[quantidadeClientes].email, f, '<');
+
+        avancaAtePalavra("<sexo>", f);
+        fscanf(f, "%d", &todosClientes[quantidadeClientes].sexo);
+
+        avancaAtePalavra("<EstadoCivil>", f);
+        fscanf(f, "%d", &todosClientes[quantidadeClientes].estadoCivil);
+
+        avancaAtePalavra("<DiaNasc>", f);
+        fscanf(f, "%d", &todosClientes[quantidadeClientes].diaNascimento);
+
+        avancaAtePalavra("<mes>", f);
+        fscanf(f, "%d", &todosClientes[quantidadeClientes].mes);
+
+        avancaAtePalavra("<ano>", f);
+        fscanf(f, "%d", &todosClientes[quantidadeClientes].ano);
+
+        avancaAtePalavra("<flagExclusao>", f);
+        fscanf(f, "%d", &todosClientes[quantidadeClientes].flag);
+
+        avancaAtePalavra("<codigo>", f);
+        quantidadeClientes++;
+    }
+    fechaArquivo(&f);
+    (modoArm)
+        ? reescreveDadosClienteBin(todosClientes, quantidadeClientes)
+        : reescreveDadosCliente(todosClientes, quantidadeClientes);
+    limpaDadosClienteMemoria(todosClientes, quantidadeClientes);
+    todosClientes = limpaMemoria(todosClientes);
 }
