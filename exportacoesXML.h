@@ -15,4 +15,5 @@ void exportaFornecedores(int modoArm);
 void exportaClientes(int modoArm);
 void exportaCategoria(int modoArm);
 void exportaFilmes(int modoArm);
+void importaDevolucoes(int modoArm);
 #endif //UNTITLED_EXPORTACOESXML_H
