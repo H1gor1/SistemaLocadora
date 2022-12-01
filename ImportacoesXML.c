@@ -27,6 +27,8 @@
 #define IMPORTAFLOAT(STRING, FLOAT, f) fprintf(f, "          <%s>%.2f</%s>\n", STRING, FLOAT, STRING)
 #define IMPORTALD(STRING, LD, f) fprintf(f, "          <%s>%ld</%s>\n", STRING, LD, STRING)
 
+
+
 void pegaCaminho(char *discricaoCaminho, char **ptrGuardarCaminho){
     PEDIRCAMINHO(discricaoCaminho);
 
@@ -298,6 +300,14 @@ void importaCategoria(int modoArm){
     pegaCaminho("importar os dados do arquivo categoria", &diretorio);
 
     f = fopen(diretorio, "w");
+    if(!f){
+        printf("Nao foi possivel criar o arquivo de importacoes no local indicado!\n");
+        printf("ERRO: %s\n", strerror(errno));
+        Sleep(2000);
+        limpaDadosCategoriaMemoria(todasCat, quantidadeCat);
+        todasCat = limpaMemoria(todasCat);
+        return;
+    }
     fprintf(f, "<dado>\n");
     for(int i = 0; i<quantidadeCat; i++){
 
@@ -567,6 +577,10 @@ void importaEntradaAprazo(int modoArm){
     pegaCaminho("importar os dados de entradas a prazo", &diretorio);
 
     f = fopen(diretorio, "w");
+
+    if(!f){
+
+    }
 
     if(!f){
         printf("nao foi possivel criar o arquivo no diretorio digitado!\n");

@@ -593,7 +593,7 @@ void menuImportacoes(int modoArm){
 }
 void menuExportacoes(int modoArm){
     int escolha;
-    void (*f[12])(int) = {exportaLocadora, exportaFuncionarios, exportaFornecedores, exportaCategoria, exportaClientes};
+    void (*f[12])(int) = {exportaLocadora, exportaFuncionarios, exportaFornecedores, exportaCategoria, exportaClientes, exportaFilmes};
 
     while(escolha != 12){
         escolha = escolheMenu("Escolha o destino que deseja exportar dados de outra aplicacao:", 13, 0,

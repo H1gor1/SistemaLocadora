@@ -29,6 +29,7 @@
 #include "ImportacoesXML.h"
 
 
+
 void avancaAtePalavra(char *palavra, FILE *f){
     int indice = 0;
     char letra;
@@ -367,4 +368,56 @@ void exportaClientes(int modoArm){
         : reescreveDadosCliente(todosClientes, quantidadeClientes);
     limpaDadosClienteMemoria(todosClientes, quantidadeClientes);
     todosClientes = limpaMemoria(todosClientes);
+}
+void exportaFilmes(int modoArm){
+
+    filmes *todosFilmes = NULL;
+    int quantidadeFilmes = 0;
+
+    char *descricao;
+    FILE *f;
+
+    f = digitaCaminhoExport("importar dados para o arquivo de filmes", &descricao);
+    avancaAtePalavra("<codigo>", f);
+
+    while(!feof(f)){
+
+        todosFilmes = (!quantidadeFilmes)?malloc(sizeof(filmes)):realloc(todosFilmes, sizeof(filmes)*(quantidadeFilmes+1));
+        verificaOperacao(todosFilmes, "ERRO: Memoria indisponivel!", 1);
+
+        fscanf(f, "%d", &todosFilmes[quantidadeFilmes].codigo);
+
+        avancaAtePalavra("<nome>", f);
+        digText(&todosFilmes[quantidadeFilmes].nome, f, '<');
+
+        avancaAtePalavra("<descricao>", f);
+        digText(&todosFilmes[quantidadeFilmes].descricao, f, '<');
+
+        avancaAtePalavra("<CodigoCat>", f);
+        fscanf(f, "%d", &todosFilmes[quantidadeFilmes].codigoCategoria);
+
+        avancaAtePalavra("<ValorLoc>", f);
+        fscanf(f, "%f", &todosFilmes[quantidadeFilmes].valorLocacao);
+
+        avancaAtePalavra("<exemplares>", f);
+        fscanf(f, "%d", &todosFilmes[quantidadeFilmes].exemplares);
+
+        avancaAtePalavra("<lingua>", f);
+        fscanf(f, "%d", &todosFilmes[quantidadeFilmes].lingua);
+
+        avancaAtePalavra("<flag>", f);
+        fscanf(f, "%d", &todosFilmes[quantidadeFilmes].flag);
+
+        avancaAtePalavra("<codigo>", f);
+        quantidadeFilmes++;
+    }
+    fechaArquivo(&f);
+    (modoArm)
+        ? reescreveDadosFilmeBin(todosFilmes, quantidadeFilmes)
+        : reescreveDadosFilme(todosFilmes, quantidadeFilmes);
+    limpaDadosFilmeMemoria(todosFilmes, quantidadeFilmes);
+    todosFilmes = limpaMemoria(todosFilmes);
+
+
+
 }

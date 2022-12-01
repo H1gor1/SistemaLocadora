@@ -14,4 +14,5 @@ void exportaConfiguracoesSons(int modoArm);
 void exportaFornecedores(int modoArm);
 void exportaClientes(int modoArm);
 void exportaCategoria(int modoArm);
+void exportaFilmes(int modoArm);
 #endif //UNTITLED_EXPORTACOESXML_H
