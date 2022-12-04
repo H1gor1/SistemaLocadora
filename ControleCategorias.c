@@ -270,6 +270,28 @@ void editaCategoria(int modoAbertura){
         case 2:
             printf("Digite o valor da locacao:\n");
             verificaNumero(&ptr->valorLocacao, "%f");
+            filmes *todosFilmes;
+            int quantidadeFilmes;
+
+
+            int (*leDadosF[2])(filmes**) = {
+                    leDadosFilmes, leDadosFilmesBin
+            };
+            void (*reescreveDadosF[2])(filmes*, int)={
+                    reescreveDadosFilme, reescreveDadosFilmeBin
+            };
+
+            quantidadeFilmes = (*leDadosF[modoAbertura])(&todosFilmes);
+
+            for(int i= 0; i < quantidadeFilmes; i++){
+                if (ptr->codigo == todosFilmes[i].codigoCategoria){
+                    todosFilmes[i].valorLocacao = ptr->valorLocacao;
+                }
+            }
+
+            (*reescreveDadosF[modoAbertura])(todosFilmes, quantidadeFilmes);
+            limpaDadosFilmeMemoria(todosFilmes, quantidadeFilmes);
+            todosFilmes = limpaMemoria(todosFilmes);
             break;
         case 3:
             break;

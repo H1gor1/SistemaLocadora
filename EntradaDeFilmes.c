@@ -97,13 +97,74 @@ void limpaMemoriaRealizaEntrada(fornecedor ** forn, int quantidadeFornecedores, 
     forn[0] = limpaMemoria(forn[0]);
 }
 
-float CalcPrecoEntrada(filmes *filmesEntrada, int quantidade, float frete, float imposto){
-    float preco = 0;
-
-    for(int i = 0; i<quantidade; i++){
-        preco += (filmesEntrada[i].valorLocacao*filmesEntrada[i].exemplares)+frete+imposto;
+void imprimeNotinha(FILE *f, entrada *filmesEntrada, int quantidade, int quantidadeExemplares, float frete, float imposto, float precoTotal){
+    fprintf(f, "Nome do fornecedor: %s\n", filmesEntrada->compraAtual.nomeFantasia);
+    fprintf(f, "CNPJ do fornecedor: %s\n", filmesEntrada->compraAtual.CNPJ);
+    fprintf(f, "Frete total: %f\n", frete);
+    fprintf(f, "Frete por produto: %f\n", frete/quantidadeExemplares);
+    fprintf(f, "Imposto total: %f\n", imposto);
+    fprintf(f, "Imposto por produto: %f\n\n", imposto/quantidadeExemplares);
+    for(int i=0; i < quantidade; i++){
+        fprintf(f, "Filme: %s\n", filmesEntrada->lista[i].nome);
+        fprintf(f, "     Preco de Custo: %f\n", filmesEntrada->lista[i].valorLocacao);
+        fprintf(f, "     Quantidade: %d\n", filmesEntrada->lista[i].exemplares);
+        fprintf(f, "     Preco Total pago no filme: %f\n", filmesEntrada->lista[i].valorLocacao+(frete/quantidadeExemplares)+(imposto/quantidadeExemplares));
     }
-    return preco;
+    fprintf(f, "\nPreco total da notinha: %f\n", precoTotal);
+}
+
+float CalcPrecoEntrada(entrada *filmesEntrada, int quantidade, float frete, float imposto){
+    float preco = 0;
+    float precoTotal = 0;
+    int escolha;
+    int quantidadeExemplares = 0;
+    for(int i = 0; i<quantidade; i++){
+        preco += (filmesEntrada->lista[i].valorLocacao*filmesEntrada->lista[i].exemplares);
+        quantidadeExemplares += filmesEntrada->lista[i].exemplares;
+    }
+    precoTotal = preco+frete+imposto;
+
+    imprimeNotinha(stdout, filmesEntrada, quantidade, quantidadeExemplares, frete, imposto, precoTotal);
+    printf("Aperta qualquer botão para continuar: ");
+    getch();
+
+    escolha = escolheMenu("Deseja imprimir a notinha em arquivo?", 2, 0, "Sim", "Não");
+    switch (escolha) {
+        case 0:
+            FILE *f;
+            char diretorio[26] = "nota";
+            char *diretorioTemp = converteIntEmString(filmesEntrada->data.tm_mday);
+            strcat(diretorio, diretorioTemp);
+            strcat(diretorio, "-");
+            diretorioTemp = limpaMemoria(diretorioTemp);
+
+            diretorioTemp = converteIntEmString(filmesEntrada->data.tm_mon+1);
+            strcat(diretorio, diretorioTemp);
+            strcat(diretorio, "-");
+            diretorioTemp = limpaMemoria(diretorioTemp);
+
+            diretorioTemp = converteIntEmString(filmesEntrada->data.tm_year+1900);
+            strcat(diretorio, diretorioTemp);
+            strcat(diretorio, "_");
+            diretorioTemp = limpaMemoria(diretorioTemp);
+
+            diretorioTemp = converteIntEmString(filmesEntrada->data.tm_hour);
+            strcat(diretorio, diretorioTemp);
+            strcat(diretorio, "-");
+            diretorioTemp = limpaMemoria(diretorioTemp);
+
+            diretorioTemp = converteIntEmString(filmesEntrada->data.tm_min);
+            strcat(diretorio, diretorioTemp);
+            strcat(diretorio, ".txt");
+            diretorioTemp = limpaMemoria(diretorioTemp);
+
+            f = fopen(diretorio, "w");
+
+            imprimeNotinha(f, filmesEntrada, quantidade, quantidadeExemplares, frete, imposto, precoTotal);
+
+            fechaArquivo(&f);
+            return precoTotal;
+    }
 }
 
 void reescreveLancamentosEntrada(lancamentoEntradas *lancamentos, int quantidade, char *nomeArq, char *nomeArqOr, char *modo){
@@ -280,11 +341,11 @@ void realizaEntrada(int modoAbertura){
      printf("Digite o valor do imposto: \n");
      verificaNumero(&EntradaAtual.imposto, "%f");
 
-     EntradaAtual.precoTotal = CalcPrecoEntrada(EntradaAtual.lista, EntradaAtual.quantidade, EntradaAtual.frete, EntradaAtual.imposto);
-
     time(&seg);
     EntradaAtual.data = *localtime(&seg);
     EntradaAtual.codigo = time(NULL);
+
+     EntradaAtual.precoTotal = CalcPrecoEntrada(&EntradaAtual, EntradaAtual.quantidade, EntradaAtual.frete, EntradaAtual.imposto);
 
 
     if (valorCaixa-EntradaAtual.precoTotal > 0){
