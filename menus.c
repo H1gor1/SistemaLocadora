@@ -189,7 +189,7 @@ int menuPrincipal(int *modo){
 
     int escolha;
     printf("\n");
-    escolha = escolheMenu("Seja bem vindo! Escolha uma opcao", 11, 0,"Administrativo", "Clientes", "Filmes", "Categorias", "Configuracoes", "Caixa", "Contas a receber","Contas a Pagar","importar dados em um XML" , "exportar dados de um XML", "Sair");
+    escolha = escolheMenu("Seja bem vindo! Escolha uma opcao", 11, 0,"Administrativo", "Clientes", "Filmes", "Categorias", "Configuracoes", "Caixa", "Contas a receber","Contas a Pagar","exportar dados para um XML" , "importar dados de um XML", "Sair");
     while(escolha != 10){
 
         switch(escolha){
@@ -567,7 +567,7 @@ void menuImportacoes(int modoArm){
                           importaLancamentosAprazo, importaDadosSons, importaLancamentosEntrada, importaEntradaAprazo};
 
     while(escolha != 10) {
-        escolha = escolheMenu("Escolha um arquivo para importar os dados:", 13, 0,
+        escolha = escolheMenu("Escolha um arquivo para exportar os dados:", 13, 0,
                               "locadora",
                               "funcionarios",
                               "fornecedores",
@@ -596,7 +596,7 @@ void menuExportacoes(int modoArm){
     void (*f[12])(int) = {exportaLocadora, exportaFuncionarios, exportaFornecedores, exportaCategoria, exportaClientes, exportaFilmes, importaDevolucoes};
 
     while(escolha != 12){
-        escolha = escolheMenu("Escolha o destino que deseja exportar dados de outra aplicacao:", 13, 0,
+        escolha = escolheMenu("Escolha o destino que deseja importar dados de outra aplicacao:", 13, 0,
                               "locadora",
                               "funcionarios",
                               "fornecedores",

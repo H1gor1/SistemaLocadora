@@ -421,3 +421,51 @@ void exportaFilmes(int modoArm){
 
 
 }
+void importaDevolucoes(int modoArm){
+
+
+    compras *todasAsCompras = NULL;
+    Funcionarios *todosFuncionarios = NULL;
+    cliente *todosClientes = NULL;
+    filmes *todosFilmes = NULL;
+    quantidades quant = {0,0,0,0};
+    long int temp;
+    char *descricao;
+    FILE *f;
+
+    printf("Para importar as compras de outro sistema, será necessario tambem importar os clientes, filmes, funcionarios e categorias!\n");
+
+    exportaCategoria(modoArm);
+    exportaClientes(modoArm);
+    exportaFilmes(modoArm);
+    exportaFuncionarios(modoArm);
+
+    quant.quantidadeClientes = (modoArm)? leDadosClientesBin(&todosClientes): leDadosClientes(&todosClientes);
+    quant.quantidadesFuncionarios = (modoArm)? leDadosFuncionariosBin(&todosFuncionarios): leDadosFuncionarios(&todosFuncionarios);
+    quant.quantidadesFilmes = (modoArm)? leDadosFilmesBin(&todosFilmes): leDadosFilmes(&todosFilmes);
+
+
+
+    f = digitaCaminhoExport("importar dados para o arquivo de filmes", &descricao);
+    avancaAtePalavra("<codigoCompra>", f);
+
+    while(!feof(f)){
+
+        todasAsCompras = (!quant.quantidadeAlugacoes)? malloc(sizeof(compras)): realloc(todasAsCompras, sizeof(compras)*(quant.quantidadeAlugacoes+1));
+        verificaOperacao(todasAsCompras, "ERRO: Memoria indisponivel!", 1);
+
+        fscanf(f, "%ld", &todasAsCompras[quant.quantidadeAlugacoes].codigo);
+
+        avancaAtePalavra("<modoPagamento>", f);
+        fscanf(f, "%d", &todasAsCompras[quant.quantidadeAlugacoes].modoPagamento);
+
+        avancaAtePalavra("<data>",f);
+        fscanf(f, "%ld", &temp);
+        todasAsCompras[quant.quantidadeAlugacoes].data = *localtime(&temp);
+
+        avancaAtePalavra("<vendedor>", f);
+        fscanf(f, "%ld", &temp);
+       // todasAsCompras[quant.quantidadeAlugacoes].vendedor = encontraFuncionarioCodigo()
+    }
+
+}
