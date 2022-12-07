@@ -92,9 +92,13 @@ int leDadosEntradasFilmesBin(lancamentoEntradas **contas){
 
 void limpaMemoriaRealizaEntrada(fornecedor ** forn, int quantidadeFornecedores, filmes ** todosFilmes, int quantidadeFilmes){
     limpaDadosFilmeMemoria(todosFilmes[0], quantidadeFilmes);
-    todosFilmes[0] = limpaMemoria(todosFilmes[0]);
+    if(quantidadeFilmes) {
+        todosFilmes[0] = limpaMemoria(todosFilmes[0]);
+    }
     limpaMemoriaStringsFornecedor(forn[0], quantidadeFornecedores);
-    forn[0] = limpaMemoria(forn[0]);
+    if(quantidadeFornecedores) {
+        forn[0] = limpaMemoria(forn[0]);
+    }
 }
 
 void imprimeNotinha(FILE *f, entrada *filmesEntrada, int quantidade, int quantidadeExemplares, float frete, float imposto, float precoTotal){
@@ -261,18 +265,8 @@ void compraAvistaEntrada(entrada *Entradas, int modoAbertura){
 
 
 
-    printf("Valor: %.2f\nDigite o valor pago pelo cliente:\n", Entradas->precoTotal);
-    do{
-        verificaNumero(&lancar.valorPago, "%f");
 
-        if(lancar.valorPago < Entradas->precoTotal){
-            printf("valor pago insuficiente!\n");
-        }
-    }while(lancar.valorPago< Entradas->precoTotal);
-
-    (lancar.valorPago-Entradas->precoTotal > 0)
-    ?printf("compra realizada com  sucesso!\ntroco: %.2f\n", lancar.valorPago-Entradas->precoTotal)
-    :printf("compra realizada com sucesso!\n");
+    printf("compra realizada com sucesso!\n");
 
     Sleep(2000);
 
@@ -323,7 +317,7 @@ void realizaEntrada(int modoAbertura){
     }
 
     if(!contaQuantidadeExistente(sizeof(filmes), filme, quantidadeFilmes)){
-        printf("Nao existem filmes cadastrados, primeiro cadastre um filme pra depois realizar a venda!\n");
+        printf("Nao existem filmes cadastrados, primeiro cadastre um filme pra depois realizar a entrada!\n");
         limpaMemoriaRealizaEntrada(&fornecedores, quantidadeFornecedores, &filme, quantidadeFilmes);
         Sleep(2000);
         return;
@@ -362,7 +356,7 @@ void realizaEntrada(int modoAbertura){
 
 
     if (valorCaixa-EntradaAtual.precoTotal > 0){
-        EntradaAtual.modoPagamento = escolheMenu("Escolha o modo de pagamento", 2, 0,"A vista", "A prazo")+1;
+        EntradaAtual.modoPagamento = escolheMenu("Escolha o modo de pagamento", 3, 0,"A vista", "A prazo", "Sair")+1;
         switch(EntradaAtual.modoPagamento){
 
             case 1:
@@ -372,6 +366,9 @@ void realizaEntrada(int modoAbertura){
                 realizaEntradaAprazo(&EntradaAtual, modoAbertura, valorCaixa);
                 break;
 
+            case 3:
+                limpaMemoriaRealizaEntrada(&fornecedores, quantidadeFornecedores, &filme, quantidadeFilmes);
+                return;
         }
     } else {
         EntradaAtual.modoPagamento = escolheMenu("Escolha o modo de pagamento", 2, 0,"A prazo", "Sair")+1;
@@ -380,7 +377,8 @@ void realizaEntrada(int modoAbertura){
                 realizaEntradaAprazo(&EntradaAtual, modoAbertura, valorCaixa);
                 break;
             case 2:
-                break;
+                limpaMemoriaRealizaEntrada(&fornecedores, quantidadeFornecedores, &filme, quantidadeFilmes);
+                return;
         }
     }
 

@@ -157,18 +157,8 @@ void LancaEntradaOuParcela_EntradaFilmes(contaApag *contaP, int modoArm, float p
     lancamento.modoPagamento = contaP->modoPagamento;
     lancamento.data = *localtime(&seg);
 
-    printf("digite o valor pago pelo cliente:\n");
-    while(1){
-        verificaNumero(&lancamento.valorPago, "%f");
 
-        if(lancamento.valorPago < lancamento.valor){
-            printf("Quantia paga insuficiente!\n");
-            continue;
-        }
-        printf("Troco: %.2f\n", (lancamento.troco = lancamento.valorPago - lancamento.valor));
-        break;
-    }
-    Sleep(2000);
+
     (modoArm)
         ?reescreveLancamentosEntradaBin(&lancamento, 1, "lancamentosEntrada.bin", "lancamentosEntrada.bin", "ab")
         :reescreveLancamentosEntrada(&lancamento, 1, "lancamentosEntrada.txt", "lancamentosEntrada.txt", "a");
@@ -192,7 +182,7 @@ void realizaEntradaAprazo(entrada *entradas, int modoArm, float valorCaixa){
         verificaLimiteNumero(&Aprazo.entrada, porcentagem, 0, "%f");
     }
 
-    printf("Digite a quantidade de parcelas o cliente deseja dividir:\n");
+    printf("Digite a quantidade de parcelas deseja dividir:\n");
     verificaLimiteNumero(&Aprazo.parcelas, MAXIMOPARCELAS, 1, "%d");
 
     Aprazo.valorParc = (entradas->precoTotal-Aprazo.entrada) / Aprazo.parcelas;
@@ -282,17 +272,28 @@ int BaixaEntradasFilmes(int modoArm){
     }
 
 
-    printf("Digite a quantidade de parcelas que deseja baixar desta compra, ainda existem %d parcelas:", darBaixa->parcelas);
-
+    printf("Digite a quantidade de parcelas que deseja baixar desta compra, voce pode pagar no maximo %.0f parcelas:", (valorCaixa/darBaixa->valorParc>4)?3:valorCaixa/darBaixa->valorParc);
     verificaLimiteNumero(&quantidadesNotinhasPagar, valorCaixa/darBaixa->valorParc, 1, "%d");
     tempo = mktime(&darBaixa->dataAluga)+86400*30*quantidadesNotinhasPagar;
     darBaixa->dataAluga = *localtime(&tempo);
     LancaEntradaOuParcela_EntradaFilmes(darBaixa, modoArm, darBaixa->valorParc*quantidadesNotinhasPagar);
     darBaixa->parcelas -= quantidadesNotinhasPagar;
 
-    (modoArm)
-        ?reescreveEntradasAprazoBin(contas, quantidade, "entradaAprazoRes.bin", "entradaAprazo.bin", "wb")
-        :reescreveEntradaAprazo(contas, quantidade, "entradaAprazoRes.txt", "entradaAprazo.txt", "w");
+    lancamentoCaixa parcelaAbatida = (lancamentoCaixa){0,0,0,0,0,(struct tm){0,0,0,0,0,0,0,0,0}};
+    parcelaAbatida.data = darBaixa->dataAluga;
+    parcelaAbatida.codigoCompra = darBaixa->codigoCompra;
+    parcelaAbatida.modoPagamento = darBaixa->modoPagamento;
+    parcelaAbatida.valor = darBaixa->valorParc*-1*quantidadesNotinhasPagar;
+
+
+    if(modoArm) {
+        reescreveEntradasAprazoBin(contas, quantidade, "entradaAprazoRes.bin", "entradaAprazo.bin", "wb");
+        reescreveLancamentosCaixaBin(&parcelaAbatida, 1, "lancamnetos.bin", "lancamentos.bin", "ab");
+    }else{
+        reescreveEntradaAprazo(contas, quantidade, "entradaAprazoRes.txt", "entradaAprazo.txt", "w");
+        reescreveLancamentosCaixa(&parcelaAbatida, 1, "lancamentos.txt", "lancamentos.txt", "a");
+    }
+    todosLancamentosCaixa = limpaMemoria(todosLancamentosCaixa);
     return quantidadesNotinhasPagar;
 }
 
@@ -300,13 +301,11 @@ int filtraEntradasAtrasadas(contaApag *contas, int quantidadeContas, contaApag *
 
     int quantidadeContasAtrasadas = 0;
     time_t seg;
+
     time(&seg);
-    struct tm dataAgora = *localtime(&seg);
+
     for(int i = 0; i<quantidadeContas; i++){
-        if((contas[i].dataAluga.tm_mon<dataAgora.tm_mon && contas[i].dataAluga.tm_mday <= dataAgora.tm_mday ||
-            (contas[i].dataAluga.tm_year < dataAgora.tm_year && contas[i].dataAluga.tm_mday <= dataAgora.tm_mday)
-            || (contas[i].dataAluga.tm_year < dataAgora.tm_year && contas[i].dataAluga.tm_mon < dataAgora.tm_mon-1))
-           && contas[i].parcelas){
+        if(difftime(seg, mktime(&contas[i].dataAluga)) >= 2629800){
 
             atrasadas[0] = (!quantidadeContasAtrasadas)?malloc(sizeof(contaApag)):realloc(atrasadas[0], sizeof(contaApag)*(quantidadeContasAtrasadas+1));
 

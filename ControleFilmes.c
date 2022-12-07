@@ -324,8 +324,10 @@ void cadastraFilmes(int modoLeitura){
     if(!verificaExisteCategoria(categorias, quantidadeCategorias)){
         printf("Nao existem categorias de filmes cadastrados ainda!\nPrimeiro cadastre uma categoria, para depois conseguir cadastrar um filme!\n");
         Sleep(2000);
-        limpaDadosCategoriaMemoria(categorias, quantidadeCategorias);
-        categorias = limpaMemoria(categorias);
+        if(quantidadeCategorias) {
+            limpaDadosCategoriaMemoria(categorias, quantidadeCategorias);
+            categorias = limpaMemoria(categorias);
+        }
         return;
     }
     int (*leDados[2])(filmes **) = {leDadosFilmes, leDadosFilmesBin};
@@ -434,7 +436,7 @@ filmes *filtraFilmPeloCodigo(filmes *ptr, int quantidade, int codigo1, int codig
             mostraFilmes(ptr + i, 1, 1);
             if(ptr[i].totalInvestido - ptr[i].totalPago > 0) {
 
-                printf("quantidades locacoes restantes a se pagar: %.0f\n",(ptr[i].totalInvestido - ptr[i].totalPago)/ptr[i].exemplares);
+                printf("quantidades locacoes restantes a se pagar: %.0f\n",(ptr[i].totalInvestido - ptr[i].totalPago)/ptr[i].valorLocacao);
             }else{
                 printf("O filme ja se pagou! Lucro: %.2f\n", (ptr[i].totalInvestido - ptr[i].totalPago)*(ptr[i].totalInvestido - ptr[i].totalPago == 0)?1:-1);
             }
@@ -442,7 +444,7 @@ filmes *filtraFilmPeloCodigo(filmes *ptr, int quantidade, int codigo1, int codig
         }
 
     }
-    printf("quantidade de filmes nesta faixa de codigo: %d\n", (*quantidadeFiltrados));
+    printf("\nquantidade de filmes nesta faixa de codigo: %d\n", (*quantidadeFiltrados));
     return filmesFiltrados;
 }
 /*

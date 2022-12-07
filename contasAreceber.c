@@ -360,7 +360,7 @@ int filtraContasAtrasadas(contaArec *contas, int quantidadeContas, contaArec **a
     time_t seg;
 
     time(&seg);
-    seg = mktime(localtime(&seg));
+
     for(int i = 0; i<quantidadeContas; i++){
         if(difftime(seg, mktime(&contas[i].dataAluga)) >= 2629800){
                 
