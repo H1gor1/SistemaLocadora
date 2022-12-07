@@ -112,11 +112,13 @@ quantidades leDadosDevolucoes(compras ** dev, Funcionarios **func, cliente **cli
         
         fscanf(f, "%d ", &dev[0][quants.quantidadeAlugacoes].quantidadeFilmesComprados);
         dev[0][quants.quantidadeAlugacoes].filmesComprados = malloc(sizeof(filmes)*dev[0][quants.quantidadeAlugacoes].quantidadeFilmesComprados);
-        
+        char *stringTemporaria;
         for(int j = 0; j<dev[0][quants.quantidadeAlugacoes].quantidadeFilmesComprados; j++){
             fscanf(f, "%d ", &codigo);
-            dev[0][quants.quantidadeAlugacoes].filmesComprados[j] = *encontraFilmeCodigo(movies[0], quants.quantidadesFilmes, converteIntEmString(codigo), 1);
+            stringTemporaria = converteIntEmString(codigo);
+            dev[0][quants.quantidadeAlugacoes].filmesComprados[j] = *encontraFilmeCodigo(movies[0], quants.quantidadesFilmes, stringTemporaria, 1);
             fscanf(f, "%d ", &dev[0][quants.quantidadeAlugacoes].filmesComprados[j].exemplares);
+            stringTemporaria = limpaMemoria(stringTemporaria);
         }
         fscanf(f, "%d  ", &dev[0][quants.quantidadeAlugacoes].devolvido);
         

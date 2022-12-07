@@ -205,7 +205,14 @@ void realizaVenda(int modoArm){
     alocaFilmes(&compraAtual.filmesComprados, &compraAtual.quantidadeFilmesComprados, TodosFilmes, quantidadeTotalFilmes, 1, "Filme alocado com sucesso!");
     
     compraAtual.preco = calculaPreco(compraAtual.filmesComprados, compraAtual.quantidadeFilmesComprados);
-    
+
+
+    for(int i = 0; i<compraAtual.quantidadeFilmesComprados; i++){
+
+        encontraFilmeNome(TodosFilmes, quantidadeTotalFilmes,compraAtual.filmesComprados[i].nome)->totalPago+=
+                compraAtual.filmesComprados[i].exemplares*compraAtual.filmesComprados[i].valorLocacao;
+    }
+
     time(&seg);
     compraAtual.data = *localtime(&seg);
     compraAtual.codigo = time(NULL);

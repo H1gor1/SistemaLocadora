@@ -30,10 +30,9 @@ void mostraFilmes(filmes *ptr, int quantidade, int mostrarExcluidos){
     for(int i = 0; i<quantidade; i++){
                 
         if(ptr[i].flag != 0 || mostrarExcluidos){
-                printf("_________________\n");
-                printf("|Nome: %s\n", ptr[i].nome);
-                printf("|Codigo: %d\n", ptr[i].codigo);
-                printf("|________________\n");
+                printf("\n\n\n");
+                printf("Nome: %s\n", ptr[i].nome);
+                printf("Codigo: %d\n", ptr[i].codigo);
         }
     }
 }
@@ -55,6 +54,7 @@ int leDadosFilmesBin(filmes **ptr){
     verificaOperacao(ptr[0], ERROMEM, 1);
     
     for(int i = 0; i<quantidade; i++){
+        ptr[0][i] = (filmes){0,NULL,NULL,0,0,0,0,0,0,0};
         fread(&ptr[0][i].codigo, sizeof(int), 1, f);
         
         fread(&quantidadeLetras, sizeof(int), 1, f);
@@ -70,6 +70,8 @@ int leDadosFilmesBin(filmes **ptr){
         fread(&ptr[0][i].valorLocacao, sizeof(float), 1, f);     
         fread(&ptr[0][i].lingua, sizeof(int), 1, f);
         fread(&ptr[0][i].flag, sizeof(int), 1, f);
+        fread(&ptr[0][i].totalInvestido, sizeof(float), 1, f);
+        fread(&ptr[0][i].totalPago, sizeof(float), 1, f);
     }
     
     fechaArquivo(&f);
@@ -79,6 +81,7 @@ int leDadosFilmesBin(filmes **ptr){
 
 int leDadosFilmes(filmes **ptr){
     int quantidade;
+
     FILE *f;
     f = fopen("filmes.txt", "r");
     if(!f){
@@ -92,6 +95,7 @@ int leDadosFilmes(filmes **ptr){
     verificaOperacao(ptr[0], ERROMEM, 1);
     
     for(int i = 0; i<quantidade; i++){
+        ptr[0][i] = (filmes){0,NULL,NULL,0,0,0,0,0,0,0};
         fscanf(f, "%d ", &ptr[0][i].codigo);
         digText(&ptr[0][i].nome, f, '\n');
         digText(&ptr[0][i].descricao, f, '\n');
@@ -99,10 +103,13 @@ int leDadosFilmes(filmes **ptr){
         fscanf(f,"%d ", &ptr[0][i].codigoCategoria);
         fscanf(f,"%f ", &ptr[0][i].valorLocacao);
         fscanf(f, "%d ", &ptr[0][i].lingua);
-        fscanf(f, "%d  ", &ptr[0][i].flag);
+        fscanf(f, "%d ", &ptr[0][i].flag);
+        fscanf(f, "%f " , &ptr[0][i].totalInvestido);
+        fscanf(f, "%f  ", &ptr[0][i].totalPago);
 
     }
     fechaArquivo(&f);
+
     return quantidade;
 }
 
@@ -138,6 +145,10 @@ void reescreveDadosFilmeBin(filmes *ptr, int quantidade){
         fwrite(&ptr[i].lingua, sizeof(int), 1, f);
         
         fwrite(&ptr[i].flag, sizeof(int), 1, f);
+
+        fwrite(&ptr[i].totalInvestido, sizeof(float), 1, f);
+
+        fwrite(&ptr[i].totalPago, sizeof(float), 1, f);
     }
     fechaArquivo(&f);
     remove("filmes.bin");
@@ -162,7 +173,9 @@ void reescreveDadosFilme(filmes *ptr, int quantidade){
         fprintf(f, "%d\n", ptr[i].codigoCategoria);
         fprintf(f, "%f\n", ptr[i].valorLocacao);
         fprintf(f, "%d\n", ptr[i].lingua); 
-        fprintf(f, "%d\n\n", ptr[i].flag);
+        fprintf(f, "%d\n", ptr[i].flag);
+        fprintf(f, "%f\n", ptr[i].totalInvestido);
+        fprintf(f, "%f\n\n", ptr[i].totalPago);
     }
     fechaArquivo(&f);
     remove("filmes.txt");
@@ -342,6 +355,10 @@ void cadastraFilmes(int modoLeitura){
     filme[quantidadeFilmes-1].lingua = 1+escolheMenu("O filme e dublado ou legendado?", 2, 0,"Dublado", "Legendado");
     filme[quantidadeFilmes-1].flag = 1;
 
+    filme[quantidadeFilmes-1].totalInvestido = 0;
+    filme[quantidadeFilmes-1].totalPago = 0;
+
+
     (*reescreveDados[modoLeitura])(filme, quantidadeFilmes);
     limpaDadosFilmeMemoria(filme, quantidadeFilmes);
     filme = limpaMemoria(filme);
@@ -415,6 +432,12 @@ filmes *filtraFilmPeloCodigo(filmes *ptr, int quantidade, int codigo1, int codig
 
             filmesFiltrados[(*quantidadeFiltrados)] = ptr[i];
             mostraFilmes(ptr + i, 1, 1);
+            if(ptr[i].totalInvestido - ptr[i].totalPago > 0) {
+
+                printf("quantidades locacoes restantes a se pagar: %.0f\n",(ptr[i].totalInvestido - ptr[i].totalPago)/ptr[i].exemplares);
+            }else{
+                printf("O filme ja se pagou! Lucro: %.2f\n", (ptr[i].totalInvestido - ptr[i].totalPago)*(ptr[i].totalInvestido - ptr[i].totalPago == 0)?1:-1);
+            }
             (*quantidadeFiltrados)++;
         }
 

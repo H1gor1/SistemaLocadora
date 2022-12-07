@@ -10,6 +10,8 @@ typedef struct filmes{
     int exemplares;
     int lingua;
     int flag;
+    float totalInvestido;
+    float totalPago;
 }filmes;
 
 void apagaFilme(int modo);

@@ -1,7 +1,7 @@
 //
 // Created by vitor on 27/11/2022.
 //
-
+#include <time.h>
 #include "exportacoesXML.h"
 #include<stdio.h>
 #include<stdlib.h>
@@ -429,7 +429,7 @@ void importaDevolucoes(int modoArm){
     cliente *todosClientes = NULL;
     filmes *todosFilmes = NULL;
     quantidades quant = {0,0,0,0};
-    long int temp;
+    time_t temp;
     char *descricao;
     FILE *f;
 

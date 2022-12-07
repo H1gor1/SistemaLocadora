@@ -300,7 +300,7 @@ void realizaEntrada(int modoAbertura){
     fornecedor *fornecedores;
     lancamentoCaixa *valoresCaixa = NULL;
     time_t seg;
-    int escolha;
+
     entrada EntradaAtual;
     
     int quantidadeFilmes;
@@ -340,12 +340,25 @@ void realizaEntrada(int modoAbertura){
      verificaNumero(&EntradaAtual.frete, "%f");
      printf("Digite o valor do imposto: \n");
      verificaNumero(&EntradaAtual.imposto, "%f");
+     time(&seg);
+     EntradaAtual.data = *localtime(&seg);
+     EntradaAtual.codigo = time(NULL);
 
-    time(&seg);
-    EntradaAtual.data = *localtime(&seg);
-    EntradaAtual.codigo = time(NULL);
+
+     float totalInvestido = 0;
+     for(int i = 0; i<EntradaAtual.quantidade; i++){
+         totalInvestido = EntradaAtual.lista[i].valorLocacao*EntradaAtual.lista[i].exemplares +
+                 EntradaAtual.frete + EntradaAtual.imposto;
+
+         encontraFilmeNome(filme, quantidadeFilmes,EntradaAtual.lista[i].nome)->totalInvestido+= totalInvestido;
+     }
 
      EntradaAtual.precoTotal = CalcPrecoEntrada(&EntradaAtual, EntradaAtual.quantidade, EntradaAtual.frete, EntradaAtual.imposto);
+
+
+
+
+
 
 
     if (valorCaixa-EntradaAtual.precoTotal > 0){
