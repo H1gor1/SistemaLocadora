@@ -74,6 +74,7 @@ quantidades leDadosDevolucoes(compras ** dev, Funcionarios **func, cliente **cli
             printf("%s\n", strerror(errno));
             return quants;
         }
+        fechaArquivo(&f);
         return quants;
     }
     
@@ -152,6 +153,7 @@ quantidades leDadosDevolucoesBin(compras **dev, Funcionarios **func, cliente **c
             printf("%s\n", strerror(errno));
             return quants;
         }
+        fechaArquivo(&f);
         return quants;
     }
     

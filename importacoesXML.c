@@ -160,7 +160,7 @@ void importaFuncionarios(int modoArm){
     char *diretorio;
     FILE *f;
 
-    f = digitaCaminhoImport("importar dados para o arquivo de funcionarios:", &diretorio);
+    f = digitaCaminhoImport("importar dados para o arquivo de funcionarios", &diretorio);
 
     while(!feof(f)){
         todosFuncs = (!quantidadeFuncs)? malloc(sizeof(Funcionarios)):realloc(todosFuncs, sizeof(Funcionarios)*(quantidadeFuncs+1));

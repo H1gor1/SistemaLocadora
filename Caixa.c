@@ -95,6 +95,7 @@ int leDadosLancamentosBin(lancamentoCaixa **lancamentos){
             printf("%s\n", strerror(errno));
             return 0;
         }
+        fechaArquivo(&f);
         return 0;
     }
     
@@ -133,6 +134,7 @@ int leDadosLancamentos(lancamentoCaixa **lancamentos){
             printf("%s\n", strerror(errno));
             return 0;
         }
+        fechaArquivo(&f);
         return 0;
     }
     

@@ -47,6 +47,7 @@ int leDadosFuncionarios(Funcionarios **ptr){
     if(!f){
         /*se nao existia, entao cria o arquivo*/
         f = fopen("Funcionarios.txt", "w");
+        fechaArquivo(&f);
         return 0;//retorna 0 para a quantidade de cliente que existiam
     }
     /*codigo do cliente atual, e necessario guardar em uma var temporaria para evitar jogar memoria fora, mais abaixo sera explicado*/

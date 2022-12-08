@@ -93,6 +93,7 @@ int leDadosLancamentosAprazo(contaArec **contas){
             printf("%s", strerror(errno));
             return 0;
         }
+        fechaArquivo(&f);
         return 0;
     }
     
@@ -155,6 +156,7 @@ int leDadosLancamentosAprazoBin(contaArec **contas){
             printf("%s\n", strerror(errno));
             return 0;
         }
+        fechaArquivo(&f);
         return 0;
     }
     
