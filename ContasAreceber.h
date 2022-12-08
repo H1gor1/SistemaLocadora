@@ -27,7 +27,8 @@ contaArec * encontraContaPeloCodigo(contaArec *contas, int quantidade, long int 
 int daBaixa(int modoArm);
 int filtraContasAtrasadas(contaArec *contas, int quantidadeContas, contaArec **atrasadas, int modoArm);
 int filtraContasClientes(contaArec *contas, int quantidadeContas, contaArec **contasDeUmCliente, int modoArm);
-void mostraContasFiltradas(contaArec *contas, int quantidadeContas, int modoArm, int (*filtra)(contaArec *, int, contaArec **, int), char *mensagem, char *mensagemCasoNaoExista);
+void mostraContasFiltradas(contaArec *contas, int quantidadeContas, int modoArm,
+                           int (*filtra)(contaArec *, int, contaArec **, int), char *mensagem, char *mensagemCasoNaoExista);
 void consultaLancamentos(int modoArm);
 int filtraPorData(contaArec *contas, int quantidade, contaArec **dest, int modoArm);
 int filtraContasVencimentoMes(contaArec *contas, int quantidadeContas, contaArec **atrasadas, int mesVenc);

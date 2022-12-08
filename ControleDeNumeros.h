@@ -8,7 +8,8 @@ void* verificaNumero(void *ptr, char *controle);
  do vetor, e a quantidade de numeros ela deve pegar do buffer*/
 int verificaDigitos(int *ptr, int quant);
 /*funcao responsavel por verificar se um cnpj digitado tem as condicoes minimas suficientes para ser valido*/
-int validaCnpjouCpf(char **ptr, int quantidadedigitos, char *verificacoes, char *verificacoes2, int quantidadeMult, int posicao, char *mensagemeERRO, int somar, int somar2);
+int validaCnpjouCpf(char **ptr, int quantidadedigitos, char *verificacoes,
+                    char *verificacoes2, int quantidadeMult, int posicao, char *mensagemeERRO, int somar, int somar2);
     
 /*funcao responsavel por verificar a digitacao da inscricao estadual do usuario*/
 int validaInsEstadual(char **ptr);

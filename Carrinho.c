@@ -150,11 +150,14 @@ void alocaFilmes(filmes **filmesAlocados, int *quantidade, filmes *lista, int qu
 }
 void limpaMemoriaRealizaVenda(cliente** clients, int quantidadeClientes, Funcionarios ** func, int quantidadeFuncionarios, filmes ** todosFilmes, int quantidadeFilmes){
     limpaDadosClienteMemoria(clients[0], quantidadeClientes);
-    clients[0] = limpaMemoria(clients[0]);
+    if(quantidadeClientes)
+        clients[0] = limpaMemoria(clients[0]);
     limpaDadosFilmeMemoria(todosFilmes[0], quantidadeFilmes);
-    todosFilmes[0] = limpaMemoria(todosFilmes[0]);
+    if(quantidadeFilmes)
+        todosFilmes[0] = limpaMemoria(todosFilmes[0]);
     apagaDadosStructFuncionarios(func[0], quantidadeFuncionarios);
-    func[0] = limpaMemoria(func[0]);
+    if(quantidadeFuncionarios)
+        func[0] = limpaMemoria(func[0]);
 }
 
 void realizaVenda(int modoArm){

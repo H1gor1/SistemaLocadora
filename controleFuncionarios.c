@@ -99,6 +99,7 @@ int leDadosFuncionariosBin(Funcionarios **ptr){
     if(!f){
         /*se nao existia, entao ele sera criado*/
         f = fopen("Funcionarios.bin", "wb");
+        fechaArquivo(&f);
         return 0;//retorna 0 como a quantidade de funcionarios
     }
     /*se f nao for null, entao continua a leitura normalmente*/

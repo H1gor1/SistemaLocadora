@@ -28,7 +28,6 @@ typedef struct lancamentoEntradas{
 
 int leDadosEntradasFilmesBin(lancamentoEntradas **contas);
 int leDadosLancamentoEntradasFilmes(lancamentoEntradas **contas);
-lancamentoEntradas *buscaEntradaAvista(lancamentoEntradas *ptr, int quantidade);
 lancamentoEntradas *encontraEntradaAvistaCodigo(lancamentoEntradas *ptr, int quantidade, long int codigo);
 void realizaEntrada(int modoAbertura);
 void limpaMemoriaRealizaEntrada(fornecedor ** forn, int quantidadeFornecedores, filmes ** todosFilmes, int quantidadeFilmes);

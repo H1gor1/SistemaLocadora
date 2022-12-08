@@ -240,23 +240,6 @@ lancamentoEntradas *encontraEntradaAvistaCodigo(lancamentoEntradas *ptr, int qua
     }
     return NULL;
 }
-lancamentoEntradas *buscaEntradaAvista(lancamentoEntradas *ptr, int quantidade){
-    lancamentoEntradas *busca = NULL;
-    long int codigo;
-
-    while(1){
-        verificaNumero(&codigo, "%ld");
-
-        busca = encontraEntradaAvistaCodigo(ptr, quantidade, codigo);
-        if(busca){
-
-            return busca;
-
-        }
-        disparaSom("Compra inexistente, digite um codigo valido!", 1);
-
-    }
-}
 
 
 void compraAvistaEntrada(entrada *Entradas, int modoAbertura){
@@ -312,7 +295,7 @@ void realizaEntrada(int modoAbertura){
     valoresCaixa = limpaMemoria(valoresCaixa);
 
      if(!verificaExisteFornecedores(fornecedores, quantidadeFornecedores)){
-        printf("Nao existem fornecedores cadastrados ate o momento!\n");
+        printf("Nao existem fornecedores cadastrados ate o momento! Primeiro cadastre um fornecedor pra depois realizar a entrada!\n");
         limpaMemoriaRealizaEntrada(&fornecedores, quantidadeFornecedores, &filme, quantidadeFilmes);
         Sleep(2000);
         return;
