@@ -25,8 +25,8 @@
 #define VLT "Voltar"
 #include "ContasAPagar.h"
 #include "EntradaDeFilmes.h"
-#include"ImportacoesXML.h"
-#include "exportacoesXML.h"
+#include"ExportacaoXML.h"
+#include "importacoesXML.h"
 #define ESC 27
 #define MENUPRINC  menuGraphics(8, "Menu principal, escolha uma opcao:", "Administrativo", "Clientes", "Filmes", "Categorias", "Trocar modo arm BIN/TXT", "Caixa", "Contas", "Sair")
 
@@ -224,10 +224,10 @@ int menuPrincipal(int *modo){
                 menuContasPagar(*modo);
                 break;
             case 8:
-                menuImportacoes(*modo);
+                menuExportacoes(*modo);
                 break;
             case 9:
-                menuExportacoes(*modo);
+                menuImportacoes(*modo);
                 break;
 
 
@@ -560,11 +560,11 @@ void menuConfiguracoes(int *modoArm){
         }
     }
 }
-void menuImportacoes(int modoArm){
+void menuExportacoes(int modoArm){
     int escolha;
-    void (*f[12])(int) = {importaDadosLocadora, importaDadosFuncs, importaDadosFornecedores, importaCategoria,
-                          importaDadosClientes, importaDadosFilmes, importaDadosCompras, importaDadosLancamentos,
-                          importaLancamentosAprazo, importaDadosSons, importaLancamentosEntrada, importaEntradaAprazo};
+    void (*f[12])(int) = {exportaLocadora, exportaDadosFuncs, exportaDadosFornecedores, exportaCategoria,
+                          exportaDadosClientes, exportaDadosFilmes, exportaDadosCompras, exportaDadosLancamentos,
+                          exportaLancamentosAprazo, exportaDadosSons, exportaLancamentosEntrada, exportaEntradaAprazo};
 
     while(escolha != 10) {
         escolha = escolheMenu("Escolha um arquivo para exportar os dados:", 13, 0,
@@ -591,9 +591,10 @@ void menuImportacoes(int modoArm){
 
 
 }
-void menuExportacoes(int modoArm){
+void menuImportacoes(int modoArm){
     int escolha;
-    void (*f[12])(int) = {exportaLocadora, exportaFuncionarios, exportaFornecedores, exportaCategoria, exportaClientes, exportaFilmes, importaDevolucoes};
+    void (*f[12])(int) = {importaLocadora, importaFuncionarios, importaFornecedores, importaCategoria, importaClientes,
+                          importaFilmes, importaDevolucoes, importaLancamentosCaixa, importaCompraAprazo, importaConfiguracoesSons};
 
     while(escolha != 12){
         escolha = escolheMenu("Escolha o destino que deseja importar dados de outra aplicacao:", 13, 0,
