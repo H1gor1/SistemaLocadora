@@ -613,3 +613,108 @@ void importaCompraAprazo(int modoArm){
 
 
 }
+void importaDadosLancamentoentradas(int modoArm){
+
+    lancamentoEntradas *todasAsEntradas = NULL;
+    int quantidadeContas = 0;
+    time_t temp = 0;
+
+    char *descricao;
+    FILE *f;
+
+    f = digitaCaminhoImport("importar dados de lancamentos de entrada", &descricao);
+
+    avancaAtePalavra("<codigoCompra>", f);
+
+    while(!feof(f)){
+
+        todasAsEntradas = (!quantidadeContas)
+                ?malloc(sizeof(lancamentoEntradas))
+                :realloc(todasAsEntradas, sizeof(lancamentoEntradas)*(quantidadeContas+1));
+
+        verificaOperacao(todasAsEntradas, "ERRO: Memoria indisponivel!", 1);
+        todasAsEntradas[quantidadeContas] = (lancamentoEntradas){0,0,0,0,0,(struct tm){0,0,0,0,0,0,0,0,0}};
+        fscanf(f, "%ld", &todasAsEntradas[quantidadeContas].codigoCompra);
+
+        avancaAtePalavra("<modoPagamento>", f);
+        fscanf(f, "%d", &todasAsEntradas[quantidadeContas].modoPagamento);
+
+        avancaAtePalavra("<valor>", f);
+        fscanf(f, "%f", &todasAsEntradas[quantidadeContas].valor);
+
+        avancaAtePalavra("<valorPago>", f);
+        fscanf(f, "%f", &todasAsEntradas[quantidadeContas].valorPago);
+
+        avancaAtePalavra("<troco>", f);
+        fscanf(f, "%f", &todasAsEntradas[quantidadeContas].troco);
+
+        avancaAtePalavra("<data>", f);
+        fscanf(f, "%ld", &temp);
+        todasAsEntradas[quantidadeContas].data = *localtime(&temp);
+
+        avancaAtePalavra("<codigoCompra>", f);
+
+        quantidadeContas++;
+
+    }
+    fechaArquivo(&f);
+
+    (modoArm)
+        ? reescreveLancamentosEntradaBin(todasAsEntradas, quantidadeContas, "lancamentosEntradaRes.bin", "lancamentosEntrada.bin", "wb")
+        : reescreveLancamentosEntrada(todasAsEntradas, quantidadeContas, "lancamentosEntradasRes.txt", "lancamentosEntrada.txt", "w");
+
+    todasAsEntradas = limpaMemoria(todasAsEntradas);
+
+
+
+
+}
+void importaEntradasAprazo(int modoArm){
+    contaApag *todasAsEntradasAprazo = NULL;
+    int quantidadeEntradasAprazo = 0;
+
+    FILE *f;
+    char *descricao;
+    time_t temp = 0;
+
+    f = digitaCaminhoImport("importar dados de entradas a prazo", &descricao);
+
+    avancaAtePalavra("<codigoCompra>", f);
+
+    while(!feof(f)){
+
+        todasAsEntradasAprazo = (!quantidadeEntradasAprazo)? malloc(sizeof(contaApag)): realloc(todasAsEntradasAprazo, sizeof(contaApag)*(quantidadeEntradasAprazo+1));
+        verificaOperacao(todasAsEntradasAprazo, "ERRO: Memoria indisponivel!", 1);
+        todasAsEntradasAprazo[quantidadeEntradasAprazo] = (contaApag){0,0,0,0,0,(struct tm){0,0,0,0,0,0,0,0,0}};
+
+        fscanf(f, "%ld", &todasAsEntradasAprazo[quantidadeEntradasAprazo].codigoCompra);
+
+        avancaAtePalavra("<modoPagamento>", f);
+        fscanf(f, "%d", &todasAsEntradasAprazo[quantidadeEntradasAprazo].modoPagamento);
+
+        avancaAtePalavra("<parcelas>", f);
+        fscanf(f, "%d", &todasAsEntradasAprazo[quantidadeEntradasAprazo].parcelas);
+
+        avancaAtePalavra("<valorParc>", f);
+        fscanf(f, "%f", &todasAsEntradasAprazo[quantidadeEntradasAprazo].valorParc);
+
+        avancaAtePalavra("<valorEntrada>", f);
+        fscanf(f, "%f", &todasAsEntradasAprazo[quantidadeEntradasAprazo].entrada);
+
+        avancaAtePalavra("<data>", f);
+        fscanf(f, "%ld", &temp);
+        todasAsEntradasAprazo[quantidadeEntradasAprazo].dataAluga = *localtime(&temp);
+
+        avancaAtePalavra("<codigoCompra>", f);
+
+        quantidadeEntradasAprazo++;
+
+    }
+    fechaArquivo(&f);
+
+    (modoArm)
+        ? reescreveEntradasAprazoBin(todasAsEntradasAprazo, quantidadeEntradasAprazo, "entradaAprazoRes.bin", "entradaAprazo.bin", "wb")
+        : reescreveEntradaAprazo(todasAsEntradasAprazo, quantidadeEntradasAprazo, "entradaAprazoRes.txt", "entradaAprazo.txt", "w");
+
+    todasAsEntradasAprazo = limpaMemoria(todasAsEntradasAprazo);
+}

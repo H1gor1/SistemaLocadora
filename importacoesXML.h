@@ -18,4 +18,6 @@ void importaFilmes(int modoArm);
 void importaDevolucoes(int modoArm);
 void importaLancamentosCaixa(int modoArm);
 void importaCompraAprazo(int modoArm);
+void importaDadosLancamentoentradas(int modoArm);
+void importaEntradasAprazo(int modoArm);
 #endif //UNTITLED_EXPORTACOESXML_H

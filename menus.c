@@ -594,7 +594,8 @@ void menuExportacoes(int modoArm){
 void menuImportacoes(int modoArm){
     int escolha;
     void (*f[12])(int) = {importaLocadora, importaFuncionarios, importaFornecedores, importaCategoria, importaClientes,
-                          importaFilmes, importaDevolucoes, importaLancamentosCaixa, importaCompraAprazo, importaConfiguracoesSons};
+                          importaFilmes, importaDevolucoes, importaLancamentosCaixa, importaCompraAprazo, importaConfiguracoesSons,
+                          importaDadosLancamentoentradas, importaEntradasAprazo};
 
     while(escolha != 12){
         escolha = escolheMenu("Escolha o destino que deseja importar dados de outra aplicacao:", 13, 0,
