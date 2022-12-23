@@ -235,7 +235,7 @@ int menuPrincipal(int *modo){
                 printf("Opcao invalida!\n");
         }
         if(escolha != 10){
-            escolha = escolha = escolheMenu("Menu principal. Escolha uma opcao", 11, 0,"Administrativo", "Clientes", "Filmes", "Categorias", "Configuracoes", "Caixa", "Contas a receber","Contas a Pagar","importar dados em um XML" , "exportar dados de um XML", "Sair");
+            escolha = escolha = escolheMenu("Menu principal. Escolha uma opcao", 11, 0,"Administrativo", "Clientes", "Filmes", "Categorias", "Configuracoes", "Caixa", "Contas a receber","Contas a Pagar","exportar dados em um XML" , "importar dados de um XML", "Sair");
         }
     }
 }

@@ -107,16 +107,16 @@ void imprimeNotinha(FILE *f, entrada *filmesEntrada, int quantidade, int quantid
     fprintf(f, "Nome do fornecedor: %s\n", filmesEntrada->compraAtual.nomeFantasia);
     fprintf(f, "CNPJ do fornecedor: %s\n", filmesEntrada->compraAtual.CNPJ);
     fprintf(f, "Frete total: %f\n", frete);
-    fprintf(f, "Frete por produto: %f\n", frete/quantidadeExemplares);
-    fprintf(f, "Imposto total: %f\n", imposto);
-    fprintf(f, "Imposto por produto: %f\n\n", imposto/quantidadeExemplares);
+    fprintf(f, "Frete por produto: %.2f\n", frete/quantidadeExemplares);
+    fprintf(f, "Imposto total: %.2f\n", imposto);
+    fprintf(f, "Imposto por produto: %.2f\n\n", imposto/quantidadeExemplares);
     for(int i=0; i < quantidade; i++){
         fprintf(f, "Filme: %s\n", filmesEntrada->lista[i].nome);
-        fprintf(f, "     Preco de Custo: %f\n", filmesEntrada->lista[i].valorLocacao);
+        fprintf(f, "     Preco de Custo: %.2f\n", filmesEntrada->lista[i].valorLocacao);
         fprintf(f, "     Quantidade: %d\n", filmesEntrada->lista[i].exemplares);
-        fprintf(f, "     Preco Total pago no filme: %f\n", filmesEntrada->lista[i].valorLocacao+(frete/quantidadeExemplares)+(imposto/quantidadeExemplares));
+        fprintf(f, "     Preco Total pago no filme: %.2f\n", filmesEntrada->lista[i].valorLocacao+(frete/quantidadeExemplares)+(imposto/quantidadeExemplares));
     }
-    fprintf(f, "\nPreco total da notinha: %f\n", precoTotal);
+    fprintf(f, "\nPreco total da notinha: %.2f\n", precoTotal);
 }
 
 float CalcPrecoEntrada(entrada *filmesEntrada, int quantidade, float frete, float imposto){
@@ -131,10 +131,10 @@ float CalcPrecoEntrada(entrada *filmesEntrada, int quantidade, float frete, floa
     precoTotal = preco+frete+imposto;
 
     imprimeNotinha(stdout, filmesEntrada, quantidade, quantidadeExemplares, frete, imposto, precoTotal);
-    printf("Aperta qualquer botão para continuar: ");
+    printf("Aperta qualquer botao para continuar: ");
     getch();
 
-    escolha = escolheMenu("Deseja imprimir a notinha em arquivo?", 2, 0, "Sim", "Não");
+    escolha = escolheMenu("Deseja imprimir a notinha em arquivo?", 2, 0, "Sim", "Nao");
     switch (escolha) {
         case 0:
             FILE *f;

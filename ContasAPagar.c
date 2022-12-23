@@ -17,6 +17,7 @@
 #include <conio.h>
 #include <windows.h>
 #include "Caixa.h"
+#include <math.h>
 #define ERROMEM "ERRO: Memoria indisponivel!\n"
 #define MAXIMOPARCELAS 3
 #include "ContasAPagar.h"
@@ -274,8 +275,8 @@ int BaixaEntradasFilmes(int modoArm){
     }
 
 
-    printf("Digite a quantidade de parcelas que deseja baixar desta compra, voce pode pagar no maximo %.0f parcelas:", (valorCaixa/darBaixa->valorParc>4)?3:valorCaixa/darBaixa->valorParc);
-    verificaLimiteNumero(&quantidadesNotinhasPagar, valorCaixa/darBaixa->valorParc, 1, "%d");
+    printf("Digite a quantidade de parcelas que deseja baixar desta compra, voce pode pagar no maximo %.0f parcelas:", (floor(valorCaixa/darBaixa->valorParc)>=darBaixa->parcelas)?darBaixa->parcelas:floor(valorCaixa/darBaixa->valorParc));
+    verificaLimiteNumero(&quantidadesNotinhasPagar, (valorCaixa/darBaixa->valorParc>darBaixa->parcelas)?darBaixa->parcelas:valorCaixa/darBaixa->valorParc, 1, "%d");
     tempo = mktime(&darBaixa->dataAluga)+86400*30*quantidadesNotinhasPagar;
     darBaixa->dataAluga = *localtime(&tempo);
     LancaEntradaOuParcela_EntradaFilmes(darBaixa, modoArm, darBaixa->valorParc*quantidadesNotinhasPagar);
@@ -290,7 +291,7 @@ int BaixaEntradasFilmes(int modoArm){
 
     if(modoArm) {
         reescreveEntradasAprazoBin(contas, quantidade, "entradaAprazoRes.bin", "entradaAprazo.bin", "wb");
-        reescreveLancamentosCaixaBin(&parcelaAbatida, 1, "lancamnetos.bin", "lancamentos.bin", "ab");
+        reescreveLancamentosCaixaBin(&parcelaAbatida, 1, "lancamentos.bin", "lancamentos.bin", "ab");
     }else{
         reescreveEntradaAprazo(contas, quantidade, "entradaAprazoRes.txt", "entradaAprazo.txt", "w");
         reescreveLancamentosCaixa(&parcelaAbatida, 1, "lancamentos.txt", "lancamentos.txt", "a");

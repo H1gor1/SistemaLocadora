@@ -75,6 +75,7 @@ int leDadosClientesBin(cliente **ptr){
     /*enquanto nao foi lida a quantidade total de clientes cadastrados, continuar lendo*/
     for(int i = 0; i<quantidade; i++){
         /*le a quantidade de bytes um int ocupa de dentro do arquivo binario, e esse numero e guardado no codigo do cliente atual*/
+        ptr[0][i] = (cliente){0,NULL, NULL, NULL, 0,NULL,0,NULL,0,0,0,0,0,0};
         fread(&ptr[0][i].codigo, sizeof(int), 1, f);
         
         /*le a quantidade de letras do proximo campo de string do cliente atual*/
@@ -155,6 +156,8 @@ int leDadosClientes(cliente **ptr){
     /*enquanto nao ler todas as informacoes de todos os clientes, continuar lendo*/
     for(int i = 0; i<quantidade; i++){
         /*cada informacao e pega e guardada dentro do campo certo do cliente atual*/
+
+        ptr[0][i] = (cliente){0,NULL,NULL,NULL,0,NULL,0,NULL,0,0,0,0,0,0,0};
         fscanf(f, "%d ", &ptr[0][i].codigo);
         
         digText(&ptr[0][i].nomeCompleto, f, '\n');

@@ -184,14 +184,14 @@ void realizaVenda(int modoArm){
         Sleep(4000);
         return;
     }
-    if(!contaQuantidadeExistente(sizeof(cliente), funcionarios, quantidadeClientes)){
+    if(!contaQuantidadeExistente(sizeof(cliente), clientes, quantidadeClientes)){
 
         printf("Nao existem clientes cadastrados, primeiro cadastre um clientes pra depois realizar a venda!\n");
         limpaMemoriaRealizaVenda(&clientes, quantidadeClientes, &funcionarios, quantidadeFuncionarios, &TodosFilmes, quantidadeTotalFilmes);
         Sleep(4000);
         return;
     }
-    if(!contaQuantidadeExistente(sizeof(filmes), funcionarios, quantidadeTotalFilmes)){
+    if(!contaQuantidadeExistente(sizeof(filmes), TodosFilmes, quantidadeTotalFilmes)){
 
         printf("Nao existem filmes cadastrados, primeiro cadastre um filme pra depois realizar a venda!\n");
         limpaMemoriaRealizaVenda(&clientes, quantidadeClientes, &funcionarios, quantidadeFuncionarios, &TodosFilmes, quantidadeTotalFilmes);

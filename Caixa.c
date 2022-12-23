@@ -521,6 +521,7 @@ void lancaValorCaixa(int modoArm){
             printf("digite um valor valido!\n");
         }
     }
+    adicionar.valorPago = adicionar.valor;
 
     adicionar.modoPagamento = 0;
     adicionar.codigoCompra = time(NULL);
